@@ -37,6 +37,19 @@ public class Provider {
     @Column(name = "working_day", nullable = false)
     private Set<DayOfWeek> workingDays;
 
+    public Provider() {
+    }
+
+    public Provider(String name, String website, String businessDomain, String phone, LocalTime startTimeOfWorkingDay, LocalTime endTimeOfWorkingDay, Set<DayOfWeek> workingDays) {
+        this.name = name;
+        this.website = website;
+        this.businessDomain = businessDomain;
+        this.phone = phone;
+        this.startTimeOfWorkingDay = startTimeOfWorkingDay;
+        this.endTimeOfWorkingDay = endTimeOfWorkingDay;
+        this.workingDays = workingDays;
+    }
+
     public Long getId() {
         return id;
     }
