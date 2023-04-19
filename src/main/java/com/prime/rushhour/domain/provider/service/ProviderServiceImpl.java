@@ -25,8 +25,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     public ProviderResponseDto save(ProviderRequestDto providerRequestDto) {
         var provider = providerMapper.toEntity(providerRequestDto);
-        providerRepository.save(provider);
-        return providerMapper.toDto(provider);
+        return providerMapper.toDto(providerRepository.save(provider));
     }
 
     @Override
