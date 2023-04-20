@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,13 @@ public class GlobalExceptionHandler {
                 );
         var error = new ErrorResponse(violations);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrity(SQLIntegrityConstraintViolationException e) {
+        String errorMessage = "Duplicate entry: " + e.getMessage().split("'")[1];
+        var violation = new Violation(null, errorMessage, LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
     }
 
     @ExceptionHandler(EntityNotFound.class)
