@@ -1,5 +1,6 @@
 package com.prime.rushhour.infrastructure.exceptions;
 
+import com.prime.rushhour.domain.provider.repository.ProviderRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,12 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final ProviderRepository providerRepository;
+
+    public GlobalExceptionHandler (ProviderRepository providerRepository){
+        this.providerRepository = providerRepository;
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleInvalidArgument(ConstraintViolationException e) {
@@ -43,9 +50,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrity(SQLIntegrityConstraintViolationException e) {
-        String errorMessage = "Duplicate entry: " + e.getMessage().split("'")[1];
-        var violation = new Violation(null, errorMessage, LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
+
+        var violations = new ArrayList<Violation>();
+
+        if(providerRepository.existsByName(e.getMessage().split("'")[1])) {
+            violations.add(new Violation("Name", e.getMessage(), LocalDateTime.now()));
+        }
+
+        if(providerRepository.existsByBusinessDomain(e.getMessage().split("'")[1])) {
+            violations.add(new Violation("Business Domain", e.getMessage(), LocalDateTime.now()));
+        }
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(violations));
     }
 
     @ExceptionHandler(EntityNotFound.class)
