@@ -8,7 +8,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Set;
 
-public record ProviderRequestDto(
+public record ProviderRequest(
     @NotBlank(message = "Name is a mandatory field")
     @Size(min = 3, message = "Name must be at least 3 characters long")
     String name,

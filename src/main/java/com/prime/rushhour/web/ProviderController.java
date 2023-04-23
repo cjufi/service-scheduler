@@ -1,7 +1,7 @@
 package com.prime.rushhour.web;
 
-import com.prime.rushhour.domain.provider.dto.ProviderRequestDto;
-import com.prime.rushhour.domain.provider.dto.ProviderResponseDto;
+import com.prime.rushhour.domain.provider.dto.ProviderRequest;
+import com.prime.rushhour.domain.provider.dto.ProviderResponse;
 import com.prime.rushhour.domain.provider.service.ProviderService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -21,17 +21,17 @@ public class ProviderController {
     }
 
     @PostMapping
-    public ResponseEntity<ProviderResponseDto> save(@Valid @RequestBody ProviderRequestDto providerRequestDto) {
-        return new ResponseEntity<>(providerService.save(providerRequestDto), HttpStatus.CREATED);
+    public ResponseEntity<ProviderResponse> save(@Valid @RequestBody ProviderRequest providerRequest) {
+        return new ResponseEntity<>(providerService.save(providerRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProviderResponseDto> getById(@PathVariable Long id) {
+    public ResponseEntity<ProviderResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(providerService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProviderResponseDto>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<ProviderResponse>> getAll(Pageable pageable) {
         return new ResponseEntity<>(providerService.getAll(pageable), HttpStatus.OK);
     }
 
@@ -42,7 +42,7 @@ public class ProviderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProviderResponseDto> update(@PathVariable Long id, @Valid @RequestBody ProviderRequestDto providerRequestDto) {
-        return new ResponseEntity<>(providerService.update(id, providerRequestDto), HttpStatus.OK);
+    public ResponseEntity<ProviderResponse> update(@PathVariable Long id, @Valid @RequestBody ProviderRequest providerRequest) {
+        return new ResponseEntity<>(providerService.update(id, providerRequest), HttpStatus.OK);
     }
 }

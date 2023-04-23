@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Set;
 
-public record ProviderResponseDto(
+public record ProviderResponse(
     String name,
     String website,
     String businessDomain,

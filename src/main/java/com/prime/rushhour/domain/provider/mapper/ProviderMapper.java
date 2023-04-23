@@ -1,7 +1,7 @@
 package com.prime.rushhour.domain.provider.mapper;
 
-import com.prime.rushhour.domain.provider.dto.ProviderRequestDto;
-import com.prime.rushhour.domain.provider.dto.ProviderResponseDto;
+import com.prime.rushhour.domain.provider.dto.ProviderRequest;
+import com.prime.rushhour.domain.provider.dto.ProviderResponse;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -9,9 +9,9 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface ProviderMapper {
 
-    Provider toEntity(ProviderRequestDto providerRequestDto);
+    Provider toEntity(ProviderRequest providerRequest);
 
-    ProviderResponseDto toDto(Provider provider);
+    ProviderResponse toDto(Provider provider);
 
-    void update(@MappingTarget Provider provider, ProviderRequestDto providerRequestDto);
+    void update(@MappingTarget Provider provider, ProviderRequest providerRequest);
 }

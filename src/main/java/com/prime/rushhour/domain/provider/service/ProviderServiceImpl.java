@@ -1,7 +1,7 @@
 package com.prime.rushhour.domain.provider.service;
 
-import com.prime.rushhour.domain.provider.dto.ProviderRequestDto;
-import com.prime.rushhour.domain.provider.dto.ProviderResponseDto;
+import com.prime.rushhour.domain.provider.dto.ProviderRequest;
+import com.prime.rushhour.domain.provider.dto.ProviderResponse;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import com.prime.rushhour.domain.provider.mapper.ProviderMapper;
 import com.prime.rushhour.domain.provider.repository.ProviderRepository;
@@ -24,26 +24,26 @@ public class ProviderServiceImpl implements ProviderService{
     }
 
     @Override
-    public ProviderResponseDto save(ProviderRequestDto providerRequestDto) {
+    public ProviderResponse save(ProviderRequest providerRequest) {
 
-        if(providerRepository.existsByName(providerRequestDto.name()))
-            throw new DuplicateResourceException("Name", providerRequestDto.name());
-        else if (providerRepository.existsByBusinessDomain(providerRequestDto.businessDomain()))
-            throw new DuplicateResourceException("Business Domain", providerRequestDto.businessDomain());
+        if(providerRepository.existsByName(providerRequest.name()))
+            throw new DuplicateResourceException("Name", providerRequest.name());
+        else if (providerRepository.existsByBusinessDomain(providerRequest.businessDomain()))
+            throw new DuplicateResourceException("Business Domain", providerRequest.businessDomain());
 
-        var provider = providerMapper.toEntity(providerRequestDto);
+        var provider = providerMapper.toEntity(providerRequest);
         return providerMapper.toDto(providerRepository.save(provider));
     }
 
     @Override
-    public ProviderResponseDto getById(Long id) {
+    public ProviderResponse getById(Long id) {
         var provider = providerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFound(Provider.class.getSimpleName(),"id", id));
         return providerMapper.toDto(provider);
     }
 
     @Override
-    public Page<ProviderResponseDto> getAll(Pageable pageable) {
+    public Page<ProviderResponse> getAll(Pageable pageable) {
         return providerRepository.findAll(pageable).map(providerMapper::toDto);
     }
 
@@ -56,11 +56,11 @@ public class ProviderServiceImpl implements ProviderService{
     }
 
     @Override
-    public ProviderResponseDto update(Long id, ProviderRequestDto providerRequestDto) {
+    public ProviderResponse update(Long id, ProviderRequest providerRequest) {
         var provider = providerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFound(Provider.class.getSimpleName(),"id", id));
 
-        providerMapper.update(provider, providerRequestDto);
+        providerMapper.update(provider, providerRequest);
         providerRepository.save(provider);
         return providerMapper.toDto(provider);
     }

@@ -1,7 +1,7 @@
 package com.prime.rushhour.domain.provider.service;
 
-import com.prime.rushhour.domain.provider.dto.ProviderRequestDto;
-import com.prime.rushhour.domain.provider.dto.ProviderResponseDto;
+import com.prime.rushhour.domain.provider.dto.ProviderRequest;
+import com.prime.rushhour.domain.provider.dto.ProviderResponse;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import com.prime.rushhour.domain.provider.mapper.ProviderMapper;
 import com.prime.rushhour.domain.provider.repository.ProviderRepository;
@@ -41,7 +41,7 @@ class ProviderServiceImplTest {
     @Test
     void save() {
 
-        ProviderRequestDto providerRequestDto = new ProviderRequestDto( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
+        ProviderRequest providerRequest = new ProviderRequest( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
                 LocalTime.of(8,0,0), LocalTime.of(17,0,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
@@ -50,20 +50,20 @@ class ProviderServiceImplTest {
                         LocalTime.of(8,0,0), LocalTime.of(17,0,0),
                         Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
-        ProviderResponseDto providerResponseDto = new ProviderResponseDto( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
+        ProviderResponse providerResponse = new ProviderResponse( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
                 LocalTime.of(8,0,0), LocalTime.of(17,0,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
 
-        when(providerMapper.toEntity(providerRequestDto)).thenReturn(provider);
+        when(providerMapper.toEntity(providerRequest)).thenReturn(provider);
         when(providerRepository.save(provider)).thenReturn(provider);
-        when(providerMapper.toDto(provider)).thenReturn(providerResponseDto);
+        when(providerMapper.toDto(provider)).thenReturn(providerResponse);
 
-        ProviderResponseDto result = providerService.save(providerRequestDto);
+        ProviderResponse result = providerService.save(providerRequest);
 
-        assertEquals(providerResponseDto, result);
+        assertEquals(providerResponse, result);
 
-        verify(providerMapper).toEntity(providerRequestDto);
+        verify(providerMapper).toEntity(providerRequest);
         verify(providerRepository).save(provider);
         verify(providerMapper).toDto(provider);
     }
@@ -77,15 +77,15 @@ class ProviderServiceImplTest {
 
         when(providerRepository.findById(1L)).thenReturn(Optional.of(provider));
 
-        ProviderResponseDto providerResponseDto = new ProviderResponseDto( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
+        ProviderResponse providerResponse = new ProviderResponse( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
                 LocalTime.of(8,0,0), LocalTime.of(17,0,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
-        when(providerMapper.toDto(provider)).thenReturn(providerResponseDto);
+        when(providerMapper.toDto(provider)).thenReturn(providerResponse);
 
-        providerResponseDto = providerService.getById(1L);
+        providerResponse = providerService.getById(1L);
 
-        assertEquals(provider.getName(), providerResponseDto.name());
+        assertEquals(provider.getName(), providerResponse.name());
     }
 
     @Test
@@ -102,12 +102,12 @@ class ProviderServiceImplTest {
         Page<Provider> page = new PageImpl<>(providers);
 
         when(providerRepository.findAll(any(Pageable.class))).thenReturn(page);
-        when(providerMapper.toDto(any(Provider.class))).thenReturn(new ProviderResponseDto(
+        when(providerMapper.toDto(any(Provider.class))).thenReturn(new ProviderResponse(
                 "Filip Massage", "https://filip.com", "ft12", "+3816555333",
                 LocalTime.of(8,0,0), LocalTime.of(17,0,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)
         ));
-        Page<ProviderResponseDto> result = providerService.getAll(PageRequest.of(0, 10));
+        Page<ProviderResponse> result = providerService.getAll(PageRequest.of(0, 10));
 
         assertEquals(2, result.getContent().size());
         assertEquals("Filip Massage", result.getContent().get(0).name());
@@ -134,7 +134,7 @@ class ProviderServiceImplTest {
     void update() {
 
         Long id = 1L;
-        ProviderRequestDto requestDto = new ProviderRequestDto( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
+        ProviderRequest requestDto = new ProviderRequest( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
                 LocalTime.of(8,0,0), LocalTime.of(17,0,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
@@ -142,14 +142,14 @@ class ProviderServiceImplTest {
                 LocalTime.of(8,0,0), LocalTime.of(17,0,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
-        ProviderResponseDto responseDto = new ProviderResponseDto( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
+        ProviderResponse responseDto = new ProviderResponse( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
                 LocalTime.of(8,0,0), LocalTime.of(17,0,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
         when(providerRepository.findById(id)).thenReturn(Optional.of(provider));
         when(providerMapper.toDto(provider)).thenReturn(responseDto);
 
-        ProviderResponseDto result = providerService.update(id, requestDto);
+        ProviderResponse result = providerService.update(id, requestDto);
 
         verify(providerRepository).findById(id);
         verify(providerMapper).update(provider, requestDto);
