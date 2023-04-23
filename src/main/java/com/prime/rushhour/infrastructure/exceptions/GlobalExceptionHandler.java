@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
     }
 
-    @ExceptionHandler(EntityNotFound.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(RuntimeException e) {
         var violation = new Violation(null, e.getMessage(), LocalDateTime.now());
 

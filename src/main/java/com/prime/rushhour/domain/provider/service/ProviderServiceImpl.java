@@ -6,7 +6,7 @@ import com.prime.rushhour.domain.provider.entity.Provider;
 import com.prime.rushhour.domain.provider.mapper.ProviderMapper;
 import com.prime.rushhour.domain.provider.repository.ProviderRepository;
 import com.prime.rushhour.infrastructure.exceptions.DuplicateResourceException;
-import com.prime.rushhour.infrastructure.exceptions.EntityNotFound;
+import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     public ProviderResponse getById(Long id) {
         var provider = providerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFound(Provider.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
         return providerMapper.toDto(provider);
     }
 
@@ -50,7 +50,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     public void delete(Long id) {
         if(!providerRepository.existsById(id)){
-            throw new EntityNotFound(Provider.class.getSimpleName(),"id", id);
+            throw new EntityNotFoundException(Provider.class.getSimpleName(),"id", id);
         }
         providerRepository.deleteById(id);
     }
@@ -58,7 +58,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     public ProviderResponse update(Long id, ProviderRequest providerRequest) {
         var provider = providerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFound(Provider.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
 
         providerMapper.update(provider, providerRequest);
         providerRepository.save(provider);
