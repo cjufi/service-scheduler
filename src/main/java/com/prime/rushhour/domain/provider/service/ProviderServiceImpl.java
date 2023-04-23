@@ -5,6 +5,7 @@ import com.prime.rushhour.domain.provider.dto.ProviderResponseDto;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import com.prime.rushhour.domain.provider.mapper.ProviderMapper;
 import com.prime.rushhour.domain.provider.repository.ProviderRepository;
+import com.prime.rushhour.infrastructure.exceptions.DuplicateResourceException;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFound;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,12 @@ public class ProviderServiceImpl implements ProviderService{
 
     @Override
     public ProviderResponseDto save(ProviderRequestDto providerRequestDto) {
+
+        if(providerRepository.existsByName(providerRequestDto.name()))
+            throw new DuplicateResourceException("Name", providerRequestDto.name());
+        else if (providerRepository.existsByBusinessDomain(providerRequestDto.businessDomain()))
+            throw new DuplicateResourceException("Business Domain", providerRequestDto.businessDomain());
+
         var provider = providerMapper.toEntity(providerRequestDto);
         return providerMapper.toDto(providerRepository.save(provider));
     }

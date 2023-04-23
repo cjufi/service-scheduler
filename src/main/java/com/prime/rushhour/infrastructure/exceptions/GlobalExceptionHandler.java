@@ -1,6 +1,5 @@
 package com.prime.rushhour.infrastructure.exceptions;
 
-import com.prime.rushhour.domain.provider.repository.ProviderRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -9,19 +8,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    private final ProviderRepository providerRepository;
-
-    public GlobalExceptionHandler (ProviderRepository providerRepository){
-        this.providerRepository = providerRepository;
-    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleInvalidArgument(ConstraintViolationException e) {
@@ -35,7 +27,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleInvalidMethodArgument(MethodArgumentNotValidException e) {
         var violations = new ArrayList<Violation>();
@@ -48,20 +39,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleDataIntegrity(SQLIntegrityConstraintViolationException e) {
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateResourceException(DuplicateResourceException e) {
+        var violation = new Violation(e.getFieldName(), e.getMessage(), LocalDateTime.now());
 
-        var violations = new ArrayList<Violation>();
-
-        if(providerRepository.existsByName(e.getMessage().split("'")[1])) {
-            violations.add(new Violation("Name", e.getMessage(), LocalDateTime.now()));
-        }
-
-        if(providerRepository.existsByBusinessDomain(e.getMessage().split("'")[1])) {
-            violations.add(new Violation("Business Domain", e.getMessage(), LocalDateTime.now()));
-        }
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(violations));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
     }
 
     @ExceptionHandler(EntityNotFound.class)
