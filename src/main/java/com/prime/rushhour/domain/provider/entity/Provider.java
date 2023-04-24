@@ -14,13 +14,13 @@ public class Provider {
     @Column(nullable = false)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
     private String website;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String businessDomain;
 
     @Column(nullable = false)

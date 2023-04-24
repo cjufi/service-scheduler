@@ -1,11 +1,12 @@
 package com.prime.rushhour.domain.provider.service;
 
-import com.prime.rushhour.domain.provider.dto.ProviderRequestDto;
-import com.prime.rushhour.domain.provider.dto.ProviderResponseDto;
+import com.prime.rushhour.domain.provider.dto.ProviderRequest;
+import com.prime.rushhour.domain.provider.dto.ProviderResponse;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import com.prime.rushhour.domain.provider.mapper.ProviderMapper;
 import com.prime.rushhour.domain.provider.repository.ProviderRepository;
-import com.prime.rushhour.infrastructure.exceptions.EntityNotFound;
+import com.prime.rushhour.infrastructure.exceptions.DuplicateResourceException;
+import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,38 +24,45 @@ public class ProviderServiceImpl implements ProviderService{
     }
 
     @Override
-    public ProviderResponseDto save(ProviderRequestDto providerRequestDto) {
-        var provider = providerMapper.toEntity(providerRequestDto);
-        providerRepository.save(provider);
-        return providerMapper.toDto(provider);
+    public ProviderResponse save(ProviderRequest providerRequest) {
+
+        if(providerRepository.existsByName(providerRequest.name())){
+            throw new DuplicateResourceException("Name", providerRequest.name());
+        }
+        else if (providerRepository.existsByBusinessDomain(providerRequest.businessDomain())){
+            throw new DuplicateResourceException("Business Domain", providerRequest.businessDomain());
+        }
+
+        var provider = providerMapper.toEntity(providerRequest);
+        return providerMapper.toDto(providerRepository.save(provider));
     }
 
     @Override
-    public ProviderResponseDto getById(Long id) {
+    public ProviderResponse getById(Long id) {
         var provider = providerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFound(Provider.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
         return providerMapper.toDto(provider);
     }
 
     @Override
-    public Page<ProviderResponseDto> getAll(Pageable pageable) {
+    public Page<ProviderResponse> getAll(Pageable pageable) {
         return providerRepository.findAll(pageable).map(providerMapper::toDto);
     }
 
     @Override
     public void delete(Long id) {
         if(!providerRepository.existsById(id)){
-            throw new EntityNotFound(Provider.class.getSimpleName(),"id", id);
+            throw new EntityNotFoundException(Provider.class.getSimpleName(),"id", id);
         }
         providerRepository.deleteById(id);
     }
 
     @Override
-    public ProviderResponseDto update(Long id, ProviderRequestDto providerRequestDto) {
+    public ProviderResponse update(Long id, ProviderRequest providerRequest) {
         var provider = providerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFound(Provider.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
 
-        providerMapper.update(provider, providerRequestDto);
+        providerMapper.update(provider, providerRequest);
         providerRepository.save(provider);
         return providerMapper.toDto(provider);
     }
