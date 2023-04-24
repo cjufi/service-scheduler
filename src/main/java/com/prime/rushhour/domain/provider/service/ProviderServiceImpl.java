@@ -26,10 +26,12 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     public ProviderResponse save(ProviderRequest providerRequest) {
 
-        if(providerRepository.existsByName(providerRequest.name()))
+        if(providerRepository.existsByName(providerRequest.name())){
             throw new DuplicateResourceException("Name", providerRequest.name());
-        else if (providerRepository.existsByBusinessDomain(providerRequest.businessDomain()))
+        }
+        else if (providerRepository.existsByBusinessDomain(providerRequest.businessDomain())){
             throw new DuplicateResourceException("Business Domain", providerRequest.businessDomain());
+        }
 
         var provider = providerMapper.toEntity(providerRequest);
         return providerMapper.toDto(providerRepository.save(provider));
