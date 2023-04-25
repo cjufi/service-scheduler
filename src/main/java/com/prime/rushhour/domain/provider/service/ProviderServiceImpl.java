@@ -63,7 +63,6 @@ public class ProviderServiceImpl implements ProviderService{
                 .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
 
         providerMapper.update(provider, providerRequest);
-        providerRepository.save(provider);
-        return providerMapper.toDto(provider);
+        return providerMapper.toDto(providerRepository.save(provider));
     }
 }

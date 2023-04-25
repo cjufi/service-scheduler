@@ -15,6 +15,6 @@ CREATE TABLE IF NOT EXISTS working_days (
                                             working_day VARCHAR(255) NOT NULL,
                                             CONSTRAINT fk_provider_id
                                                 FOREIGN KEY (provider_id)
-                                                REFERENCES provider (id)
-                                                ON DELETE CASCADE
+                                                    REFERENCES provider (id)
+                                                    ON DELETE CASCADE
 );
