@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import javax.management.relation.RoleList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +39,8 @@ class RoleServiceImplTest {
     @Test
     void save() {
 
-        RoleDto roleDto = new RoleDto(RoleType.ADMIN);
-        Role role = new Role(RoleType.ADMIN);
+        RoleDto roleDto = new RoleDto(RoleType.ADMIN.toString());
+        Role role = new Role(RoleType.ADMIN.toString());
 
         when(roleMapper.toEntity(roleDto)).thenReturn(role);
         when(roleRepository.save(role)).thenReturn(role);
@@ -57,10 +58,10 @@ class RoleServiceImplTest {
     @Test
     void getById() {
 
-        Role role = new Role(RoleType.CLIENT);
+        Role role = new Role(RoleType.CLIENT.toString());
         when(roleRepository.findById(1L)).thenReturn(Optional.of(role));
 
-        RoleDto roleDto = new RoleDto(RoleType.CLIENT);
+        RoleDto roleDto = new RoleDto(RoleType.CLIENT.toString());
         when(roleMapper.toDto(role)).thenReturn(roleDto);
 
         roleDto = roleService.getById(1L);
@@ -71,14 +72,14 @@ class RoleServiceImplTest {
     void getAll() {
 
         List<Role> roles = Arrays.asList(
-                new Role(RoleType.ADMIN),
-                new Role(RoleType.EMPLOYEE)
+                new Role(RoleType.CLIENT.toString()),
+                new Role(RoleType.EMPLOYEE.toString())
         );
 
         Page<Role> page = new PageImpl<>(roles);
 
         when(roleRepository.findAll(any(Pageable.class))).thenReturn(page);
-        when(roleMapper.toDto(any(Role.class))).thenReturn(new RoleDto(RoleType.ADMIN));
+        when(roleMapper.toDto(any(Role.class))).thenReturn(new RoleDto(RoleType.ADMIN.toString()));
 
         Page<RoleDto> result = roleService.getAll(PageRequest.of(0, 10));
 
@@ -100,8 +101,8 @@ class RoleServiceImplTest {
     @Test
     void update() {
 
-        Role role = new Role(RoleType.CLIENT);
-        RoleDto roleDto = new RoleDto(RoleType.CLIENT);
+        Role role = new Role(RoleType.CLIENT.toString());
+        RoleDto roleDto = new RoleDto(RoleType.CLIENT.toString());
 
         when(roleRepository.findById(1L)).thenReturn(Optional.of(role));
         when(roleRepository.save(role)).thenReturn(role);

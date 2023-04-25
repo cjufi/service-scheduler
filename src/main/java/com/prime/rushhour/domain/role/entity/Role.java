@@ -11,19 +11,19 @@ public class Role {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private RoleType name;
+    private String name;
 
     public Role() {}
 
-    public Role(RoleType name) {
+    public Role(String name) {
         this.name = name;
     }
 
-    public RoleType getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(RoleType name) {
+    public void setName(String name) {
         this.name = name;
     }
 }
