@@ -24,7 +24,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public RoleDto save(RoleDto roleDto) {
         if(roleRepository.existsByName(roleDto.name())) {
-            throw new DuplicateResourceException("Name", roleDto.name().toString());
+            throw new DuplicateResourceException("Name", roleDto.name());
         }
 
         var role = roleMapper.toEntity(roleDto);
