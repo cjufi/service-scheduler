@@ -12,6 +12,6 @@ public record AccountRequest(
         String fullName,
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")
         String password,
-        String roleName
+        Long roleId
 ) {
 }
