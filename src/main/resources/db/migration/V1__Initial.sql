@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS provider (
 
 CREATE TABLE IF NOT EXISTS working_days (
                                             provider_id BIGINT NOT NULL,
-                                            working_day VARCHAR(255) NOT NULL,
+                                            working_day SMALLINT NOT NULL,
                                             CONSTRAINT fk_provider_id
                                                 FOREIGN KEY (provider_id)
                                                     REFERENCES provider (id)
