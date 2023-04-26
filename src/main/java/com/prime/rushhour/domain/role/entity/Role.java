@@ -1,9 +1,6 @@
 package com.prime.rushhour.domain.role.entity;
 
-import com.prime.rushhour.domain.account.entity.Account;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 public class Role {
@@ -15,9 +12,6 @@ public class Role {
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    @OneToMany(mappedBy = "role")
-    private List<Account> accounts;
 
     public Role() {}
 
