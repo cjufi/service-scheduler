@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.employee.entity;
 
+import com.prime.rushhour.domain.account.entity.Account;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,10 @@ public class Employee {
 
     @Column(nullable = false)
     private LocalDate hireDate;
+
+    @OneToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 
     public Employee(String title, String phone, Double ratePerHour, LocalDate hireDate) {
         this.title = title;

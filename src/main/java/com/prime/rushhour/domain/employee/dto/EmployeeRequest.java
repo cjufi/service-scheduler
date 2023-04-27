@@ -18,6 +18,7 @@ public record EmployeeRequest(
         Double ratePerHour,
         @NotNull(message = "Hire Date is a mandatory field")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        LocalDate hireDate
+        LocalDate hireDate,
+        Long accountId
 ) {
 }
