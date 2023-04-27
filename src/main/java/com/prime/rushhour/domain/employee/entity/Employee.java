@@ -24,7 +24,7 @@ public class Employee {
     @Column(nullable = false)
     private LocalDate hireDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
