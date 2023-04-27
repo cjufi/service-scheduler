@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public record EmployeeRequest(
         @NotBlank(message = "Title is a mandatory field")
         @Size(min = 2, message = "Title must be at least 2 characters long")
-        @Pattern(regexp = "^[a-zA-Z0-9]*$")
+        @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
         String title,
         @NotBlank(message = "Phone is a mandatory field")
         @Pattern(regexp = "^\\+?\\d+$")
