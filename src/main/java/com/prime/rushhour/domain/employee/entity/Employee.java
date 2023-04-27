@@ -28,11 +28,12 @@ public class Employee {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    public Employee(String title, String phone, Double ratePerHour, LocalDate hireDate) {
+    public Employee(String title, String phone, Double ratePerHour, LocalDate hireDate, Account account) {
         this.title = title;
         this.phone = phone;
         this.ratePerHour = ratePerHour;
         this.hireDate = hireDate;
+        this.account = account;
     }
 
     public Employee() {}
@@ -67,5 +68,13 @@ public class Employee {
 
     public void setHireDate(LocalDate hireDate) {
         this.hireDate = hireDate;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

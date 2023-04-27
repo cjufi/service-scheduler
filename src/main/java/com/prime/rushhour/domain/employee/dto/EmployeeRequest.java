@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.employee.dto;
 
+import com.prime.rushhour.domain.account.dto.AccountRequest;
 import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,6 +20,6 @@ public record EmployeeRequest(
         @NotNull(message = "Hire Date is a mandatory field")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         LocalDate hireDate,
-        Long accountId
+        AccountRequest accountRequest
 ) {
 }
