@@ -1,6 +1,7 @@
 package com.prime.rushhour.domain.employee.entity;
 
 import com.prime.rushhour.domain.account.entity.Account;
+import com.prime.rushhour.domain.provider.entity.Provider;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -27,6 +28,10 @@ public class Employee {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "provider_id", nullable = false)
+    private Provider provider;
+
 
     public Employee(String title, String phone, Double ratePerHour, LocalDate hireDate, Account account) {
         this.title = title;
