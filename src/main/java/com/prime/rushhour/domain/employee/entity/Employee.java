@@ -33,12 +33,13 @@ public class Employee {
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 
-    public Employee(String title, String phone, Double ratePerHour, LocalDate hireDate, Account account) {
+    public Employee(String title, String phone, Double ratePerHour, LocalDate hireDate, Account account, Provider provider) {
         this.title = title;
         this.phone = phone;
         this.ratePerHour = ratePerHour;
         this.hireDate = hireDate;
         this.account = account;
+        this.provider = provider;
     }
 
     public Employee() {}
