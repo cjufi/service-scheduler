@@ -65,4 +65,11 @@ public class ProviderServiceImpl implements ProviderService{
         providerMapper.update(provider, providerRequest);
         return providerMapper.toDto(providerRepository.save(provider));
     }
+
+    @Override
+    public Provider getProviderById(Long id) {
+        var provider = providerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
+        return provider;
+    }
 }

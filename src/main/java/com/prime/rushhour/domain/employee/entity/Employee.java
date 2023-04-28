@@ -83,4 +83,12 @@ public class Employee {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
 }
