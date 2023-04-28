@@ -29,7 +29,7 @@ public class Employee {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 
