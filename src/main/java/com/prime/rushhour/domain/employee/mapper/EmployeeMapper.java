@@ -3,11 +3,10 @@ package com.prime.rushhour.domain.employee.mapper;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.entity.Employee;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import com.prime.rushhour.domain.role.service.RoleService;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {RoleService.class})
 public interface EmployeeMapper {
 
     @Mapping(target = "account.role.id", source = "accountRequest.roleId")
@@ -22,4 +21,5 @@ public interface EmployeeMapper {
     @Mapping(target = "account.role.id", source = "accountRequest.roleId")
     @Mapping(target = "account", source = "accountRequest")
     void update(@MappingTarget Employee employee, EmployeeRequest employeeRequest);
+
 }

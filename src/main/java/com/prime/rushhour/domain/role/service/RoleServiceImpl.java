@@ -59,4 +59,11 @@ public class RoleServiceImpl implements RoleService{
         roleMapper.update(role, roleDto);
         return roleMapper.toDto(roleRepository.save(role));
     }
+
+    @Override
+    public String getNameById(Long id) {
+        var role = roleRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException(Role.class.getSimpleName(),"id", id));
+        return role.getName();
+    }
 }
