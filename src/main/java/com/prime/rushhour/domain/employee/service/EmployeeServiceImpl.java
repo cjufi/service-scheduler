@@ -41,8 +41,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         accountService.validateAccount(employeeRequest.accountRequest());
 
-        if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(extractEmailDomain(employeeRequest.accountRequest().email())))) {
-            throw new DomainNotCompatibleException("Domain", extractEmailDomain(employeeRequest.accountRequest().email()));
+        var emailDomain = extractEmailDomain(employeeRequest.accountRequest().email());
+
+        if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(emailDomain))) {
+            throw new DomainNotCompatibleException("Domain", emailDomain);
         }
         if (!checkRole(employeeRequest.accountRequest().roleId())) {
             throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeRequest.accountRequest().roleId());
