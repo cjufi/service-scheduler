@@ -88,8 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (parts.length != 2) {
             throw new IllegalArgumentException("Invalid email address: " + email);
         }
-        String[] domainParts = parts[1].split("\\.");
-        return domainParts[0];
+        return parts[1];
     }
 
     private boolean checkRole(Long id) {
