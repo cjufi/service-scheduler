@@ -16,4 +16,6 @@ public interface EmployeeService {
     void delete(Long id);
 
     EmployeeResponse update(Long id, EmployeeRequest employeeRequest);
+
+    void deleteByProviderId(Long id);
 }

@@ -84,6 +84,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toDto(employeeRepository.save(employee));
     }
 
+    @Override
+    public void deleteByProviderId(Long id) {
+        employeeRepository.deleteEmployeesByProviderId(id);
+    }
+
+
     private String extractEmailDomain(String email) {
         String[] parts = email.split("@");
         if (parts.length != 2) {
