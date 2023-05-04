@@ -6,9 +6,8 @@ import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.mapper.EmployeeMapper;
 import com.prime.rushhour.domain.employee.repository.EmployeeRepository;
-import com.prime.rushhour.domain.provider.repository.ProviderRepository;
-import com.prime.rushhour.domain.role.entity.Role;
-import com.prime.rushhour.domain.role.repository.RoleRepository;
+import com.prime.rushhour.domain.provider.service.ProviderService;
+import com.prime.rushhour.domain.role.service.RoleService;
 import com.prime.rushhour.infrastructure.exceptions.DomainNotCompatibleException;
 import com.prime.rushhour.infrastructure.exceptions.DuplicateResourceException;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
@@ -26,16 +25,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final AccountService accountService;
 
-    private final ProviderRepository providerRepository;
+    private final ProviderService providerService;
 
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, AccountService accountService, ProviderRepository providerRepository, RoleRepository roleRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, AccountService accountService, ProviderService providerService, RoleService roleService) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
         this.accountService = accountService;
-        this.providerRepository = providerRepository;
-        this.roleRepository = roleRepository;
+        this.providerService = providerService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (accountService.checkEmail(employeeRequest.accountRequest().email())) {
             throw new DuplicateResourceException("Email", employeeRequest.accountRequest().email());
         }
-        if (!(providerRepository.findById(employeeRequest.providerId()).get().getBusinessDomain().equals(extractEmailDomain(employeeRequest.accountRequest().email())))) {
+        if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(extractEmailDomain(employeeRequest.accountRequest().email())))) {
             throw new DomainNotCompatibleException("Domain", extractEmailDomain(employeeRequest.accountRequest().email()));
         }
         if (!checkRole(employeeRequest.accountRequest().roleId())) {
@@ -97,9 +96,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private boolean checkRole(Long id) {
-        var role = roleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Role.class.getSimpleName(), "id", id));
+        var role = roleService.getById(id);
 
-        return switch (role.getName()) {
+        return switch (role.name()) {
             case "ADMIN", "PROVIDER_ADMIN", "EMPLOYEE" -> true;
             default -> false;
         };
