@@ -9,7 +9,6 @@ import com.prime.rushhour.domain.employee.repository.EmployeeRepository;
 import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.service.RoleService;
 import com.prime.rushhour.infrastructure.exceptions.DomainNotCompatibleException;
-import com.prime.rushhour.infrastructure.exceptions.DuplicateResourceException;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
 import com.prime.rushhour.infrastructure.exceptions.RoleNotCompatibleException;
 import org.springframework.data.domain.Page;
