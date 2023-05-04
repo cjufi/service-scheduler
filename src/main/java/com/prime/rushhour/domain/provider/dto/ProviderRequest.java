@@ -17,7 +17,7 @@ public record ProviderRequest(
     String website,
     @NotBlank(message = "Domain is a mandatory field")
     @Size(min = 2, message = "Domain must be at least 2 characters long")
-    @Pattern(regexp = "^[a-zA-Z\\d]*$")
+    @Pattern(regexp = "^[a-zA-Z\\d]+(\\.[a-zA-Z\\d]+)*$")
     String businessDomain,
     @NotBlank(message = "Phone is a mandatory field")
     @Pattern(regexp = "^\\+?\\d+$")

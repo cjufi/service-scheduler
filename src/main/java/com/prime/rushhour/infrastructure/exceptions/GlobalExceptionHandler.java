@@ -53,6 +53,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(List.of(violation)));
     }
 
+    @ExceptionHandler(DomainNotCompatibleException.class)
+    public ResponseEntity<ErrorResponse> handleDomainNotCompatible(DomainNotCompatibleException e) {
+        var violation = new Violation(e.getFieldName(), e.getMessage(), LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
+    }
+
+    @ExceptionHandler(RoleNotCompatibleException.class)
+    public ResponseEntity<ErrorResponse> handleRoleNotCompatible(RuntimeException e) {
+        var violation = new Violation(null, e.getMessage(), LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
+    }
+
     private record Violation(String field, String error, LocalDateTime timestamp){}
     private record ErrorResponse(List<Violation> violations){}
 }

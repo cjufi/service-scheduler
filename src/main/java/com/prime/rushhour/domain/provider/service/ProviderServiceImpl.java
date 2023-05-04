@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.provider.service;
 
+import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.domain.provider.dto.ProviderRequest;
 import com.prime.rushhour.domain.provider.dto.ProviderResponse;
 import com.prime.rushhour.domain.provider.entity.Provider;
@@ -7,6 +8,8 @@ import com.prime.rushhour.domain.provider.mapper.ProviderMapper;
 import com.prime.rushhour.domain.provider.repository.ProviderRepository;
 import com.prime.rushhour.infrastructure.exceptions.DuplicateResourceException;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,9 +21,13 @@ public class ProviderServiceImpl implements ProviderService{
 
     private final ProviderMapper providerMapper;
 
-    public ProviderServiceImpl(ProviderRepository providerRepository, ProviderMapper providerMapper) {
+    private final EmployeeService employeeService;
+
+    @Lazy
+    public ProviderServiceImpl(ProviderRepository providerRepository, ProviderMapper providerMapper, EmployeeService employeeService) {
         this.providerRepository = providerRepository;
         this.providerMapper = providerMapper;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -50,10 +57,13 @@ public class ProviderServiceImpl implements ProviderService{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         if(!providerRepository.existsById(id)){
             throw new EntityNotFoundException(Provider.class.getSimpleName(),"id", id);
         }
+
+        employeeService.deleteByProviderId(id);
         providerRepository.deleteById(id);
     }
 
@@ -64,5 +74,11 @@ public class ProviderServiceImpl implements ProviderService{
 
         providerMapper.update(provider, providerRequest);
         return providerMapper.toDto(providerRepository.save(provider));
+    }
+
+    @Override
+    public Provider getProviderById(Long id) {
+        return providerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
     }
 }
