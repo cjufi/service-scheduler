@@ -11,8 +11,7 @@ import org.mapstruct.*;
 public interface EmployeeMapper {
 
     @Mapping(target = "provider", source = "providerId")
-    @Mapping(target = "account.role.id", source = "accountRequest.roleId")
-    @Mapping(target = "account.role.name", source = "accountRequest.roleId")
+    @Mapping(target = "account.role", source = "accountRequest.roleId")
     @Mapping(target = "account", source = "accountRequest")
     Employee toEntity(EmployeeRequest employeeRequest);
 

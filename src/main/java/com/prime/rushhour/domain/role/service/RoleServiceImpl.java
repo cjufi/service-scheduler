@@ -66,4 +66,9 @@ public class RoleServiceImpl implements RoleService{
                 .orElseThrow(()-> new EntityNotFoundException(Role.class.getSimpleName(),"id", id));
         return role.getName();
     }
+
+    public Role idToRole(Long id) {
+        return roleRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException(Role.class.getSimpleName(),"id", id));
+    }
 }

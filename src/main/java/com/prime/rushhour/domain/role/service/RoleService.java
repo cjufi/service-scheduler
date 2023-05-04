@@ -1,6 +1,7 @@
 package com.prime.rushhour.domain.role.service;
 
 import com.prime.rushhour.domain.role.dto.RoleDto;
+import com.prime.rushhour.domain.role.entity.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,4 +18,6 @@ public interface RoleService {
     void delete(Long id);
 
     String getNameById(Long id);
+
+    Role idToRole(Long id);
 }
