@@ -40,12 +40,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse save(EmployeeRequest employeeRequest) {
 
-        if (accountService.checkFullName(employeeRequest.accountRequest().fullName())) {
-            throw new DuplicateResourceException("Full Name", employeeRequest.accountRequest().fullName());
-        }
-        if (accountService.checkEmail(employeeRequest.accountRequest().email())) {
-            throw new DuplicateResourceException("Email", employeeRequest.accountRequest().email());
-        }
+        accountService.validateAccount(employeeRequest.accountRequest());
+
         if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(extractEmailDomain(employeeRequest.accountRequest().email())))) {
             throw new DomainNotCompatibleException("Domain", extractEmailDomain(employeeRequest.accountRequest().email()));
         }
