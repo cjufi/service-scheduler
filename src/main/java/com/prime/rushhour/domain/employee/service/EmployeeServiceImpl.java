@@ -7,6 +7,7 @@ import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.mapper.EmployeeMapper;
 import com.prime.rushhour.domain.employee.repository.EmployeeRepository;
 import com.prime.rushhour.domain.provider.service.ProviderService;
+import com.prime.rushhour.domain.role.entity.RoleType;
 import com.prime.rushhour.domain.role.service.RoleService;
 import com.prime.rushhour.infrastructure.exceptions.DomainNotCompatibleException;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
@@ -93,10 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private boolean checkRole(Long id) {
         var role = roleService.getById(id);
-
-        return switch (role.name()) {
-            case "ADMIN", "PROVIDER_ADMIN", "EMPLOYEE" -> true;
-            default -> false;
-        };
+        var roleType = RoleType.valueOf(role.name().toUpperCase());
+        return roleType == RoleType.ADMIN || roleType == RoleType.PROVIDER_ADMIN || roleType == RoleType.EMPLOYEE;
     }
 }
