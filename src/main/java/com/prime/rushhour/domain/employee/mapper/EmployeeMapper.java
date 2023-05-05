@@ -20,7 +20,7 @@ public interface EmployeeMapper {
     @Mapping(target = "accountResponse", source = "account")
     EmployeeResponse toDto(Employee employee);
 
-    @Mapping(target = "account.role.id", source = "accountRequest.roleId")
+    @Mapping(target = "account.role", source = "accountRequest.roleId")
     @Mapping(target = "account", source = "accountRequest")
     void update(@MappingTarget Employee employee, EmployeeRequest employeeRequest);
 }

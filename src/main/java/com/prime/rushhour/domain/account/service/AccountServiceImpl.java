@@ -24,9 +24,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public void validateAccount(AccountRequest accountRequest) {
-        if(checkFullName(accountRequest.fullName())){
-            throw new DuplicateResourceException("Full Name", accountRequest.fullName());
-        }
+
         if(checkEmail(accountRequest.email())){
             throw new DuplicateResourceException("Email", accountRequest.email());
         }
