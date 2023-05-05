@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.client.service;
 
+import com.prime.rushhour.domain.account.service.AccountService;
 import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
 import com.prime.rushhour.domain.client.entity.Client;
@@ -17,13 +18,18 @@ public class ClientServiceImpl implements ClientService{
 
     private final ClientMapper clientMapper;
 
-    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper) {
+    private final AccountService accountService;
+
+    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, AccountService accountService) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
+        this.accountService = accountService;
     }
 
     @Override
     public ClientResponse save(ClientRequest clientRequest) {
+        accountService.validateAccount(clientRequest.accountRequest());
+
         var client = clientMapper.toEntity(clientRequest);
         return clientMapper.toDto(clientRepository.save(client));
     }
