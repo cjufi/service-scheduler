@@ -9,8 +9,10 @@ import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.mapper.EmployeeMapper;
 import com.prime.rushhour.domain.employee.repository.EmployeeRepository;
+import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.dto.RoleDto;
 import com.prime.rushhour.domain.role.entity.Role;
+import com.prime.rushhour.domain.role.service.RoleService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,6 +44,12 @@ class EmployeeServiceImplTest {
 
     @Mock
     private AccountService accountService;
+
+    @Mock
+    private ProviderService providerService;
+
+    @Mock
+    private RoleService roleService;
 
     @InjectMocks
     private EmployeeServiceImpl employeeService;
