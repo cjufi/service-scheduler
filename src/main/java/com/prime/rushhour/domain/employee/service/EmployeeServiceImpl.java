@@ -40,16 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse save(EmployeeRequest employeeRequest) {
 
-        accountService.validateAccount(employeeRequest.accountRequest());
-
-        var emailDomain = extractEmailDomain(employeeRequest.accountRequest().email());
-
-        if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(emailDomain))) {
-            throw new DomainNotCompatibleException("Domain", emailDomain);
-        }
-        if (!checkRole(employeeRequest.accountRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeRequest.accountRequest().roleId());
-        }
+        employeeValidation(employeeRequest);
 
         var employee = employeeMapper.toEntity(employeeRequest);
         return employeeMapper.toDto(employeeRepository.save(employee));
@@ -80,6 +71,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         var employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
 
+        employeeValidation(employeeRequest);
+
         employeeMapper.update(employee, employeeRequest);
         return employeeMapper.toDto(employeeRepository.save(employee));
     }
@@ -96,6 +89,20 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new IllegalArgumentException("Invalid email address: " + email);
         }
         return parts[1];
+    }
+
+    private void employeeValidation(EmployeeRequest employeeRequest) {
+
+        accountService.validateAccount(employeeRequest.accountRequest());
+
+        var emailDomain = extractEmailDomain(employeeRequest.accountRequest().email());
+
+        if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(emailDomain))) {
+            throw new DomainNotCompatibleException("Domain", emailDomain);
+        }
+        if (!checkRole(employeeRequest.accountRequest().roleId())) {
+            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeRequest.accountRequest().roleId());
+        }
     }
 
     private boolean checkRole(Long id) {
