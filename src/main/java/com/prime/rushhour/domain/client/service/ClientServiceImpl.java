@@ -6,7 +6,11 @@ import com.prime.rushhour.domain.client.dto.ClientResponse;
 import com.prime.rushhour.domain.client.entity.Client;
 import com.prime.rushhour.domain.client.mapper.ClientMapper;
 import com.prime.rushhour.domain.client.repository.ClientRepository;
+import com.prime.rushhour.domain.employee.entity.Employee;
+import com.prime.rushhour.domain.role.entity.RoleType;
+import com.prime.rushhour.domain.role.service.RoleService;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
+import com.prime.rushhour.infrastructure.exceptions.RoleNotCompatibleException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,15 +24,22 @@ public class ClientServiceImpl implements ClientService{
 
     private final AccountService accountService;
 
-    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, AccountService accountService) {
+    private final RoleService roleService;
+
+    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, AccountService accountService, RoleService roleService) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
         this.accountService = accountService;
+        this.roleService = roleService;
     }
 
     @Override
     public ClientResponse save(ClientRequest clientRequest) {
         accountService.validateAccount(clientRequest.accountRequest());
+
+        if (!checkRole(clientRequest.accountRequest().roleId())) {
+            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), clientRequest.accountRequest().roleId());
+        }
 
         var client = clientMapper.toEntity(clientRequest);
         return clientMapper.toDto(clientRepository.save(client));
@@ -59,7 +70,19 @@ public class ClientServiceImpl implements ClientService{
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
 
+        accountService.validateAccount(clientRequest.accountRequest());
+
+        if (!checkRole(clientRequest.accountRequest().roleId())) {
+            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), clientRequest.accountRequest().roleId());
+        }
+
         clientMapper.update(client, clientRequest);
         return clientMapper.toDto(clientRepository.save(client));
+    }
+
+    private boolean checkRole(Long id) {
+        var role = roleService.getById(id);
+        var roleType = RoleType.valueOf(role.name().toUpperCase());
+        return roleType == RoleType.CLIENT;
     }
 }
