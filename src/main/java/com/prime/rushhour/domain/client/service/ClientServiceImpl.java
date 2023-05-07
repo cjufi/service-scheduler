@@ -70,8 +70,6 @@ public class ClientServiceImpl implements ClientService{
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
 
-        accountService.validateAccount(clientRequest.accountRequest());
-
         if (!checkRole(clientRequest.accountRequest().roleId())) {
             throw new RoleNotCompatibleException(Employee.class.getSimpleName(), clientRequest.accountRequest().roleId());
         }
