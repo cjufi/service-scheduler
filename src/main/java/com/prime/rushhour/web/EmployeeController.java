@@ -2,6 +2,7 @@ package com.prime.rushhour.web;
 
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
+import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -42,7 +43,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @Valid @RequestBody EmployeeRequest employeeRequest) {
-        return new ResponseEntity<>(employeeService.update(id, employeeRequest), HttpStatus.OK);
+    public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @Valid @RequestBody EmployeeUpdateRequest employeeUpdateRequest) {
+        return new ResponseEntity<>(employeeService.update(id, employeeUpdateRequest), HttpStatus.OK);
     }
 }

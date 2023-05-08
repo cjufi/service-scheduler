@@ -3,6 +3,7 @@ package com.prime.rushhour.domain.employee.service;
 import com.prime.rushhour.domain.account.service.AccountService;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
+import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.mapper.EmployeeMapper;
 import com.prime.rushhour.domain.employee.repository.EmployeeRepository;
@@ -67,13 +68,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponse update(Long id, EmployeeRequest employeeRequest) {
+    public EmployeeResponse update(Long id, EmployeeUpdateRequest employeeUpdateRequest) {
         var employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
 
-        employeeValidation(employeeRequest);
+        if (!checkRole(employeeUpdateRequest.accountUpdateRequest().roleId())) {
+            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeUpdateRequest.accountUpdateRequest().roleId());
+        }
 
-        employeeMapper.update(employee, employeeRequest);
+        employeeMapper.update(employee, employeeUpdateRequest);
         return employeeMapper.toDto(employeeRepository.save(employee));
     }
 
