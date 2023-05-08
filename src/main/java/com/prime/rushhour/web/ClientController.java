@@ -2,6 +2,7 @@ package com.prime.rushhour.web;
 
 import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
+import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
 import com.prime.rushhour.domain.client.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -42,7 +43,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientResponse> update(@PathVariable Long id, @Valid @RequestBody ClientRequest clientRequest) {
-        return new ResponseEntity<>(clientService.update(id, clientRequest), HttpStatus.OK);
+    public ResponseEntity<ClientResponse> update(@PathVariable Long id, @Valid @RequestBody ClientUpdateRequest clientUpdateRequest) {
+        return new ResponseEntity<>(clientService.update(id, clientUpdateRequest), HttpStatus.OK);
     }
 }

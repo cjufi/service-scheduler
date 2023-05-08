@@ -3,6 +3,7 @@ package com.prime.rushhour.domain.client.service;
 import com.prime.rushhour.domain.account.service.AccountService;
 import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
+import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
 import com.prime.rushhour.domain.client.entity.Client;
 import com.prime.rushhour.domain.client.mapper.ClientMapper;
 import com.prime.rushhour.domain.client.repository.ClientRepository;
@@ -66,15 +67,15 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public ClientResponse update(Long id, ClientRequest clientRequest) {
+    public ClientResponse update(Long id, ClientUpdateRequest clientUpdateRequest) {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
 
-        if (!checkRole(clientRequest.accountRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), clientRequest.accountRequest().roleId());
+        if (!checkRole(clientUpdateRequest.accountUpdateRequest().roleId())) {
+            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), clientUpdateRequest.accountUpdateRequest().roleId());
         }
 
-        clientMapper.update(client, clientRequest);
+        clientMapper.update(client, clientUpdateRequest);
         return clientMapper.toDto(clientRepository.save(client));
     }
 

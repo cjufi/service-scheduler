@@ -2,6 +2,7 @@ package com.prime.rushhour.domain.client.service;
 
 import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
+import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,5 +16,5 @@ public interface ClientService {
 
     void delete(Long id);
 
-    ClientResponse update(Long id, ClientRequest clientRequest);
+    ClientResponse update(Long id, ClientUpdateRequest clientUpdateRequest);
 }
