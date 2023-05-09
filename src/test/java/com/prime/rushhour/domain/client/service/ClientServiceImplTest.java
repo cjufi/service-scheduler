@@ -14,7 +14,6 @@ import com.prime.rushhour.domain.client.repository.ClientRepository;
 import com.prime.rushhour.domain.role.dto.RoleDto;
 import com.prime.rushhour.domain.role.entity.Role;
 import com.prime.rushhour.domain.role.service.RoleService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,9 +42,6 @@ class ClientServiceImplTest {
 
     @Mock
     private ClientMapper clientMapper;
-
-    @Mock
-    private AccountService accountService;
 
     @Mock
     private RoleService roleService;
