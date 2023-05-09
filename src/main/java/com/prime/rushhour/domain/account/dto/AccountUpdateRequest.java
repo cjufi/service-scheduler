@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Size;
 
 public record AccountUpdateRequest(
         @NotBlank(message = "Name is a mandatory field")
-        @Pattern(regexp = "^[a-zA-Z'-]+")
+        @Pattern(regexp = "^[a-zA-Z'-]+", message = "Only letters, hyphens and apostrophes are allowed")
         @Size(min = 3, message = "Name must be at least 3 characters long")
         String fullName,
         @NotBlank(message = "Password is a mandatory field")
-        @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")
+        @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "Password should contain at least 8 characters, one uppercase, one lowercase, one digit, and a special symbol")
         String password,
         Long roleId
 ) {
