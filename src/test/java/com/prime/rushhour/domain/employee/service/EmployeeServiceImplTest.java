@@ -4,7 +4,6 @@ import com.prime.rushhour.domain.account.dto.AccountRequest;
 import com.prime.rushhour.domain.account.dto.AccountResponse;
 import com.prime.rushhour.domain.account.dto.AccountUpdateRequest;
 import com.prime.rushhour.domain.account.entity.Account;
-import com.prime.rushhour.domain.account.service.AccountService;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
@@ -50,9 +49,6 @@ class EmployeeServiceImplTest {
     private EmployeeMapper employeeMapper;
 
     @Mock
-    private AccountService accountService;
-
-    @Mock
     private ProviderService providerService;
 
     @Mock
@@ -66,11 +62,11 @@ class EmployeeServiceImplTest {
 
         Employee employee = new Employee("Junior", "+381698154562", 12.67, LocalDate.of(2020, 8, 30),
                 new Account("ftasic39@gmail.com", "FilipTasic", "Password12#", new Role("PROVIDER_ADMIN")),
-                new Provider("Filip Massage", "https://filip.com", "gmail.com", "+3816555333", LocalTime.of(8,00), LocalTime.of(15,00), Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)));
+                new Provider("Filip Massage", "https://filip.com", "gmail.com", "+3816555333", LocalTime.of(8, 0), LocalTime.of(15,0), Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)));
 
         EmployeeResponse employeeResponse = new EmployeeResponse("Junior", "+381698154562", 12.67, LocalDate.of(2020, 8, 30),
                 new AccountResponse("ftasic39@gmail.com", "FilipTasic", new RoleDto("PROVIDER_ADMIN")),
-                new ProviderResponse("Filip Massage", "https://filip.com", "gmail.com", "+3816555333", LocalTime.of(8,00), LocalTime.of(15,00), Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)));
+                new ProviderResponse("Filip Massage", "https://filip.com", "gmail.com", "+3816555333", LocalTime.of(8, 0), LocalTime.of(15,0), Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)));
 
         when(providerService.getProviderById(1L)).thenReturn(employee.getProvider());
         when(roleService.getById(2L)).thenReturn(new RoleDto("PROVIDER_ADMIN"));
@@ -108,7 +104,7 @@ class EmployeeServiceImplTest {
         List<Employee> employees = Arrays.asList(
                 new Employee("Junior", "+381698154562", 12.67, LocalDate.of(2020, 8, 30),
                         new Account("ftasic39@gmail.com", "FilipTasic", "Password12#", new Role("PROVIDER_ADMIN")), null),
-                new Employee("Senior", "+3816981522342", 20.00, LocalDate.of(2018, 8, 30),
+                new Employee("Senior", "+3816981522342", 20.0, LocalDate.of(2018, 8, 30),
                         new Account("svetlana@gmail.com", "SvetlanaStojanovic", "Password12#", new Role("PROVIDER_ADMIN")), null)
         );
 
@@ -144,11 +140,11 @@ class EmployeeServiceImplTest {
 
         Employee employee = new Employee("Junior", "+381698154562", 12.67, LocalDate.of(2020, 8, 30),
                 new Account("ftasic39@gmail.com", "FilipTasic", "Password12#", new Role("PROVIDER_ADMIN")),
-                new Provider("Filip Massage", "https://filip.com", "gmail.com", "+3816555333", LocalTime.of(8,00), LocalTime.of(15,00), Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)));
+                new Provider("Filip Massage", "https://filip.com", "gmail.com", "+3816555333", LocalTime.of(8,0), LocalTime.of(15,0), Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)));
 
         EmployeeResponse employeeResponse = new EmployeeResponse("Junior", "+381698154562", 12.67, LocalDate.of(2020, 8, 30),
                 new AccountResponse("ftasic39@gmail.com", "FilipTasic", new RoleDto("PROVIDER_ADMIN")),
-                new ProviderResponse("Filip Massage", "https://filip.com", "gmail.com", "+3816555333", LocalTime.of(8,00), LocalTime.of(15,00), Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)));
+                new ProviderResponse("Filip Massage", "https://filip.com", "gmail.com", "+3816555333", LocalTime.of(8,0), LocalTime.of(15,0), Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY)));
 
         when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
         when(roleService.getById(2L)).thenReturn(new RoleDto("PROVIDER_ADMIN"));
