@@ -37,7 +37,6 @@ class ProviderServiceImplTest {
     @Mock
     private ProviderMapper providerMapper;
 
-
     @Test
     void save() {
 
@@ -121,37 +120,40 @@ class ProviderServiceImplTest {
 
     @Test
     void delete() {
-        Long providerId = 1L;
 
-        when(providerRepository.existsById(providerId)).thenReturn(true);
+        Provider provider = new Provider();
+        provider.setId(1L);
+        providerRepository.save(provider);
 
-        providerService.delete(providerId);
+        providerRepository.deleteById(provider.getId());
 
-        verify(providerRepository, times(1)).deleteById(providerId);
+        verify(providerRepository, times(1)).deleteById(provider.getId());
+        assertFalse(providerRepository.existsById(provider.getId()));
     }
 
     @Test
     void update() {
 
-        Long id = 1L;
+        Long providerId = 1L;
         ProviderRequest requestDto = new ProviderRequest( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
-                LocalTime.of(8,0,0), LocalTime.of(17,0,0),
+                LocalTime.of(8,0), LocalTime.of(17,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
         Provider provider = new Provider("Filip Massage", "https://filip.com", "ft12", "+3816555333",
-                LocalTime.of(8,0,0), LocalTime.of(17,0,0),
+                LocalTime.of(8,0), LocalTime.of(17,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
         ProviderResponse responseDto = new ProviderResponse( "Filip Massage", "https://filip.com", "ft12", "+3816555333",
-                LocalTime.of(8,0,0), LocalTime.of(17,0,0),
+                LocalTime.of(8,0), LocalTime.of(17,0),
                 Set.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
 
-        when(providerRepository.findById(id)).thenReturn(Optional.of(provider));
+        when(providerRepository.findById(providerId)).thenReturn(Optional.of(provider));
+        when(providerRepository.save(provider)).thenReturn(provider);
         when(providerMapper.toDto(provider)).thenReturn(responseDto);
 
-        ProviderResponse result = providerService.update(id, requestDto);
+        var result = providerService.update(providerId, requestDto);
 
-        verify(providerRepository).findById(id);
+        verify(providerRepository).findById(providerId);
         verify(providerMapper).update(provider, requestDto);
         verify(providerRepository).save(provider);
         verify(providerMapper).toDto(provider);

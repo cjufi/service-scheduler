@@ -1,14 +1,10 @@
 package com.prime.rushhour.domain.account.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record AccountRequest(
-        @NotBlank(message = "Email is a mandatory field")
-        @Email(message = "Please provide a valid email")
-        String email,
+public record AccountUpdateRequest(
         @NotBlank(message = "Name is a mandatory field")
         @Pattern(regexp = "^[a-zA-Z'-]+", message = "Only letters, hyphens and apostrophes are allowed")
         @Size(min = 3, message = "Name must be at least 3 characters long")
