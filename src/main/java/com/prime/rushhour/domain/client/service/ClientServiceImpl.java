@@ -79,7 +79,7 @@ public class ClientServiceImpl implements ClientService{
         return clientMapper.toDto(clientRepository.save(client));
     }
 
-    private boolean checkRole(Long id) {
+    protected boolean checkRole(Long id) {
         var role = roleService.getById(id);
         var roleType = RoleType.valueOf(role.name().toUpperCase());
         return roleType == RoleType.CLIENT;

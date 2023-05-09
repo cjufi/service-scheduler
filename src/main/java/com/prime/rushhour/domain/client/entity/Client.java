@@ -23,6 +23,12 @@ public class Client {
     public Client() {
     }
 
+    public Client(String phone, String address, Account account) {
+        this.phone = phone;
+        this.address = address;
+        this.account = account;
+    }
+
     public String getPhone() {
         return phone;
     }
