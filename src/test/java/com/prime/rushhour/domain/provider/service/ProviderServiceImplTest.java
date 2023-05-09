@@ -1,20 +1,14 @@
 package com.prime.rushhour.domain.provider.service;
 
-import com.prime.rushhour.domain.account.dto.AccountRequest;
-import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
-import com.prime.rushhour.domain.employee.entity.Employee;
-import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.domain.provider.dto.ProviderRequest;
 import com.prime.rushhour.domain.provider.dto.ProviderResponse;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import com.prime.rushhour.domain.provider.mapper.ProviderMapper;
 import com.prime.rushhour.domain.provider.repository.ProviderRepository;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
@@ -43,10 +36,6 @@ class ProviderServiceImplTest {
 
     @Mock
     private ProviderMapper providerMapper;
-
-    @Mock
-    private EmployeeService employeeService;
-
 
     @Test
     void save() {
