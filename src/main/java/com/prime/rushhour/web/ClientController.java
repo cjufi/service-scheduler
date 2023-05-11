@@ -1,5 +1,6 @@
 package com.prime.rushhour.web;
 
+import com.prime.rushhour.domain.account.dto.LoginRequest;
 import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
 import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
@@ -45,5 +46,10 @@ public class ClientController {
     @PutMapping("/{id}")
     public ResponseEntity<ClientResponse> update(@PathVariable Long id, @Valid @RequestBody ClientUpdateRequest clientUpdateRequest) {
         return new ResponseEntity<>(clientService.update(id, clientUpdateRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        return clientService.login(loginRequest.username(), loginRequest.password());
     }
 }
