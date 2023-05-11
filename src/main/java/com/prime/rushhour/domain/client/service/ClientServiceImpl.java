@@ -92,8 +92,7 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public String login(String email, String password) {
         Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        String token = tokenService.generateToken(authentication);
-        return token;
+        return tokenService.generateToken(authentication);
     }
 
     protected boolean checkRole(Long id) {
