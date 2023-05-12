@@ -48,7 +48,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.update(id, employeeUpdateRequest), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest) {
         return employeeService.login(loginRequest.username(), loginRequest.password());
     }
