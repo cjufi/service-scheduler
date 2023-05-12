@@ -1,5 +1,6 @@
 package com.prime.rushhour.web;
 
+import com.prime.rushhour.domain.account.dto.LoginRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
@@ -45,5 +46,10 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @Valid @RequestBody EmployeeUpdateRequest employeeUpdateRequest) {
         return new ResponseEntity<>(employeeService.update(id, employeeUpdateRequest), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public String login(@RequestBody LoginRequest loginRequest) {
+        return employeeService.login(loginRequest.username(), loginRequest.password());
     }
 }
