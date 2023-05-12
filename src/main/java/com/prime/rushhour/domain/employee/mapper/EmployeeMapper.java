@@ -6,14 +6,17 @@ import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.service.RoleService;
+import com.prime.rushhour.infrastructure.mapper.EncodedMapping;
+import com.prime.rushhour.infrastructure.mapper.PasswordEncoderMapper;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", uses = {RoleService.class, ProviderService.class})
+@Mapper(componentModel = "spring", uses = {RoleService.class, ProviderService.class, PasswordEncoderMapper.class})
 public interface EmployeeMapper {
 
     @Mapping(target = "provider", source = "providerId")
     @Mapping(target = "account.role", source = "accountRequest.roleId")
     @Mapping(target = "account", source = "accountRequest")
+    @Mapping(target = "account.password", qualifiedBy = EncodedMapping.class)
     Employee toEntity(EmployeeRequest employeeRequest);
 
     @Mapping(target = "providerResponse", source = "provider")

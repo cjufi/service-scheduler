@@ -10,11 +10,15 @@ import com.prime.rushhour.domain.employee.repository.EmployeeRepository;
 import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.entity.RoleType;
 import com.prime.rushhour.domain.role.service.RoleService;
+import com.prime.rushhour.domain.token.service.TokenService;
 import com.prime.rushhour.infrastructure.exceptions.DomainNotCompatibleException;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
 import com.prime.rushhour.infrastructure.exceptions.RoleNotCompatibleException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,12 +34,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final RoleService roleService;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, AccountService accountService, ProviderService providerService, RoleService roleService) {
+    private final TokenService tokenService;
+
+    private final AuthenticationManager manager;
+
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, AccountService accountService, ProviderService providerService, RoleService roleService, TokenService tokenService, AuthenticationManager manager) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
         this.accountService = accountService;
         this.providerService = providerService;
         this.roleService = roleService;
+        this.tokenService = tokenService;
+        this.manager = manager;
     }
 
     @Override
@@ -83,6 +93,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteByProviderId(Long id) {
         employeeRepository.deleteEmployeesByProviderId(id);
+    }
+
+    @Override
+    public String login(String email, String password) {
+        Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        return tokenService.generateToken(authentication);
     }
 
 

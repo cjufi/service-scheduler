@@ -19,4 +19,6 @@ public interface EmployeeService {
     EmployeeResponse update(Long id, EmployeeUpdateRequest employeeUpdateRequest);
 
     void deleteByProviderId(Long id);
+
+    String login(String email, String password);
 }
