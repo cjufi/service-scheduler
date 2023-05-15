@@ -5,11 +5,13 @@ import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
+import com.prime.rushhour.domain.permission.service.PermissionService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,8 +20,11 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeService employeeService) {
+    private final PermissionService permissionService;
+
+    public EmployeeController(EmployeeService employeeService, PermissionService permissionService) {
         this.employeeService = employeeService;
+        this.permissionService = permissionService;
     }
 
     @PostMapping
@@ -44,6 +49,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize(" hasRole('ADMIN') || (hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id))")
     public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @Valid @RequestBody EmployeeUpdateRequest employeeUpdateRequest) {
         return new ResponseEntity<>(employeeService.update(id, employeeUpdateRequest), HttpStatus.OK);
     }

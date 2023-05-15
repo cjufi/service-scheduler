@@ -118,6 +118,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         return tokenService.generateToken(authentication);
     }
 
+    @Override
+    public Long getProviderIdFromEmployee(Long employeeId) {
+        return employeeRepository.findByProviderId(employeeId);
+    }
 
     private String extractEmailDomain(String email) {
         String[] parts = email.split("@");

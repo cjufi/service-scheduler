@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     void deleteEmployeesByProviderId(Long id);
+
+    Long findByProviderId(Long id);
 }
