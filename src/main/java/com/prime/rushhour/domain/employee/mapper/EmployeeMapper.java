@@ -26,5 +26,6 @@ public interface EmployeeMapper {
 
     @Mapping(target = "account.role", source = "accountUpdateRequest.roleId")
     @Mapping(target = "account", source = "accountUpdateRequest")
+    @Mapping(target = "account.password", qualifiedBy = EncodedMapping.class)
     void update(@MappingTarget Employee employee, EmployeeUpdateRequest employeeUpdateRequest);
 }

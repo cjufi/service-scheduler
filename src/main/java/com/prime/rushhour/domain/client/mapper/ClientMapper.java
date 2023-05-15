@@ -25,5 +25,6 @@ public interface ClientMapper {
 
     @Mapping(target = "account", source = "accountUpdateRequest")
     @Mapping(target = "account.role", source = "accountUpdateRequest.roleId")
+    @Mapping(target = "account.password", qualifiedBy = EncodedMapping.class)
     void update(@MappingTarget Client client, ClientUpdateRequest clientUpdateRequest);
 }
