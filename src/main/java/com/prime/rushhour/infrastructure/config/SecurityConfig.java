@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.prime.rushhour.domain.account.repository.AccountRepository;
+import com.prime.rushhour.domain.client.entity.Client;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -49,11 +50,17 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests()
+                .requestMatchers(
+                        "/api/v1/client/login",
+                        "/api/v1/employee/login"
+                ).permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/v1/client").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/employee").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/employee/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/client").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/client/login").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/api/v1/client").hasAuthority("SCOPE_CLIENT")
+                .requestMatchers(HttpMethod.GET, "/api/v1/client/{id}").hasAuthority("SCOPE_CLIENT")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/client/{id}").hasAuthority("SCOPE_CLIENT")
+                .requestMatchers(HttpMethod.GET, "/api/v1/employee/{id}").hasAuthority("SCOPE_EMPLOYEE")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/employee/{id}").hasAuthority("SCOPE_EMPLOYEE")
+                .requestMatchers("/api/v1/**").hasAuthority("SCOPE_ADMIN")
                 .anyRequest().authenticated()
                 .and().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
