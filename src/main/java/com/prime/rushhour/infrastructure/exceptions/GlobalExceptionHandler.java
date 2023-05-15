@@ -67,6 +67,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
     }
 
+    @ExceptionHandler(PermissionDeniedException.class)
+    public ResponseEntity<ErrorResponse> handlePermissionDenied(RuntimeException e) {
+        var violation = new Violation(null, e.getMessage(), LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
+    }
+
     private record Violation(String field, String error, LocalDateTime timestamp){}
     private record ErrorResponse(List<Violation> violations){}
 }

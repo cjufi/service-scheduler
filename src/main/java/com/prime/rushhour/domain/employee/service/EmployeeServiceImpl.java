@@ -13,12 +13,14 @@ import com.prime.rushhour.domain.role.service.RoleService;
 import com.prime.rushhour.domain.token.service.TokenService;
 import com.prime.rushhour.infrastructure.exceptions.DomainNotCompatibleException;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
+import com.prime.rushhour.infrastructure.exceptions.PermissionDeniedException;
 import com.prime.rushhour.infrastructure.exceptions.RoleNotCompatibleException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -81,6 +83,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponse update(Long id, EmployeeUpdateRequest employeeUpdateRequest) {
         var employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String role = roleService.getNameById(employeeUpdateRequest.accountUpdateRequest().roleId());
+
+        if("[SCOPE_ADMIN]".equals(authentication.getAuthorities().toString())) {
+            if(role.equals("ADMIN")) {
+                throw new PermissionDeniedException(role);
+            }
+        }
 
         if (!checkRole(employeeUpdateRequest.accountUpdateRequest().roleId())) {
             throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeUpdateRequest.accountUpdateRequest().roleId());
