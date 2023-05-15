@@ -82,7 +82,7 @@ public class SecurityConfig {
             }
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(account.getRole().getName()));
-            return new User(account.getEmail(), account.getPassword(), authorities);
+            return new CustomUserDetails(account.getEmail(), account.getPassword(), account.getId(), authorities);
         };
     }
 

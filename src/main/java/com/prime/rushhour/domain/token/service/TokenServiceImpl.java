@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.token.service;
 
+import com.prime.rushhour.infrastructure.config.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -25,11 +26,14 @@ public class TokenServiceImpl implements TokenService{
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long accountId = userDetails.getAccountId();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
                 .claim("scope", scope)
+                .claim("accountId", accountId)
                 .build();
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }

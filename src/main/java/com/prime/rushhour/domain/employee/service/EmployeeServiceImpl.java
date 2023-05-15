@@ -93,6 +93,12 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
         }
 
+        if("[SCOPE_PROVIDER_ADMIN]".equals(authentication.getAuthorities().toString())) {
+            if(role.equals("ADMIN")) {
+                throw new PermissionDeniedException(role);
+            }
+        }
+
         if (!checkRole(employeeUpdateRequest.accountUpdateRequest().roleId())) {
             throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeUpdateRequest.accountUpdateRequest().roleId());
         }
