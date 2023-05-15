@@ -15,7 +15,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,12 +47,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/client/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/employee").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/employee/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/client").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/employee/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/provider").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/client/login").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/v1/client").hasAuthority("SCOPE_CLIENT")
                 .anyRequest().authenticated()
                 .and().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
