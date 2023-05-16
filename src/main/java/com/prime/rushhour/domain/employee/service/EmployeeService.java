@@ -22,5 +22,5 @@ public interface EmployeeService {
 
     String login(String email, String password);
 
-    Long getProviderIdFromEmployee(Long employeeId);
+    Long getProviderIdFromAccount(Long accountId);
 }

@@ -119,8 +119,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Long getProviderIdFromEmployee(Long employeeId) {
-        return employeeRepository.findByProviderId(employeeId);
+    public Long getProviderIdFromAccount(Long accountId) {
+        return employeeRepository.findProviderIdByAccountId(accountId);
     }
 
     private String extractEmailDomain(String email) {

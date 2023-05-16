@@ -5,7 +5,6 @@ import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
-import com.prime.rushhour.domain.permission.service.PermissionServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +19,8 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    private final PermissionServiceImpl permissionServiceImpl;
-
-    public EmployeeController(EmployeeService employeeService, PermissionServiceImpl permissionServiceImpl) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
-        this.permissionServiceImpl = permissionServiceImpl;
     }
 
     @PostMapping
