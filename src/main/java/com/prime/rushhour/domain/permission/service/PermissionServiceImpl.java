@@ -22,7 +22,7 @@ public class PermissionServiceImpl implements PermissionService{
         JwtAuthenticationToken jwtAuthentication = (JwtAuthenticationToken) authentication;
         Jwt jwt = jwtAuthentication.getToken();
         Long accountId = jwt.getClaim("accountId");
-        return true;
+        return false;
     }
 
     private Authentication getAuthentication() {
