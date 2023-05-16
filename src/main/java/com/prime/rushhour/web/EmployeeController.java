@@ -48,7 +48,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("(hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("(hasAuthority('SCOPE_EMPLOYEE') && @permissionServiceImpl.canEmployeeAccessEmployee(#id)) || (hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @Valid @RequestBody EmployeeUpdateRequest employeeUpdateRequest) {
         return new ResponseEntity<>(employeeService.update(id, employeeUpdateRequest), HttpStatus.OK);
     }
