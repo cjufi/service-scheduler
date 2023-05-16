@@ -48,6 +48,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("(hasAuthority('SCOPE_CLIENT') && @permissionServiceImpl.canClientAccessClient(#id)) || hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<ClientResponse> update(@PathVariable Long id, @Valid @RequestBody ClientUpdateRequest clientUpdateRequest) {
         return new ResponseEntity<>(clientService.update(id, clientUpdateRequest), HttpStatus.OK);
     }
