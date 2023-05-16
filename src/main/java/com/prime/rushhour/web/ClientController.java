@@ -5,11 +5,14 @@ import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
 import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
 import com.prime.rushhour.domain.client.service.ClientService;
+import com.prime.rushhour.domain.permission.service.PermissionService;
+import com.prime.rushhour.domain.permission.service.PermissionServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,6 +42,7 @@ public class ClientController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("(hasAuthority('SCOPE_CLIENT') && @permissionServiceImpl.canClientAccessClient(#id)) || hasAuthority('SCOPE_ADMIN')")
     public void delete(@PathVariable Long id) {
         clientService.delete(id);
     }

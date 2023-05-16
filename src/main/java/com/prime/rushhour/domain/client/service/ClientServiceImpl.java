@@ -95,6 +95,11 @@ public class ClientServiceImpl implements ClientService{
         return tokenService.generateToken(authentication);
     }
 
+    @Override
+    public Long getAccountIdFromClientId(Long id) {
+        return clientRepository.findAccountIdByClientId(id);
+    }
+
     protected boolean checkRole(Long id) {
         var role = roleService.getById(id);
         var roleType = RoleType.valueOf(role.name().toUpperCase());

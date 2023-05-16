@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/api/v1/client/{id}").hasAuthority("SCOPE_CLIENT")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/employee/{id}").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_PROVIDER_ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/employee/{id}").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_PROVIDER_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/client/{id}").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_CLIENT")
                 .anyRequest().authenticated()
                 .and().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
