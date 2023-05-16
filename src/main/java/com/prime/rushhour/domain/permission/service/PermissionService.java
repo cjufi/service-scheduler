@@ -8,6 +8,8 @@ public interface PermissionService {
 
     boolean canClientAccessClient(Long id);
 
+    boolean canEmployeeAccessEmployee(Long id);
+
     boolean canProviderAdminAccessProvider(Long id);
 
     boolean canProviderAdminCreateEmployee(EmployeeRequest employeeRequest);

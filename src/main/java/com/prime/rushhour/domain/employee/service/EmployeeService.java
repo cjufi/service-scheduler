@@ -23,4 +23,6 @@ public interface EmployeeService {
     String login(String email, String password);
 
     Long getProviderIdFromAccount(Long accountId);
+
+    Long getAccountIdFromEmployeeId(Long id);
 }

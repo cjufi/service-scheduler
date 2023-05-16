@@ -46,6 +46,13 @@ public class PermissionServiceImpl implements PermissionService{
     }
 
     @Override
+    public boolean canEmployeeAccessEmployee(Long id) {
+        Long accountId = getAccountIdFromUser();
+        Long employeesAccountId = employeeService.getAccountIdFromEmployeeId(id);
+        return Objects.equals(employeesAccountId, accountId);
+    }
+
+    @Override
     public boolean canProviderAdminAccessProvider(Long id) {
         Long accountId = getAccountIdFromUser();
         Long providerId = providerService.getProviderIdByAccount(accountId);

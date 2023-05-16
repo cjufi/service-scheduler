@@ -30,6 +30,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize(" (hasAuthority('SCOPE_EMPLOYEE') && @permissionServiceImpl.canEmployeeAccessEmployee(#id)) || (hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<EmployeeResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(employeeService.getById(id), HttpStatus.OK);
     }
