@@ -18,10 +18,10 @@ public class PermissionServiceImpl implements PermissionService{
 
     @Override
     public boolean canProviderAdminAccessEmployee(Long id) {
-        var authentication = getAuthentication();
-        JwtAuthenticationToken jwtAuthentication = (JwtAuthenticationToken) authentication;
-        Jwt jwt = jwtAuthentication.getToken();
-        Long accountId = jwt.getClaim("accountId");
+//        var authentication = getAuthentication();
+//        JwtAuthenticationToken jwtAuthentication = (JwtAuthenticationToken) authentication;
+//        Jwt jwt = jwtAuthentication.getToken();
+//        Long accountId = jwt.getClaim("accountId");
         return false;
     }
 
