@@ -5,8 +5,6 @@ import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
 import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
 import com.prime.rushhour.domain.client.service.ClientService;
-import com.prime.rushhour.domain.permission.service.PermissionService;
-import com.prime.rushhour.domain.permission.service.PermissionServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

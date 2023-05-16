@@ -24,6 +24,7 @@ public class EmployeeController {
     }
 
     @PostMapping
+    @PreAuthorize("(hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminCreateEmployee(#employeeRequest)) || hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<EmployeeResponse> save(@Valid @RequestBody EmployeeRequest employeeRequest) {
         return new ResponseEntity<>(employeeService.save(employeeRequest), HttpStatus.CREATED);
     }

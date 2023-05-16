@@ -1,8 +1,10 @@
 package com.prime.rushhour.domain.permission.service;
 
 import com.prime.rushhour.domain.client.service.ClientService;
+import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.domain.provider.service.ProviderService;
+import com.prime.rushhour.domain.role.service.RoleService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -19,10 +21,13 @@ public class PermissionServiceImpl implements PermissionService{
 
     private final ProviderService providerService;
 
-    public PermissionServiceImpl(EmployeeService employeeService, ClientService clientService, ProviderService providerService) {
+    private final RoleService roleService;
+
+    public PermissionServiceImpl(EmployeeService employeeService, ClientService clientService, ProviderService providerService, RoleService roleService) {
         this.employeeService = employeeService;
         this.clientService = clientService;
         this.providerService = providerService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -45,6 +50,13 @@ public class PermissionServiceImpl implements PermissionService{
         Long accountId = getAccountIdFromUser();
         Long providerId = providerService.getProviderIdByAccount(accountId);
         return Objects.equals(providerId, id);
+    }
+
+    @Override
+    public boolean canProviderAdminCreateEmployee(EmployeeRequest employeeRequest) {
+        Long roleId = employeeRequest.accountRequest().roleId();
+        var role = roleService.idToRole(roleId);
+        return role.getName().equals("EMPLOYEE");
     }
 
 
