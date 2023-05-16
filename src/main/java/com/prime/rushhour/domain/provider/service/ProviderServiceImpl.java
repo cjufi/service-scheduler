@@ -81,4 +81,9 @@ public class ProviderServiceImpl implements ProviderService{
         return providerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
     }
+
+    @Override
+    public Long getProviderIdByAccount(Long id) {
+        return providerRepository.findProviderIdByAccountId(id);
+    }
 }

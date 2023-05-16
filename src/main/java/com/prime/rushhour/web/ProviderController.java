@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,6 +43,7 @@ public class ProviderController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("(hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessProvider(#id)) || hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<ProviderResponse> update(@PathVariable Long id, @Valid @RequestBody ProviderRequest providerRequest) {
         return new ResponseEntity<>(providerService.update(id, providerRequest), HttpStatus.OK);
     }

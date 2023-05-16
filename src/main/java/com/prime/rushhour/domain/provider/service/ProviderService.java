@@ -19,4 +19,6 @@ public interface ProviderService {
     ProviderResponse update(Long id, ProviderRequest providerRequest);
 
     Provider getProviderById(Long id);
+
+    Long getProviderIdByAccount(Long id);
 }

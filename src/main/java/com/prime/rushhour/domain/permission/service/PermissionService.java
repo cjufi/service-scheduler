@@ -5,4 +5,6 @@ public interface PermissionService {
     boolean canProviderAdminAccessEmployee(Long id);
 
     boolean canClientAccessClient(Long id);
+
+    boolean canProviderAdminAccessProvider(Long id);
 }
