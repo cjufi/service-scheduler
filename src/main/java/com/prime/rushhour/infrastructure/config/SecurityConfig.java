@@ -66,7 +66,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/provider").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_CLIENT")
                 .requestMatchers(HttpMethod.GET, "/api/v1/provider/{id}").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_CLIENT")
                 .requestMatchers(HttpMethod.GET, "/api/v1/client").hasAuthority("SCOPE_ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/v1/client").hasAnyAuthority("SCOPE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/v1/client/{id}").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_CLIENT")
                 .requestMatchers(HttpMethod.GET, "/api/v1/employee").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_PROVIDER_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/v1/employee/{id}").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_PROVIDER_ADMIN", "SCOPE_EMPLOYEE")
                 .anyRequest().authenticated()

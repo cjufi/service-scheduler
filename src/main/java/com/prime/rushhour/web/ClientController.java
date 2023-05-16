@@ -29,6 +29,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("(hasAuthority('SCOPE_CLIENT') && @permissionServiceImpl.canClientAccessClient(#id)) || hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<ClientResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(clientService.getById(id), HttpStatus.OK);
     }
