@@ -25,7 +25,8 @@ public class PermissionServiceImpl implements PermissionService{
         Jwt jwt = jwtAuthentication.getToken();
         Long accountId = jwt.getClaim("accountId");
         Long providerId = employeeService.getProviderIdFromAccount(accountId);
-        return Objects.equals(id, providerId);
+        Long employeesProviderId = employeeService.getProviderIdFromAccount(id);
+        return Objects.equals(employeesProviderId, providerId);
     }
 
     private Authentication getAuthentication() {

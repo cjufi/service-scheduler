@@ -87,7 +87,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String role = roleService.getNameById(employeeUpdateRequest.accountUpdateRequest().roleId());
 
-        if("[SCOPE_ADMIN]".equals(authentication.getAuthorities().toString()) || "[SCOPE_PROVIDER_ADMIN]".equals(authentication.getAuthorities().toString())) {
+        if("[SCOPE_ADMIN]".equals(authentication.getAuthorities().toString())) {
+            if(role.equals("ADMIN")) {
+                throw new PermissionDeniedException(role);
+            }
+        }
+        if("[SCOPE_PROVIDER_ADMIN]".equals(authentication.getAuthorities().toString())) {
             if(role.equals("ADMIN")) {
                 throw new PermissionDeniedException(role);
             }

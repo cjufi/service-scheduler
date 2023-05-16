@@ -40,6 +40,7 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("(hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasAuthority('SCOPE_ADMIN')")
     public void delete(@PathVariable Long id) {
         employeeService.delete(id);
     }
