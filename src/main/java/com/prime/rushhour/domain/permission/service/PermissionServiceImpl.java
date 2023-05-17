@@ -63,7 +63,9 @@ public class PermissionServiceImpl implements PermissionService{
     public boolean canProviderAdminCreateEmployee(EmployeeRequest employeeRequest) {
         Long roleId = employeeRequest.accountRequest().roleId();
         var role = roleService.idToRole(roleId);
-        return role.getName().equals("EMPLOYEE");
+        Long accountId = getAccountIdFromUser();
+        Long providerId = providerService.getProviderIdByAccount(accountId);
+        return role.getName().equals("EMPLOYEE") && (employeeRequest.providerId().equals(providerId));
     }
 
 
