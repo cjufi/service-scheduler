@@ -4,12 +4,14 @@ import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
+import com.prime.rushhour.infrastructure.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,6 +40,12 @@ public class EmployeeController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<EmployeeResponse>> getAll(Pageable pageable) {
         return new ResponseEntity<>(employeeService.getAll(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/providerEmployees")
+    @PreAuthorize("hasRole('PROVIDER_ADMIN')")
+    public ResponseEntity<Page<EmployeeResponse>> getAllFromProvider(@AuthenticationPrincipal CustomUserDetails user, Pageable pageable) {
+        return new ResponseEntity<>(employeeService.getAllFromSameProvider(pageable, user.getAccount().getId()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

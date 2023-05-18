@@ -1,6 +1,8 @@
 package com.prime.rushhour.domain.employee.repository;
 
 import com.prime.rushhour.domain.employee.entity.Employee;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +18,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query("SELECT e.account.id FROM Employee e WHERE e.id = :employeeId")
     Long findAccountIdByEmployeeId(@Param("employeeId") Long employeeId);
+
+    Page<Employee> findEmployeesByProviderId(Pageable pageable, Long id);
 }

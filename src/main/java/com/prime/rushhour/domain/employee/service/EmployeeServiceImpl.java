@@ -63,6 +63,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Page<EmployeeResponse> getAllFromSameProvider(Pageable pageable, Long id) {
+        Long providerId = getProviderIdFromAccount(id);
+        return employeeRepository.findEmployeesByProviderId(pageable, providerId).map(employeeMapper::toDto);
+    }
+
+    @Override
     public void delete(Long id) {
         if (!employeeRepository.existsById(id)) {
             throw new EntityNotFoundException(Employee.class.getSimpleName(), "id", id);
