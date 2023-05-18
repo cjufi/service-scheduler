@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProviderServiceImpl implements ProviderService{
+public class ProviderServiceImpl implements ProviderService {
 
     private final ProviderRepository providerRepository;
 
@@ -33,10 +33,9 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     public ProviderResponse save(ProviderRequest providerRequest) {
 
-        if(providerRepository.existsByName(providerRequest.name())){
+        if (providerRepository.existsByName(providerRequest.name())) {
             throw new DuplicateResourceException("Name", providerRequest.name());
-        }
-        else if (providerRepository.existsByBusinessDomain(providerRequest.businessDomain())){
+        } else if (providerRepository.existsByBusinessDomain(providerRequest.businessDomain())) {
             throw new DuplicateResourceException("Business Domain", providerRequest.businessDomain());
         }
 
@@ -47,7 +46,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     public ProviderResponse getById(Long id) {
         var provider = providerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(), "id", id));
         return providerMapper.toDto(provider);
     }
 
@@ -59,8 +58,8 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     @Transactional
     public void delete(Long id) {
-        if(!providerRepository.existsById(id)){
-            throw new EntityNotFoundException(Provider.class.getSimpleName(),"id", id);
+        if (!providerRepository.existsById(id)) {
+            throw new EntityNotFoundException(Provider.class.getSimpleName(), "id", id);
         }
 
         employeeService.deleteByProviderId(id);
@@ -70,7 +69,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     public ProviderResponse update(Long id, ProviderRequest providerRequest) {
         var provider = providerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(), "id", id));
 
         providerMapper.update(provider, providerRequest);
         return providerMapper.toDto(providerRepository.save(provider));
@@ -79,7 +78,7 @@ public class ProviderServiceImpl implements ProviderService{
     @Override
     public Provider getProviderById(Long id) {
         return providerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Provider.class.getSimpleName(), "id", id));
     }
 
     @Override

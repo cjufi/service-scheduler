@@ -84,7 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeMapper.update(employee, employeeUpdateRequest);
         return employeeMapper.toDto(employeeRepository.save(employee));
-}
+    }
 
     @Override
     public void deleteByProviderId(Long id) {

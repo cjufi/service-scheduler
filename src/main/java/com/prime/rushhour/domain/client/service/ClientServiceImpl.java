@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
 
@@ -50,7 +50,7 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public ClientResponse getById(Long id) {
         var client = clientRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
         return clientMapper.toDto(client);
     }
 
@@ -61,7 +61,7 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public void delete(Long id) {
-        if(!clientRepository.existsById(id)) {
+        if (!clientRepository.existsById(id)) {
             throw new EntityNotFoundException(Client.class.getSimpleName(), "id", id);
         }
         clientRepository.deleteById(id);
