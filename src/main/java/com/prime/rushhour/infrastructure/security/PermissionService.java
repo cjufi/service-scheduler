@@ -31,7 +31,7 @@ public class PermissionService {
     public boolean canProviderAdminAccessEmployee(Long id) {
         var authentication = getAuthentication();
         Long providerId = employeeService.getProviderIdFromAccount(authentication.getAccount().getId());
-        Long employeesProviderId = employeeService.getProviderIdFromAccount(id);
+        Long employeesProviderId = employeeService.getProviderIdFromEmployeeId(id);
         return Objects.equals(employeesProviderId, providerId);
     }
 

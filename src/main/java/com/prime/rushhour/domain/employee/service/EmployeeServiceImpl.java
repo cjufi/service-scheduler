@@ -66,6 +66,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Long getProviderIdFromEmployeeId(Long id) {
+        return employeeRepository.findProviderIdByEmployeeId(id);
+    }
+
+    @Override
     public void delete(Long id) {
         if (!employeeRepository.existsById(id)) {
             throw new EntityNotFoundException(Employee.class.getSimpleName(), "id", id);

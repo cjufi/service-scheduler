@@ -25,4 +25,6 @@ public interface EmployeeService {
     Long getAccountIdFromEmployeeId(Long id);
 
     Page<EmployeeResponse> getAllFromSameProvider(Pageable pageable, Long id);
+
+    Long getProviderIdFromEmployeeId(Long id);
 }
