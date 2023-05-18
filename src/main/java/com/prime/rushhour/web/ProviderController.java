@@ -43,7 +43,7 @@ public class ProviderController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("(hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessProvider(#id)) || hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessProvider(#id)) || hasRole('ADMIN')")
     public ResponseEntity<ProviderResponse> update(@PathVariable Long id, @Valid @RequestBody ProviderRequest providerRequest) {
         return new ResponseEntity<>(providerService.update(id, providerRequest), HttpStatus.OK);
     }

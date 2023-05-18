@@ -23,13 +23,13 @@ public class EmployeeController {
     }
 
     @PostMapping
-    @PreAuthorize("(hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminCreateEmployee(#employeeRequest)) || hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminCreateEmployee(#employeeRequest)) || hasRole('ADMIN')")
     public ResponseEntity<EmployeeResponse> save(@Valid @RequestBody EmployeeRequest employeeRequest) {
         return new ResponseEntity<>(employeeService.save(employeeRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize(" (hasAuthority('SCOPE_EMPLOYEE') && @permissionServiceImpl.canEmployeeAccessEmployee(#id)) || (hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize(" (hasRole('EMPLOYEE') && @permissionServiceImpl.canEmployeeAccessEmployee(#id)) || (hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasRole('ADMIN')")
     public ResponseEntity<EmployeeResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(employeeService.getById(id), HttpStatus.OK);
     }
@@ -41,13 +41,13 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("(hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         employeeService.delete(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("(hasAuthority('SCOPE_EMPLOYEE') && @permissionServiceImpl.canEmployeeAccessEmployee(#id)) || (hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("(hasRole('EMPLOYEE') && @permissionServiceImpl.canEmployeeAccessEmployee(#id)) || (hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasRole('ADMIN')")
     public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @Valid @RequestBody EmployeeUpdateRequest employeeUpdateRequest) {
         return new ResponseEntity<>(employeeService.update(id, employeeUpdateRequest), HttpStatus.OK);
     }
