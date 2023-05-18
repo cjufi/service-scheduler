@@ -28,12 +28,13 @@ public class ProviderController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessProvider(#id)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessProvider(#id)) || hasRole('ADMIN') || hasRole('CLIENT')")
     public ResponseEntity<ProviderResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(providerService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') || hasRole('CLIENT')")
     public ResponseEntity<Page<ProviderResponse>> getAll(Pageable pageable) {
         return new ResponseEntity<>(providerService.getAll(pageable), HttpStatus.OK);
     }

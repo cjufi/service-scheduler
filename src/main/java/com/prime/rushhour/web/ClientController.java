@@ -34,6 +34,7 @@ public class ClientController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<ClientResponse>> getAll(Pageable pageable) {
         return new ResponseEntity<>(clientService.getAll(pageable), HttpStatus.OK);
     }

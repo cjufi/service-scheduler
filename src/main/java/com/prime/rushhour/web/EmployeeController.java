@@ -35,6 +35,7 @@ public class EmployeeController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<EmployeeResponse>> getAll(Pageable pageable) {
         return new ResponseEntity<>(employeeService.getAll(pageable), HttpStatus.OK);
     }
