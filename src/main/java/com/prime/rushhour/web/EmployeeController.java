@@ -1,6 +1,5 @@
 package com.prime.rushhour.web;
 
-import com.prime.rushhour.domain.account.dto.LoginRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
@@ -51,10 +50,5 @@ public class EmployeeController {
     @PreAuthorize("(hasAuthority('SCOPE_EMPLOYEE') && @permissionServiceImpl.canEmployeeAccessEmployee(#id)) || (hasAuthority('SCOPE_PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @Valid @RequestBody EmployeeUpdateRequest employeeUpdateRequest) {
         return new ResponseEntity<>(employeeService.update(id, employeeUpdateRequest), HttpStatus.OK);
-    }
-
-    @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
-        return employeeService.login(loginRequest.username(), loginRequest.password());
     }
 }
