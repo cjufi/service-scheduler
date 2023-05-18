@@ -14,13 +14,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final AccountService accountService;
 
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
 
     private final PasswordEncoder passwordEncoder;
 
-    public CustomUserDetailsService(AccountService accountService, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
+    public CustomUserDetailsService(AccountService accountService, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.accountService = accountService;
-        this.jwtUtil = jwtUtil;
+        this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new RuntimeException("Wrong Email or Password");
         }
 
-        var token = jwtUtil.generateToken(account);
+        var token = jwtService.generateToken(account);
         return new LoginResponse(token);
     }
 }
