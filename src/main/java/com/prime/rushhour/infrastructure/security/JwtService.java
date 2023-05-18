@@ -4,7 +4,6 @@ import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +26,12 @@ public class JwtService {
         Date creationTime = new Date();
         Date expirationTime = new Date(creationTime.getTime() + expiration);
 
-        HashMap<String, Object> claims = new HashMap<>();
+        var claims = new HashMap<String, Object>(0);
         userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::toString)
                 .findFirst()
-                .ifPresent(role -> claims.put("role", role));
+                .ifPresent(role -> claims.put("role", role.toString()));
+        claims.put("username", userDetails.getUsername());
+
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())

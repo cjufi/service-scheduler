@@ -20,7 +20,6 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtRequestFilter.class);
-
     private final CustomUserDetailsService customUserDetailsService;
 
     private final JwtService jwtService;
@@ -40,7 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(jwtToken) && jwtService.validateToken(jwtToken)) {
                 String username = jwtService.extractUsername(jwtToken);
 
-                var userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(username);
+                CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(username);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails,
@@ -65,5 +64,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         return null;
     }
-
 }
