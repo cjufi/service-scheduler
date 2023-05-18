@@ -20,8 +20,6 @@ public interface EmployeeService {
 
     void deleteByProviderId(Long id);
 
-    String login(String email, String password);
-
     Long getProviderIdFromAccount(Long accountId);
 
     Long getAccountIdFromEmployeeId(Long id);
