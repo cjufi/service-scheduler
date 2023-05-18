@@ -28,6 +28,7 @@ public class ProviderController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessProvider(#id)) || hasRole('ADMIN')")
     public ResponseEntity<ProviderResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(providerService.getById(id), HttpStatus.OK);
     }
@@ -39,6 +40,7 @@ public class ProviderController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessProvider(#id)) || hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         providerService.delete(id);
     }
