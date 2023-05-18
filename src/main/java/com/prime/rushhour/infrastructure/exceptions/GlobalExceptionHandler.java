@@ -74,6 +74,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
     }
 
-    private record Violation(String field, String error, LocalDateTime timestamp){}
-    private record ErrorResponse(List<Violation> violations){}
+    private record Violation(String field, String error, LocalDateTime timestamp) {
+    }
+
+    private record ErrorResponse(List<Violation> violations) {
+    }
 }
