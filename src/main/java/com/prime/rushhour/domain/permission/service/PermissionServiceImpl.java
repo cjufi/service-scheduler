@@ -5,9 +5,8 @@ import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.service.RoleService;
+import com.prime.rushhour.infrastructure.security.CustomUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -32,30 +31,30 @@ public class PermissionServiceImpl implements PermissionService{
 
     @Override
     public boolean canProviderAdminAccessEmployee(Long id) {
-        Long accountId = getAccountIdFromUser();
-        Long providerId = employeeService.getProviderIdFromAccount(accountId);
+        var authentication = getAuthentication();
+        Long providerId = employeeService.getProviderIdFromAccount(authentication.getAccount().getId());
         Long employeesProviderId = employeeService.getProviderIdFromAccount(id);
         return Objects.equals(employeesProviderId, providerId);
     }
 
     @Override
     public boolean canClientAccessClient(Long id) {
-        Long accountId = getAccountIdFromUser();
+        var authentication = getAuthentication();
         Long clientsAccountId = clientService.getAccountIdFromClientId(id);
-        return Objects.equals(clientsAccountId, accountId);
+        return Objects.equals(clientsAccountId, authentication.getAccount().getId());
     }
 
     @Override
     public boolean canEmployeeAccessEmployee(Long id) {
-        Long accountId = getAccountIdFromUser();
+        var authentication = getAuthentication();
         Long employeesAccountId = employeeService.getAccountIdFromEmployeeId(id);
-        return Objects.equals(employeesAccountId, accountId);
+        return Objects.equals(employeesAccountId, authentication.getAccount().getId());
     }
 
     @Override
     public boolean canProviderAdminAccessProvider(Long id) {
-        Long accountId = getAccountIdFromUser();
-        Long providerId = providerService.getProviderIdByAccount(accountId);
+        var authentication = getAuthentication();
+        Long providerId = providerService.getProviderIdByAccount(authentication.getAccount().getId());
         return Objects.equals(providerId, id);
     }
 
@@ -63,16 +62,16 @@ public class PermissionServiceImpl implements PermissionService{
     public boolean canProviderAdminCreateEmployee(EmployeeRequest employeeRequest) {
         Long roleId = employeeRequest.accountRequest().roleId();
         var role = roleService.idToRole(roleId);
-        Long accountId = getAccountIdFromUser();
-        Long providerId = providerService.getProviderIdByAccount(accountId);
+        var authentication = getAuthentication();
+        Long providerId = providerService.getProviderIdByAccount(authentication.getAccount().getId());
         return role.getName().equals("EMPLOYEE") && (employeeRequest.providerId().equals(providerId));
     }
 
 
-    private Long getAccountIdFromUser() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        JwtAuthenticationToken jwtAuthentication = (JwtAuthenticationToken) authentication;
-        Jwt jwt = jwtAuthentication.getToken();
-        return jwt.getClaim("accountId");
+    private CustomUserDetails getAuthentication() {
+        var securityContext = SecurityContextHolder.getContext();
+        return (CustomUserDetails) securityContext
+                .getAuthentication()
+                .getPrincipal();
     }
 }

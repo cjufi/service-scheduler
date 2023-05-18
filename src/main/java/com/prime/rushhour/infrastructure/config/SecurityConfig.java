@@ -35,7 +35,7 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/authenticate/login").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/v1/authentication/login").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/v1/client").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/employee").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_PROVIDER_ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/v1/provider").hasAuthority("SCOPE_ADMIN")
