@@ -22,6 +22,7 @@ public class ProviderController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProviderResponse> save(@Valid @RequestBody ProviderRequest providerRequest) {
         return new ResponseEntity<>(providerService.save(providerRequest), HttpStatus.CREATED);
     }
@@ -43,7 +44,7 @@ public class ProviderController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessProvider(#id)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessProvider(#id)) || hasRole('ADMIN')")
     public ResponseEntity<ProviderResponse> update(@PathVariable Long id, @Valid @RequestBody ProviderRequest providerRequest) {
         return new ResponseEntity<>(providerService.update(id, providerRequest), HttpStatus.OK);
     }

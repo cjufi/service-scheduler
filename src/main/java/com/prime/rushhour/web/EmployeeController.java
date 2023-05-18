@@ -23,13 +23,13 @@ public class EmployeeController {
     }
 
     @PostMapping
-    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminCreateEmployee(#employeeRequest)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminCreateEmployee(#employeeRequest)) || hasRole('ADMIN')")
     public ResponseEntity<EmployeeResponse> save(@Valid @RequestBody EmployeeRequest employeeRequest) {
         return new ResponseEntity<>(employeeService.save(employeeRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize(" (hasRole('EMPLOYEE') && @permissionServiceImpl.canEmployeeAccessEmployee(#id)) || (hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasRole('ADMIN')")
+    @PreAuthorize(" (hasRole('EMPLOYEE') && @permissionService.canEmployeeAccessEmployee(#id)) || (hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessEmployee(#id)) || hasRole('ADMIN')")
     public ResponseEntity<EmployeeResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(employeeService.getById(id), HttpStatus.OK);
     }
@@ -41,13 +41,13 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessEmployee(#id)) || hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         employeeService.delete(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("(hasRole('EMPLOYEE') && @permissionServiceImpl.canEmployeeAccessEmployee(#id)) || (hasRole('PROVIDER_ADMIN') && @permissionServiceImpl.canProviderAdminAccessEmployee(#id)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('EMPLOYEE') && @permissionService.canEmployeeAccessEmployee(#id)) || (hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessEmployee(#id)) || hasRole('ADMIN')")
     public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @Valid @RequestBody EmployeeUpdateRequest employeeUpdateRequest) {
         return new ResponseEntity<>(employeeService.update(id, employeeUpdateRequest), HttpStatus.OK);
     }

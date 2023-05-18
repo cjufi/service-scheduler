@@ -28,7 +28,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("(hasRole('CLIENT') && @permissionServiceImpl.canClientAccessClient(#id)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('CLIENT') && @permissionService.canClientAccessClient(#id)) || hasRole('ADMIN')")
     public ResponseEntity<ClientResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(clientService.getById(id), HttpStatus.OK);
     }
@@ -40,13 +40,13 @@ public class ClientController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("(hasRole('CLIENT') && @permissionServiceImpl.canClientAccessClient(#id)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('CLIENT') && @permissionService.canClientAccessClient(#id)) || hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         clientService.delete(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("(hasRole('CLIENT') && @permissionServiceImpl.canClientAccessClient(#id)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('CLIENT') && @permissionService.canClientAccessClient(#id)) || hasRole('ADMIN')")
     public ResponseEntity<ClientResponse> update(@PathVariable Long id, @Valid @RequestBody ClientUpdateRequest clientUpdateRequest) {
         return new ResponseEntity<>(clientService.update(id, clientUpdateRequest), HttpStatus.OK);
     }
