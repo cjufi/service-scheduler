@@ -1,23 +1,29 @@
 package com.prime.rushhour.infrastructure.config;
 
+import com.prime.rushhour.infrastructure.security.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    private final JwtRequestFilter jwtRequestFilter;
+
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -29,10 +35,7 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(
-                        "/api/v1/client/login",
-                        "/api/v1/employee/login"
-                ).permitAll()
+                .requestMatchers("/api/v1/authenticate/login").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/v1/client").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/employee").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_PROVIDER_ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/v1/provider").hasAuthority("SCOPE_ADMIN")
@@ -50,8 +53,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/employee/{id}").hasAnyAuthority("SCOPE_ADMIN", "SCOPE_PROVIDER_ADMIN", "SCOPE_EMPLOYEE")
                 .anyRequest().authenticated()
                 .and().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults())
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

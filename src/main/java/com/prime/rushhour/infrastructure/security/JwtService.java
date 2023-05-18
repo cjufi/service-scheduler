@@ -51,13 +51,6 @@ public class JwtService {
         return (String) claims.get("username");
     }
 
-    public Date extractExpiration(String jwt) {
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(jwt)
-                .getBody().getExpiration();
-    }
-
     public boolean validateToken(String jwt) {
         try {
             Jwts.parser()
