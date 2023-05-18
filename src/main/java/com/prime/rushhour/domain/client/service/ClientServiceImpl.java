@@ -10,14 +10,10 @@ import com.prime.rushhour.domain.client.repository.ClientRepository;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.role.entity.RoleType;
 import com.prime.rushhour.domain.role.service.RoleService;
-import com.prime.rushhour.domain.token.service.TokenService;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
 import com.prime.rushhour.infrastructure.exceptions.RoleNotCompatibleException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,17 +27,12 @@ public class ClientServiceImpl implements ClientService{
 
     private final RoleService roleService;
 
-    private final TokenService tokenService;
 
-    private final AuthenticationManager manager;
-
-    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, AccountService accountService, RoleService roleService, TokenService tokenService, AuthenticationManager manager) {
+    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, AccountService accountService, RoleService roleService) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
         this.accountService = accountService;
         this.roleService = roleService;
-        this.tokenService = tokenService;
-        this.manager = manager;
     }
 
     @Override
@@ -87,12 +78,6 @@ public class ClientServiceImpl implements ClientService{
 
         clientMapper.update(client, clientUpdateRequest);
         return clientMapper.toDto(clientRepository.save(client));
-    }
-
-    @Override
-    public String login(String email, String password) {
-        Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        return tokenService.generateToken(authentication);
     }
 
     @Override

@@ -18,7 +18,5 @@ public interface ClientService {
 
     ClientResponse update(Long id, ClientUpdateRequest clientUpdateRequest);
 
-    String login(String email, String password);
-
     Long getAccountIdFromClientId(Long id);
 }
