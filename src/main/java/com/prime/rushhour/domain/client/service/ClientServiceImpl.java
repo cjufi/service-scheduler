@@ -7,7 +7,6 @@ import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
 import com.prime.rushhour.domain.client.entity.Client;
 import com.prime.rushhour.domain.client.mapper.ClientMapper;
 import com.prime.rushhour.domain.client.repository.ClientRepository;
-import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.role.entity.RoleType;
 import com.prime.rushhour.domain.role.service.RoleService;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
@@ -40,7 +39,7 @@ public class ClientServiceImpl implements ClientService {
         accountService.validateAccount(clientRequest.accountRequest());
 
         if (!checkRole(clientRequest.accountRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), clientRequest.accountRequest().roleId());
+            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientRequest.accountRequest().roleId());
         }
 
         var client = clientMapper.toEntity(clientRequest);
@@ -73,7 +72,7 @@ public class ClientServiceImpl implements ClientService {
                 .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
 
         if (!checkRole(clientUpdateRequest.accountUpdateRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), clientUpdateRequest.accountUpdateRequest().roleId());
+            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientUpdateRequest.accountUpdateRequest().roleId());
         }
 
         clientMapper.update(client, clientUpdateRequest);
