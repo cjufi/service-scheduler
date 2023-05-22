@@ -11,11 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
 
     private final RoleMapper roleMapper;
+
     public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper) {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
@@ -23,7 +24,7 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public RoleDto save(RoleDto roleDto) {
-        if(roleRepository.existsByName(roleDto.name())) {
+        if (roleRepository.existsByName(roleDto.name())) {
             throw new DuplicateResourceException("Name", roleDto.name());
         }
 
@@ -34,7 +35,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public RoleDto getById(Long id) {
         var role = roleRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException(Role.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Role.class.getSimpleName(), "id", id));
         return roleMapper.toDto(role);
     }
 
@@ -45,7 +46,7 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public void delete(Long id) {
-        if(!roleRepository.existsById(id)){
+        if (!roleRepository.existsById(id)) {
             throw new EntityNotFoundException(Role.class.getSimpleName(), "id", id);
         }
         roleRepository.deleteById(id);
@@ -54,7 +55,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public RoleDto update(Long id, RoleDto roleDto) {
         var role = roleRepository.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException(Role.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Role.class.getSimpleName(), "id", id));
 
         roleMapper.update(role, roleDto);
         return roleMapper.toDto(roleRepository.save(role));
@@ -63,12 +64,12 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public String getNameById(Long id) {
         var role = roleRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException(Role.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Role.class.getSimpleName(), "id", id));
         return role.getName();
     }
 
     public Role idToRole(Long id) {
         return roleRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException(Role.class.getSimpleName(),"id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Role.class.getSimpleName(), "id", id));
     }
 }

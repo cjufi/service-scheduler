@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface RoleService {
 
-    RoleDto save (RoleDto roleDto);
+    RoleDto save(RoleDto roleDto);
 
     RoleDto getById(Long id);
 

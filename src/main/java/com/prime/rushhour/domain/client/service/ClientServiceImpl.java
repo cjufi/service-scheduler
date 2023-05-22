@@ -7,7 +7,6 @@ import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
 import com.prime.rushhour.domain.client.entity.Client;
 import com.prime.rushhour.domain.client.mapper.ClientMapper;
 import com.prime.rushhour.domain.client.repository.ClientRepository;
-import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.role.entity.RoleType;
 import com.prime.rushhour.domain.role.service.RoleService;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
@@ -17,7 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
 
@@ -26,6 +25,7 @@ public class ClientServiceImpl implements ClientService{
     private final AccountService accountService;
 
     private final RoleService roleService;
+
 
     public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, AccountService accountService, RoleService roleService) {
         this.clientRepository = clientRepository;
@@ -39,7 +39,7 @@ public class ClientServiceImpl implements ClientService{
         accountService.validateAccount(clientRequest.accountRequest());
 
         if (!checkRole(clientRequest.accountRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), clientRequest.accountRequest().roleId());
+            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientRequest.accountRequest().roleId());
         }
 
         var client = clientMapper.toEntity(clientRequest);
@@ -49,7 +49,7 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public ClientResponse getById(Long id) {
         var client = clientRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
         return clientMapper.toDto(client);
     }
 
@@ -60,7 +60,7 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public void delete(Long id) {
-        if(!clientRepository.existsById(id)) {
+        if (!clientRepository.existsById(id)) {
             throw new EntityNotFoundException(Client.class.getSimpleName(), "id", id);
         }
         clientRepository.deleteById(id);
@@ -72,11 +72,16 @@ public class ClientServiceImpl implements ClientService{
                 .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
 
         if (!checkRole(clientUpdateRequest.accountUpdateRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), clientUpdateRequest.accountUpdateRequest().roleId());
+            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientUpdateRequest.accountUpdateRequest().roleId());
         }
 
         clientMapper.update(client, clientUpdateRequest);
         return clientMapper.toDto(clientRepository.save(client));
+    }
+
+    @Override
+    public Long getAccountIdFromClientId(Long id) {
+        return clientRepository.findAccountIdByClientId(id);
     }
 
     protected boolean checkRole(Long id) {

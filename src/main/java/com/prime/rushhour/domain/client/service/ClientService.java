@@ -17,4 +17,6 @@ public interface ClientService {
     void delete(Long id);
 
     ClientResponse update(Long id, ClientUpdateRequest clientUpdateRequest);
+
+    Long getAccountIdFromClientId(Long id);
 }

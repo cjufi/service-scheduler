@@ -42,7 +42,8 @@ public class Employee {
         this.provider = provider;
     }
 
-    public Employee() {}
+    public Employee() {
+    }
 
     public String getTitle() {
         return title;

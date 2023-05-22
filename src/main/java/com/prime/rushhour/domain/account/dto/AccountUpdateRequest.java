@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 public record AccountUpdateRequest(
         @NotBlank(message = "Name is a mandatory field")
-        @Pattern(regexp = "^[a-zA-Z'-]+", message = "Only letters, hyphens and apostrophes are allowed")
+        @Pattern(regexp = "^[a-zA-Z\\s'-]+", message = "Only letters, hyphens and apostrophes are allowed")
         @Size(min = 3, message = "Name must be at least 3 characters long")
         String fullName,
         @NotBlank(message = "Password is a mandatory field")

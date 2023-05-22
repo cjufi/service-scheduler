@@ -60,6 +60,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Page<EmployeeResponse> getAllFromSameProvider(Pageable pageable, Long id) {
+        Long providerId = getProviderIdFromAccount(id);
+        return employeeRepository.findEmployeesByProviderId(pageable, providerId).map(employeeMapper::toDto);
+    }
+
+    @Override
+    public Long getProviderIdFromEmployeeId(Long id) {
+        return employeeRepository.findProviderIdByEmployeeId(id);
+    }
+
+    @Override
     public void delete(Long id) {
         if (!employeeRepository.existsById(id)) {
             throw new EntityNotFoundException(Employee.class.getSimpleName(), "id", id);
@@ -85,6 +96,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.deleteEmployeesByProviderId(id);
     }
 
+    @Override
+    public Long getProviderIdFromAccount(Long accountId) {
+        return employeeRepository.findProviderIdByAccountId(accountId);
+    }
+
+    @Override
+    public Long getAccountIdFromEmployeeId(Long id) {
+        return employeeRepository.findAccountIdByEmployeeId(id);
+    }
 
     private String extractEmailDomain(String email) {
         String[] parts = email.split("@");

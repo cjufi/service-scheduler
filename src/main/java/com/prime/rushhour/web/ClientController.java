@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,22 +28,26 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("(hasRole('CLIENT') && @permissionService.canClientAccessClient(#id)) || hasRole('ADMIN')")
     public ResponseEntity<ClientResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(clientService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<ClientResponse>> getAll(Pageable pageable) {
         return new ResponseEntity<>(clientService.getAll(pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("(hasRole('CLIENT') && @permissionService.canClientAccessClient(#id)) || hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         clientService.delete(id);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("(hasRole('CLIENT') && @permissionService.canClientAccessClient(#id)) || hasRole('ADMIN')")
     public ResponseEntity<ClientResponse> update(@PathVariable Long id, @Valid @RequestBody ClientUpdateRequest clientUpdateRequest) {
         return new ResponseEntity<>(clientService.update(id, clientUpdateRequest), HttpStatus.OK);
     }
