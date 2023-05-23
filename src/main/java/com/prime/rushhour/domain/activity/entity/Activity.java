@@ -4,6 +4,7 @@ import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import jakarta.persistence.*;
 
+import java.time.Duration;
 import java.util.List;
 
 @Entity
@@ -17,14 +18,15 @@ public class Activity {
 
     private Double price;
 
-    private Integer duration;
+    private Duration duration;
 
     @ManyToOne
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 
-    @OneToMany
-    @JoinColumn(name = "employee_id")
+    @ManyToMany
+    @JoinTable(name = "activity_employees", joinColumns = @JoinColumn(name = "activity_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees;
 
     public Activity() {
@@ -54,11 +56,11 @@ public class Activity {
         this.price = price;
     }
 
-    public Integer getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
