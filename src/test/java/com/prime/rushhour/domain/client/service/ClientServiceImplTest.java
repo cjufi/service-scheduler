@@ -46,6 +46,9 @@ class ClientServiceImplTest {
     @Mock
     private RoleService roleService;
 
+    @Mock
+    private AccountService accountService;
+
     @Test
     void save() {
 
