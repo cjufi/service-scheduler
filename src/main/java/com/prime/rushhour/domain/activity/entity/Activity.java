@@ -14,10 +14,13 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private Double price;
 
+    @Column(nullable = false)
     private Duration duration;
 
     @ManyToOne
