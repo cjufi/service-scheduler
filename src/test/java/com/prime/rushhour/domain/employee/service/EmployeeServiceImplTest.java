@@ -4,6 +4,7 @@ import com.prime.rushhour.domain.account.dto.AccountRequest;
 import com.prime.rushhour.domain.account.dto.AccountResponse;
 import com.prime.rushhour.domain.account.dto.AccountUpdateRequest;
 import com.prime.rushhour.domain.account.entity.Account;
+import com.prime.rushhour.domain.account.service.AccountService;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
@@ -53,6 +54,9 @@ class EmployeeServiceImplTest {
 
     @Mock
     private RoleService roleService;
+
+    @Mock
+    private AccountService accountService;
 
     @Test
     void save() {
