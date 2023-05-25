@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS activity
     duration    DECIMAL      NOT NULL,
     provider_id BIGINT       NOT NULL,
     constraint fk_activity_provider
-        FOREIGN KEY (provider_id) references provider (id)
+        FOREIGN KEY (provider_id) references provider (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS activity_employees
@@ -16,5 +16,5 @@ CREATE TABLE IF NOT EXISTS activity_employees
     constraint fk_activity_id
         FOREIGN KEY (activity_id) references activity (id) ON DELETE CASCADE,
     constraint fk_employee_id
-        FOREIGN KEY (employee_id) references employee (id) ON DELETE CASCADE
+        FOREIGN KEY (employee_id) references employee (id)
 );
