@@ -32,7 +32,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public ActivityResponse getById(Long id) {
         var activity = activityRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException(Activity.class.getSimpleName(), "id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Activity.class.getSimpleName(), "id", id));
         return activityMapper.toDto(activity);
     }
 
@@ -43,7 +43,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public void delete(Long id) {
-        if(!activityRepository.existsById(id)){
+        if (!activityRepository.existsById(id)) {
             throw new EntityNotFoundException(Activity.class.getSimpleName(), "id", id);
         }
         activityRepository.deleteById(id);
@@ -52,7 +52,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public ActivityResponse update(Long id, ActivityRequest activityRequest) {
         var activity = activityRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException(Activity.class.getSimpleName(), "id", id));
+                .orElseThrow(() -> new EntityNotFoundException(Activity.class.getSimpleName(), "id", id));
 
         activityMapper.update(activity, activityRequest);
         return activityMapper.toDto(activityRepository.save(activity));
