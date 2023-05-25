@@ -27,7 +27,7 @@ public class Activity {
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "activity_employees", joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees;

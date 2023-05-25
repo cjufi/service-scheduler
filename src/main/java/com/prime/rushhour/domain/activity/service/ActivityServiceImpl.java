@@ -57,4 +57,9 @@ public class ActivityServiceImpl implements ActivityService {
         activityMapper.update(activity, activityRequest);
         return activityMapper.toDto(activityRepository.save(activity));
     }
+
+    @Override
+    public void deleteByProviderId(Long id) {
+        activityRepository.deleteActivitiesByProviderId(id);
+    }
 }

@@ -16,4 +16,6 @@ public interface ActivityService {
     void delete(Long id);
 
     ActivityResponse update(Long id, ActivityRequest activityRequest);
+
+    void deleteByProviderId(Long id);
 }

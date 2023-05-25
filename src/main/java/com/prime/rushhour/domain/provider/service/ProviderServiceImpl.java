@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.provider.service;
 
+import com.prime.rushhour.domain.activity.service.ActivityService;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.domain.provider.dto.ProviderRequest;
 import com.prime.rushhour.domain.provider.dto.ProviderResponse;
@@ -23,11 +24,14 @@ public class ProviderServiceImpl implements ProviderService {
 
     private final EmployeeService employeeService;
 
+    private final ActivityService activityService;
+
     @Lazy
-    public ProviderServiceImpl(ProviderRepository providerRepository, ProviderMapper providerMapper, EmployeeService employeeService) {
+    public ProviderServiceImpl(ProviderRepository providerRepository, ProviderMapper providerMapper, EmployeeService employeeService, ActivityService activityService) {
         this.providerRepository = providerRepository;
         this.providerMapper = providerMapper;
         this.employeeService = employeeService;
+        this.activityService = activityService;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class ProviderServiceImpl implements ProviderService {
         if (!providerRepository.existsById(id)) {
             throw new EntityNotFoundException(Provider.class.getSimpleName(), "id", id);
         }
-
+        activityService.deleteByProviderId(id);
         employeeService.deleteByProviderId(id);
         providerRepository.deleteById(id);
     }
