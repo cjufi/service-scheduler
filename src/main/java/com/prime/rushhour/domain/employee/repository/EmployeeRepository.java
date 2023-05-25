@@ -24,5 +24,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Page<Employee> findEmployeesByProviderId(Pageable pageable, Long id);
 
-    Long findEmployeeId(Employee employee);
+    @Query("SELECT e.id FROM Employee e WHERE e = :employee")
+    Long findEmployeeId(@Param("employee") Employee employee);
 }

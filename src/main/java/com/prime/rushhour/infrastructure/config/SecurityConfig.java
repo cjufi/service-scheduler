@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/authentication/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/client").permitAll()
+                .requestMatchers("/api/v1/activity/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
