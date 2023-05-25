@@ -17,6 +17,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -104,6 +108,32 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Long getAccountIdFromEmployeeId(Long id) {
         return employeeRepository.findAccountIdByEmployeeId(id);
+    }
+
+    @Override
+    public List<Employee> idsToEmployees(List<Long> employeeIds) {
+
+        List<Employee> employees = new ArrayList<>();
+
+        for (Long employeeId : employeeIds) {
+            Optional<Employee> employee = employeeRepository.findById(employeeId);
+            employee.ifPresent(employees::add);
+        }
+        return employees;
+    }
+
+    @Override
+    public List<Long> EmployeesToIds(List<Employee> employees) {
+
+        List<Long> employeeIds = new ArrayList<>();
+
+        for(Employee employee: employees) {
+            Long employeeId = employeeRepository.findEmployeeId(employee);
+            if (employeeId != null) {
+                employeeIds.add(employeeId);
+            }
+        }
+        return employeeIds;
     }
 
     private String extractEmailDomain(String email) {

@@ -23,4 +23,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Long findProviderIdByEmployeeId(Long employeeId);
 
     Page<Employee> findEmployeesByProviderId(Pageable pageable, Long id);
+
+    Long findEmployeeId(Employee employee);
 }
