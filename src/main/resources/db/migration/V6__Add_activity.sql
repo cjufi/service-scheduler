@@ -16,5 +16,5 @@ CREATE TABLE IF NOT EXISTS activity_employees
     constraint fk_activity_id
         FOREIGN KEY (activity_id) references activity (id) ON DELETE CASCADE,
     constraint fk_employee_id
-        FOREIGN KEY (employee_id) references employee(id)
+        FOREIGN KEY (employee_id) references employee(id) ON DELETE CASCADE
 );
