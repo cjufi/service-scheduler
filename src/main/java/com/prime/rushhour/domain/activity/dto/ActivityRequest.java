@@ -18,7 +18,7 @@ public record ActivityRequest(
         Double price,
         @NotNull(message = "Duration is a mandatory field")
         @Min(value = 0, message = "Duration must be greater than 0")
-        Duration duration,
+        Long duration,
         Long providerId,
         List<Long> employeeIds
 ) {

@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.activity.entity;
 
+import com.prime.rushhour.domain.activity.repository.converter.DurationConverter;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import jakarta.persistence.*;
@@ -21,6 +22,7 @@ public class Activity {
     private Double price;
 
     @Column(nullable = false)
+    @Convert(converter = DurationConverter.class)
     private Duration duration;
 
     @ManyToOne
