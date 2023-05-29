@@ -18,4 +18,10 @@ public interface ActivityService {
     ActivityResponse update(Long id, ActivityRequest activityRequest);
 
     void deleteByProviderId(Long id);
+
+    Long getProviderIdFromActivityId(Long id);
+
+    Long getProviderIdFromAccountId(Long id);
+
+    Page<ActivityResponse> getAllFromSameProvider(Pageable pageable, Long id);
 }

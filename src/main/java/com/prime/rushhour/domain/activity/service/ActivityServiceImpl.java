@@ -62,4 +62,20 @@ public class ActivityServiceImpl implements ActivityService {
     public void deleteByProviderId(Long id) {
         activityRepository.deleteActivitiesByProviderId(id);
     }
+
+    @Override
+    public Long getProviderIdFromActivityId(Long id) {
+        return activityRepository.findProviderIdByActivityId(id);
+    }
+
+    @Override
+    public Long getProviderIdFromAccountId(Long id) {
+        return activityRepository.findProviderIdByAccountId(id);
+    }
+
+    @Override
+    public Page<ActivityResponse> getAllFromSameProvider(Pageable pageable, Long id) {
+        var providerId = getProviderIdFromAccountId(id);
+        return activityRepository.findActivitiesByProviderId(pageable, providerId).map(activityMapper::toDto);
+    }
 }

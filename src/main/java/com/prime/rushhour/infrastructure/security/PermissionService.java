@@ -1,5 +1,6 @@
 package com.prime.rushhour.infrastructure.security;
 
+import com.prime.rushhour.domain.activity.service.ActivityService;
 import com.prime.rushhour.domain.client.service.ClientService;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
@@ -21,11 +22,14 @@ public class PermissionService {
 
     private final RoleService roleService;
 
-    public PermissionService(EmployeeService employeeService, ClientService clientService, ProviderService providerService, RoleService roleService) {
+    private final ActivityService activityService;
+
+    public PermissionService(EmployeeService employeeService, ClientService clientService, ProviderService providerService, RoleService roleService, ActivityService activityService) {
         this.employeeService = employeeService;
         this.clientService = clientService;
         this.providerService = providerService;
         this.roleService = roleService;
+        this.activityService = activityService;
     }
 
     public boolean canProviderAdminAccessEmployee(Long id) {
@@ -59,6 +63,13 @@ public class PermissionService {
         var authentication = getAuthentication();
         Long providerId = providerService.getProviderIdByAccount(authentication.getAccount().getId());
         return role.getName().equals("EMPLOYEE") && (employeeRequest.providerId().equals(providerId));
+    }
+
+    public boolean canProviderAdminAccessActivity(Long id) {
+        var authentication = getAuthentication();
+        var accountId = authentication.getAccount().getId();
+        var providerId = activityService.getProviderIdFromActivityId(id);
+        return activityService.getProviderIdFromAccountId(accountId).equals(providerId);
     }
 
 

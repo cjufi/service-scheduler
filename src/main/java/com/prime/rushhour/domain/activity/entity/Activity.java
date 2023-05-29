@@ -5,6 +5,7 @@ import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Activity {
     private String name;
 
     @Column(nullable = false)
-    private Double price;
+    private BigDecimal price;
 
     @Column(nullable = false)
     @Convert(converter = DurationConverter.class)
@@ -53,11 +54,11 @@ public class Activity {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

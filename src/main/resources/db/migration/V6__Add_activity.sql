@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS activity
 (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(255) NOT NULL,
-    price       DOUBLE       NOT NULL,
+    price       NUMERIC       NOT NULL,
     duration    BIGINT       NOT NULL,
     provider_id BIGINT       NOT NULL,
     constraint fk_activity_provider
