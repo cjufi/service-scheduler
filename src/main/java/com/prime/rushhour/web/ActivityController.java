@@ -24,19 +24,26 @@ public class ActivityController {
     }
 
     @PostMapping
-    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessProvider(#activityRequest.providerId())) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && " +
+            "@permissionService.canProviderAdminAccessProvider(#activityRequest.providerId()) && " +
+            "@permissionService.canProviderAdminAccessEmployees(#activityRequest.employeeIds())) || " +
+            "hasRole('ADMIN')")
     public ResponseEntity<ActivityResponse> save(@Valid @RequestBody ActivityRequest activityRequest) {
         return new ResponseEntity<>(activityService.save(activityRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessActivity(#id)) || hasRole('CLIENT') || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && " +
+            "@permissionService.canProviderAdminAccessActivity(#id)) || " +
+            "hasRole('CLIENT') || " +
+            "hasRole('ADMIN')")
     public ResponseEntity<ActivityResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(activityService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('CLIENT') || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('CLIENT')) || " +
+            "hasRole('ADMIN')")
     public ResponseEntity<Page<ActivityResponse>> getAll(Pageable pageable) {
         return new ResponseEntity<>(activityService.getAll(pageable), HttpStatus.OK);
     }
@@ -49,13 +56,17 @@ public class ActivityController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.CONFLICT)
-    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessActivity(#id)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && " +
+            "@permissionService.canProviderAdminAccessActivity(#id)) || " +
+            "hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         activityService.delete(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && @permissionService.canProviderAdminAccessActivity(#id)) || hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('PROVIDER_ADMIN') && " +
+            "@permissionService.canProviderAdminAccessActivity(#id)) || " +
+            "hasRole('ADMIN')")
     public ResponseEntity<ActivityResponse> update(@PathVariable Long id, @Valid @RequestBody ActivityRequest activityRequest) {
         return new ResponseEntity<>(activityService.update(id, activityRequest), HttpStatus.OK);
     }

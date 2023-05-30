@@ -9,6 +9,7 @@ import com.prime.rushhour.domain.role.service.RoleService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -37,6 +38,18 @@ public class PermissionService {
         Long providerId = employeeService.getProviderIdFromAccount(authentication.getAccount().getId());
         Long employeesProviderId = employeeService.getProviderIdFromEmployeeId(id);
         return Objects.equals(employeesProviderId, providerId);
+    }
+
+    public boolean canProviderAdminAccessEmployees(List<Long> employeeIds) {
+        var authentication = getAuthentication();
+        Long providerId = employeeService.getProviderIdFromAccount(authentication.getAccount().getId());
+        for(Long employeeId: employeeIds) {
+            Long employeesProviderId = employeeService.getProviderIdFromEmployeeId(employeeId);
+            if(!Objects.equals(employeesProviderId,providerId)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean canClientAccessClient(Long id) {
