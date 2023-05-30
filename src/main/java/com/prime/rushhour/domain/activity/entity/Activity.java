@@ -38,6 +38,15 @@ public class Activity {
     public Activity() {
     }
 
+    public Activity(Long id, String name, BigDecimal price, Duration duration, Provider provider, List<Employee> employees) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.duration = duration;
+        this.provider = provider;
+        this.employees = employees;
+    }
+
     public Long getId() {
         return id;
     }
