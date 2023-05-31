@@ -65,7 +65,9 @@ public class ActivityController {
 
     @PutMapping("/{id}")
     @PreAuthorize("(hasRole('PROVIDER_ADMIN') && " +
-            "@permissionService.canProviderAdminAccessActivity(#id)) || " +
+            "@permissionService.canProviderAdminAccessActivity(#id) &&" +
+            "@permissionService.canProviderAdminAccessEmployees(#activityRequest.employeeIds()) &&" +
+            "@permissionService.canProviderAdminAccessProvider(#activityRequest.providerId())) || " +
             "hasRole('ADMIN')")
     public ResponseEntity<ActivityResponse> update(@PathVariable Long id, @Valid @RequestBody ActivityRequest activityRequest) {
         return new ResponseEntity<>(activityService.update(id, activityRequest), HttpStatus.OK);
