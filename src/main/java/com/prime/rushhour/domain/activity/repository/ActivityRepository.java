@@ -16,8 +16,5 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     @Query("SELECT a.provider.id FROM Activity a WHERE a.id = :id")
     Long findProviderIdByActivityId(@Param("id") Long id);
 
-    @Query("SELECT e.provider.id FROM Employee e WHERE e.account.id = :accountId")
-    Long findProviderIdByAccountId(@Param("accountId") Long accountId);
-
     Page<Activity> findActivitiesByProviderId(Pageable pageable, Long id);
 }

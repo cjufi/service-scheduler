@@ -5,6 +5,7 @@ import com.prime.rushhour.domain.activity.dto.ActivityResponse;
 import com.prime.rushhour.domain.activity.entity.Activity;
 import com.prime.rushhour.domain.activity.mapper.ActivityMapper;
 import com.prime.rushhour.domain.activity.repository.ActivityRepository;
+import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +18,12 @@ public class ActivityServiceImpl implements ActivityService {
 
     private final ActivityMapper activityMapper;
 
-    public ActivityServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper) {
+    private final EmployeeService employeeService;
+
+    public ActivityServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper, EmployeeService employeeService) {
         this.activityRepository = activityRepository;
         this.activityMapper = activityMapper;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -70,7 +74,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Long getProviderIdFromAccountId(Long id) {
-        return activityRepository.findProviderIdByAccountId(id);
+        return employeeService.getProviderIdFromAccount(id);
     }
 
     @Override
