@@ -55,7 +55,7 @@ public class ActivityController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("(hasRole('PROVIDER_ADMIN') && " +
             "@permissionService.canProviderAdminAccessActivity(#id)) || " +
             "hasRole('ADMIN')")
