@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -112,14 +111,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> idsToEmployees(List<Long> employeeIds) {
-
-        List<Employee> employees = new ArrayList<>();
-
-        for (Long employeeId : employeeIds) {
-            Optional<Employee> employee = employeeRepository.findById(employeeId);
-            employee.ifPresent(employees::add);
-        }
-        return employees;
+        return employeeRepository.findByIdIn(employeeIds);
     }
 
     @Override

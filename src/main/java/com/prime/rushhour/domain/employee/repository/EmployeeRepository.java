@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
@@ -26,4 +28,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query("SELECT e.id FROM Employee e WHERE e = :employee")
     Long findEmployeeId(@Param("employee") Employee employee);
+
+    List<Employee> findByIdIn(List<Long> employeeIds);
 }
