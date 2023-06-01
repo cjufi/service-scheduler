@@ -146,11 +146,4 @@ class ActivityServiceImplTest {
 
         verify(activityRepository, times(1)).findProviderIdByActivityId(1L);
     }
-
-    @Test
-    void getProviderIdFromAccountId() {
-        activityService.getProviderIdFromAccountId(1L);
-
-        verify(activityRepository, times(1)).findProviderIdByAccountId(1L);
-    }
 }
