@@ -120,9 +120,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Long> employeeIds = new ArrayList<>();
 
         for(Employee employee: employees) {
-            Long employeeId = employeeRepository.findEmployeeId(employee);
-            if (employeeId != null) {
-                employeeIds.add(employeeId);
+            if (employee.getId() != null) {
+                employeeIds.add(employee.getId());
             }
         }
         return employeeIds;
