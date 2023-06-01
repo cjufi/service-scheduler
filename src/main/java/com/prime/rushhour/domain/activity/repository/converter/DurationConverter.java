@@ -13,7 +13,7 @@ public class DurationConverter implements AttributeConverter<Duration, Long> {
     }
 
     @Override
-    public Duration convertToEntityAttribute(Long aLong) {
-        return Duration.ofMinutes(aLong);
+    public Duration convertToEntityAttribute(Long minutes) {
+        return Duration.ofMinutes(minutes);
     }
 }
