@@ -40,7 +40,7 @@ public class Provider {
     private Set<DayOfWeek> workingDays;
 
     @OneToMany(mappedBy = "provider",cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Employee> employee;
+    private Set<Employee> employees;
 
     @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Activity> activities;
@@ -122,12 +122,12 @@ public class Provider {
         this.workingDays = workingDays;
     }
 
-    public Set<Employee> getEmployee() {
-        return employee;
+    public Set<Employee> getEmployees() {
+        return employees;
     }
 
-    public void setEmployee(Set<Employee> employee) {
-        this.employee = employee;
+    public void setEmployees(Set<Employee> employee) {
+        this.employees = employees;
     }
 
     public Set<Activity> getActivities() {

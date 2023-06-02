@@ -3,6 +3,7 @@ package com.prime.rushhour.infrastructure.security;
 import com.prime.rushhour.domain.activity.service.ActivityService;
 import com.prime.rushhour.domain.client.service.ClientService;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
+import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.service.RoleService;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PermissionService {
@@ -43,13 +46,14 @@ public class PermissionService {
     public boolean canProviderAdminAccessEmployees(List<Long> employeeIds) {
         var authentication = getAuthentication();
         Long providerId = employeeService.getProviderIdFromAccount(authentication.getAccount().getId());
-        for(Long employeeId: employeeIds) {
-            Long employeesProviderId = employeeService.getProviderIdFromEmployeeId(employeeId);
-            if(!Objects.equals(employeesProviderId,providerId)) {
-                return false;
-            }
-        }
-        return true;
+        var provider = providerService.getProviderById(providerId);
+
+        Set<Long> employeeIdSet = provider.getEmployees().stream()
+                .map(Employee::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        return employeeIdSet.containsAll(employeeIds);
     }
 
     public boolean canClientAccessClient(Long id) {

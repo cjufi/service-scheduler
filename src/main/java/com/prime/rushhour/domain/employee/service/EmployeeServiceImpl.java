@@ -95,11 +95,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteByProviderId(Long id) {
-        employeeRepository.deleteEmployeesByProviderId(id);
-    }
-
-    @Override
     public Long getProviderIdFromAccount(Long accountId) {
         return employeeRepository.findProviderIdByAccountId(accountId);
     }

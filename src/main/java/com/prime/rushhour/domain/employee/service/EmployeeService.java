@@ -21,8 +21,6 @@ public interface EmployeeService {
 
     EmployeeResponse update(Long id, EmployeeUpdateRequest employeeUpdateRequest);
 
-    void deleteByProviderId(Long id);
-
     Long getProviderIdFromAccount(Long accountId);
 
     Long getAccountIdFromEmployeeId(Long id);
