@@ -21,7 +21,7 @@ public interface ActivityMapper {
     @Mapping(target = "employeeIds", source = "employees")
     ActivityResponse toDto(Activity activity);
 
-    @Mapping(target = "provider", source = "providerId")
+    @Mapping(target = "provider", ignore = true)
     @Mapping(target = "employees", source = "employeeIds")
     void update(@MappingTarget Activity activity, ActivityRequest activityRequest);
 }
