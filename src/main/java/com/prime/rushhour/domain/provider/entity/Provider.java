@@ -1,5 +1,7 @@
 package com.prime.rushhour.domain.provider.entity;
 
+import com.prime.rushhour.domain.activity.entity.Activity;
+import com.prime.rushhour.domain.employee.entity.Employee;
 import jakarta.persistence.*;
 
 import java.time.DayOfWeek;
@@ -36,6 +38,12 @@ public class Provider {
     @CollectionTable(name = "working_days", joinColumns = @JoinColumn(name = "provider_id"))
     @Column(name = "working_day", nullable = false)
     private Set<DayOfWeek> workingDays;
+
+    @OneToMany(mappedBy = "provider",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Employee> employees;
+
+    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Activity> activities;
 
     public Provider() {
     }
@@ -112,5 +120,21 @@ public class Provider {
 
     public void setWorkingDays(Set<DayOfWeek> workingDays) {
         this.workingDays = workingDays;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employee) {
+        this.employees = employees;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
     }
 }

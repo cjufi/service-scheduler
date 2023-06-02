@@ -3,8 +3,11 @@ package com.prime.rushhour.domain.employee.service;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
+import com.prime.rushhour.domain.employee.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface EmployeeService {
 
@@ -18,8 +21,6 @@ public interface EmployeeService {
 
     EmployeeResponse update(Long id, EmployeeUpdateRequest employeeUpdateRequest);
 
-    void deleteByProviderId(Long id);
-
     Long getProviderIdFromAccount(Long accountId);
 
     Long getAccountIdFromEmployeeId(Long id);
@@ -27,4 +28,8 @@ public interface EmployeeService {
     Page<EmployeeResponse> getAllFromSameProvider(Pageable pageable, Long id);
 
     Long getProviderIdFromEmployeeId(Long id);
+
+    List<Employee> idsToEmployees(List<Long> employeeIds);
+
+    List<Long> EmployeesToIds(List<Employee> employees);
 }

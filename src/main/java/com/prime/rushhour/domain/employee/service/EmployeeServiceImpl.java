@@ -17,6 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -83,17 +86,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         var employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
 
-        if (!checkRole(employeeUpdateRequest.accountUpdateRequest().roleId())) {
+        if (checkRole(employeeUpdateRequest.accountUpdateRequest().roleId())) {
             throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeUpdateRequest.accountUpdateRequest().roleId());
         }
 
         employeeMapper.update(employee, employeeUpdateRequest);
         return employeeMapper.toDto(employeeRepository.save(employee));
-    }
-
-    @Override
-    public void deleteByProviderId(Long id) {
-        employeeRepository.deleteEmployeesByProviderId(id);
     }
 
     @Override
@@ -104,6 +102,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Long getAccountIdFromEmployeeId(Long id) {
         return employeeRepository.findAccountIdByEmployeeId(id);
+    }
+
+    @Override
+    public List<Employee> idsToEmployees(List<Long> employeeIds) {
+        return employeeRepository.findByIdIn(employeeIds);
+    }
+
+    @Override
+    public List<Long> EmployeesToIds(List<Employee> employees) {
+
+        List<Long> employeeIds = new ArrayList<>();
+
+        for(Employee employee: employees) {
+            if (employee.getId() != null) {
+                employeeIds.add(employee.getId());
+            }
+        }
+        return employeeIds;
     }
 
     private String extractEmailDomain(String email) {
@@ -123,7 +139,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(emailDomain))) {
             throw new DomainNotCompatibleException("Domain", emailDomain);
         }
-        if (!checkRole(employeeRequest.accountRequest().roleId())) {
+        if (checkRole(employeeRequest.accountRequest().roleId())) {
             throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeRequest.accountRequest().roleId());
         }
     }
@@ -131,6 +147,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private boolean checkRole(Long id) {
         var role = roleService.getById(id);
         var roleType = RoleType.valueOf(role.name().toUpperCase());
-        return roleType == RoleType.ADMIN || roleType == RoleType.PROVIDER_ADMIN || roleType == RoleType.EMPLOYEE;
+        return roleType != RoleType.ADMIN && roleType != RoleType.PROVIDER_ADMIN && roleType != RoleType.EMPLOYEE;
     }
 }
