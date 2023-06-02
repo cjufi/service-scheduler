@@ -86,7 +86,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         var employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
 
-        if (!checkRole(employeeUpdateRequest.accountUpdateRequest().roleId())) {
+        if (checkRole(employeeUpdateRequest.accountUpdateRequest().roleId())) {
             throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeUpdateRequest.accountUpdateRequest().roleId());
         }
 
@@ -139,7 +139,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(emailDomain))) {
             throw new DomainNotCompatibleException("Domain", emailDomain);
         }
-        if (!checkRole(employeeRequest.accountRequest().roleId())) {
+        if (checkRole(employeeRequest.accountRequest().roleId())) {
             throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeRequest.accountRequest().roleId());
         }
     }
@@ -147,6 +147,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private boolean checkRole(Long id) {
         var role = roleService.getById(id);
         var roleType = RoleType.valueOf(role.name().toUpperCase());
-        return roleType == RoleType.ADMIN || roleType == RoleType.PROVIDER_ADMIN || roleType == RoleType.EMPLOYEE;
+        return roleType != RoleType.ADMIN && roleType != RoleType.PROVIDER_ADMIN && roleType != RoleType.EMPLOYEE;
     }
 }
