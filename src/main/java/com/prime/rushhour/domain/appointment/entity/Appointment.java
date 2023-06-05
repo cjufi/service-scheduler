@@ -15,7 +15,7 @@ public class Appointment {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDateTime starDate;
+    private LocalDateTime startDate;
 
     @Column(nullable = false)
     private LocalDateTime endDate;
@@ -42,12 +42,12 @@ public class Appointment {
         this.id = id;
     }
 
-    public LocalDateTime getStarDate() {
-        return starDate;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setStarDate(LocalDateTime starDate) {
-        this.starDate = starDate;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
     public LocalDateTime getEndDate() {
