@@ -32,4 +32,6 @@ public interface EmployeeService {
     List<Employee> idsToEmployees(List<Long> employeeIds);
 
     List<Long> EmployeesToIds(List<Employee> employees);
+
+    Employee idToEmployee(Long id);
 }

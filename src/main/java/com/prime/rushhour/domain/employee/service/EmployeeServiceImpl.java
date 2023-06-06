@@ -122,6 +122,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeIds;
     }
 
+    @Override
+    public Employee idToEmployee(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
+    }
+
     private String extractEmailDomain(String email) {
         String[] parts = email.split("@");
         if (parts.length != 2) {

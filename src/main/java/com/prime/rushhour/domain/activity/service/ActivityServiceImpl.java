@@ -82,4 +82,10 @@ public class ActivityServiceImpl implements ActivityService {
         var providerId = getProviderIdFromAccountId(id);
         return activityRepository.findActivitiesByProviderId(pageable, providerId).map(activityMapper::toDto);
     }
+
+    @Override
+    public Activity idToActivity(Long id) {
+        return activityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Activity.class.getSimpleName(), "id", id));
+    }
 }

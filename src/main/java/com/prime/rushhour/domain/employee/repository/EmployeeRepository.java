@@ -13,8 +13,6 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    void deleteEmployeesByProviderId(Long id);
-
     @Query("SELECT e.provider.id FROM Employee e WHERE e.account.id = :accountId")
     Long findProviderIdByAccountId(@Param("accountId") Long accountId);
 
@@ -25,9 +23,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Long findProviderIdByEmployeeId(Long employeeId);
 
     Page<Employee> findEmployeesByProviderId(Pageable pageable, Long id);
-
-    @Query("SELECT e.id FROM Employee e WHERE e = :employee")
-    Long findEmployeeId(@Param("employee") Employee employee);
 
     List<Employee> findByIdIn(List<Long> employeeIds);
 }
