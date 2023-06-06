@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.appointment.service;
 
+import com.prime.rushhour.domain.activity.service.ActivityService;
 import com.prime.rushhour.domain.appointment.dto.AppointmentRequest;
 import com.prime.rushhour.domain.appointment.dto.AppointmentResponse;
 import com.prime.rushhour.domain.appointment.entity.Appointment;
@@ -17,9 +18,12 @@ public class AppointmentServiceImpl implements AppointmentService{
 
     private final AppointmentMapper appointmentMapper;
 
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, AppointmentMapper appointmentMapper) {
+    private final ActivityService activityService;
+
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, AppointmentMapper appointmentMapper, ActivityService activityService) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentMapper = appointmentMapper;
+        this.activityService = activityService;
     }
 
     @Override
@@ -54,7 +58,9 @@ public class AppointmentServiceImpl implements AppointmentService{
         var appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Appointment.class.getSimpleName(), "id", id));
 
-        appointment.setEndDate(appointment.getStartDate().plusMinutes(appointment.getActivity().getDuration().toMinutes()));
+        appointment.setEndDate(appointmentRequest.startDate()
+                .plusMinutes(activityService.idToActivity(appointmentRequest.activityId())
+                        .getDuration().toMinutes()));
         appointmentMapper.update(appointment, appointmentRequest);
         return appointmentMapper.toDto(appointmentRepository.save(appointment));
     }
