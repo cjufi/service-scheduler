@@ -1,6 +1,7 @@
 package com.prime.rushhour.infrastructure.security;
 
 import com.prime.rushhour.domain.activity.service.ActivityService;
+import com.prime.rushhour.domain.appointment.entity.Appointment;
 import com.prime.rushhour.domain.client.service.ClientService;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.entity.Employee;
@@ -56,26 +57,6 @@ public class PermissionService {
         return employeeIdSet.containsAll(employeeIds);
     }
 
-    public boolean canClientAccessClient(Long id) {
-        var authentication = getAuthentication();
-        Long clientsAccountId = clientService.getAccountIdFromClientId(id);
-        return Objects.equals(clientsAccountId, authentication.getAccount().getId());
-    }
-
-    public boolean canEmployeeAccessEmployee(Long id) {
-        var authentication = getAuthentication();
-        Long employeesAccountId = employeeService.getAccountIdFromEmployeeId(id);
-        return Objects.equals(employeesAccountId, authentication.getAccount().getId());
-    }
-
-    public boolean canEmployeeAccessActivity(Long id) {
-        var authentication = getAuthentication();
-        Long employeesProviderId = employeeService.getEmployeesProviderIdByAccount(authentication.getAccount().getId());
-        var activity = activityService.getActivityById(id);
-        Long providerId = activity.getProvider().getId();
-        return Objects.equals(employeesProviderId, providerId);
-    }
-
     public boolean canProviderAdminAccessProvider(Long id) {
         var authentication = getAuthentication();
         Long providerId = providerService.getProviderIdByAccount(authentication.getAccount().getId());
@@ -97,6 +78,45 @@ public class PermissionService {
         return activityService.getProviderIdFromAccountId(accountId).equals(providerId);
     }
 
+    public boolean canEmployeeAccessEmployee(Long id) {
+        var authentication = getAuthentication();
+        Long employeesAccountId = employeeService.getAccountIdFromEmployeeId(id);
+        return Objects.equals(employeesAccountId, authentication.getAccount().getId());
+    }
+
+    public boolean canEmployeeAccessActivity(Long id) {
+        var authentication = getAuthentication();
+        Long employeesProviderId = employeeService.getEmployeesProviderIdByAccount(authentication.getAccount().getId());
+        var activity = activityService.getActivityById(id);
+        Long providerId = activity.getProvider().getId();
+        return Objects.equals(employeesProviderId, providerId);
+    }
+
+    public boolean canEmployeeAccessAppointment(Long id) {
+        var authentication = getAuthentication();
+        var employee = employeeService.getEmployeeByAccountId(authentication.getAccount().getId());
+
+        return employee.getAppointments().stream()
+                .map(Appointment::getId)
+                .filter(Objects::nonNull)
+                .anyMatch(appointmentId -> appointmentId.equals(id));
+    }
+
+    public boolean canClientAccessClient(Long id) {
+        var authentication = getAuthentication();
+        Long clientsAccountId = clientService.getAccountIdFromClientId(id);
+        return Objects.equals(clientsAccountId, authentication.getAccount().getId());
+    }
+
+    public boolean canClientAccessAppointment(Long id) {
+        var authentication = getAuthentication();
+        var client = clientService.getClientByAccountId(authentication.getAccount().getId());
+
+        return client.getAppointments().stream()
+                .map(Appointment::getId)
+                .filter(Objects::nonNull)
+                .anyMatch(appointmentId -> appointmentId.equals(id));
+    }
 
     private CustomUserDetails getAuthentication() {
         var securityContext = SecurityContextHolder.getContext();

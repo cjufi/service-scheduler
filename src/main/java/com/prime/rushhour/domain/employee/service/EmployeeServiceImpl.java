@@ -133,6 +133,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findEmployeesProviderIdByAccountId(id);
     }
 
+    @Override
+    public Employee getEmployeeByAccountId(Long id) {
+        return employeeRepository.findByAccountId(id);
+    }
+
     private String extractEmailDomain(String email) {
         String[] parts = email.split("@");
         if (parts.length != 2) {

@@ -90,6 +90,11 @@ public class ClientServiceImpl implements ClientService {
                 .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
     }
 
+    @Override
+    public Client getClientByAccountId(Long id) {
+        return clientRepository.findByAccountId(id);
+    }
+
     protected boolean checkRole(Long id) {
         var role = roleService.getById(id);
         var roleType = RoleType.valueOf(role.name().toUpperCase());

@@ -25,13 +25,17 @@ public class AppointmentController {
     @PreAuthorize("(hasRole('EMPLOYEE') && " +
             "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityId()) &&" +
             "@permissionService.canEmployeeAccessEmployee(#appointmentRequest.employeeId())) ||" +
-            "hasRole('CLIENT') || hasRole('ADMIN')")
+            "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> save(@Valid @RequestBody AppointmentRequest appointmentRequest) {
         return new ResponseEntity<>(appointmentService.save(appointmentRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('EMPLOYEE') &&" +
+            "@permissionService.canEmployeeAccessAppointment(#id)) ||" +
+            "(hasRole('CLIENT') &&" +
+            "@permissionService.canClientAccessAppointment(#id)) ||" +
+            "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(appointmentService.getById(id), HttpStatus.OK);
     }
@@ -44,13 +48,19 @@ public class AppointmentController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('EMPLOYEE') &&" +
+            "@permissionService.canEmployeeAccessAppointment(#id)) ||" +
+            "(hasRole('CLIENT') &&" +
+            "@permissionService.canClientAccessAppointment(#id)) ||" +
+            "hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         appointmentService.delete(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('EMPLOYEE') &&" +
+            "@permissionService.canEmployeeAccessAppointment(#id)) ||" +
+            "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> update(@PathVariable Long id, @Valid @RequestBody AppointmentRequest appointmentRequest) {
         return new ResponseEntity<>(appointmentService.update(id, appointmentRequest), HttpStatus.OK);
     }

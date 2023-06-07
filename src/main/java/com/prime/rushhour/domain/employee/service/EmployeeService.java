@@ -36,4 +36,6 @@ public interface EmployeeService {
     Employee idToEmployee(Long id);
 
     Long getEmployeesProviderIdByAccount(Long id);
+
+    Employee getEmployeeByAccountId(Long id);
 }

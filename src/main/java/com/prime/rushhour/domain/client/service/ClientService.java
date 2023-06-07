@@ -22,4 +22,6 @@ public interface ClientService {
     Long getAccountIdFromClientId(Long id);
 
     Client idToClient(Long id);
+
+    Client getClientByAccountId(Long id);
 }
