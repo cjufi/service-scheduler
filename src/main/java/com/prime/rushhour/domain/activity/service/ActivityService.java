@@ -27,4 +27,6 @@ public interface ActivityService {
     Page<ActivityResponse> getAllFromSameProvider(Pageable pageable, Long id);
 
     Activity idToActivity(Long id);
+
+    Activity getActivityById(Long id);
 }

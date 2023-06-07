@@ -6,6 +6,7 @@ import com.prime.rushhour.domain.activity.entity.Activity;
 import com.prime.rushhour.domain.activity.mapper.ActivityMapper;
 import com.prime.rushhour.domain.activity.repository.ActivityRepository;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
+import com.prime.rushhour.domain.provider.entity.Provider;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -85,6 +86,12 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Activity idToActivity(Long id) {
+        return activityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Activity.class.getSimpleName(), "id", id));
+    }
+
+    @Override
+    public Activity getActivityById(Long id) {
         return activityRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Activity.class.getSimpleName(), "id", id));
     }

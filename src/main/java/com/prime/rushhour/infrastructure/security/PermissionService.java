@@ -68,6 +68,14 @@ public class PermissionService {
         return Objects.equals(employeesAccountId, authentication.getAccount().getId());
     }
 
+    public boolean canEmployeeAccessActivity(Long id) {
+        var authentication = getAuthentication();
+        Long employeesProviderId = employeeService.getEmployeesProviderIdByAccount(authentication.getAccount().getId());
+        var activity = activityService.getActivityById(id);
+        Long providerId = activity.getProvider().getId();
+        return Objects.equals(employeesProviderId, providerId);
+    }
+
     public boolean canProviderAdminAccessProvider(Long id) {
         var authentication = getAuthentication();
         Long providerId = providerService.getProviderIdByAccount(authentication.getAccount().getId());

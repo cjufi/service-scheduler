@@ -128,6 +128,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
     }
 
+    @Override
+    public Long getEmployeesProviderIdByAccount(Long id) {
+        return employeeRepository.findEmployeesProviderIdByAccountId(id);
+    }
+
     private String extractEmailDomain(String email) {
         String[] parts = email.split("@");
         if (parts.length != 2) {

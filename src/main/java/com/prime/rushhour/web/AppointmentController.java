@@ -22,7 +22,10 @@ public class AppointmentController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('EMPLOYEE') && " +
+            "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityId()) &&" +
+            "@permissionService.canEmployeeAccessEmployee(#appointmentRequest.employeeId())) ||" +
+            "hasRole('CLIENT') || hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> save(@Valid @RequestBody AppointmentRequest appointmentRequest) {
         return new ResponseEntity<>(appointmentService.save(appointmentRequest), HttpStatus.CREATED);
     }
