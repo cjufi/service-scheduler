@@ -1,7 +1,10 @@
 package com.prime.rushhour.domain.client.entity;
 
 import com.prime.rushhour.domain.account.entity.Account;
+import com.prime.rushhour.domain.appointment.entity.Appointment;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class Client {
@@ -19,6 +22,9 @@ public class Client {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
+
+    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Appointment> appointments;
 
     public Client() {
     }

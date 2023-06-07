@@ -1,6 +1,7 @@
 package com.prime.rushhour.domain.activity.entity;
 
 import com.prime.rushhour.domain.activity.repository.converter.DurationConverter;
+import com.prime.rushhour.domain.appointment.entity.Appointment;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Activity {
@@ -34,6 +36,9 @@ public class Activity {
     @JoinTable(name = "activity_employees", joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees;
+
+    @OneToMany(mappedBy = "activity",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Appointment> appointments;
 
     public Activity() {
     }
