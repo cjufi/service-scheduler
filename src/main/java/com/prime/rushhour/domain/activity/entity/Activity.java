@@ -99,4 +99,12 @@ public class Activity {
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
 }

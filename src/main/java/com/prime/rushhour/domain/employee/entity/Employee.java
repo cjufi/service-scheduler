@@ -105,4 +105,12 @@ public class Employee {
     public void setProvider(Provider provider) {
         this.provider = provider;
     }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
 }

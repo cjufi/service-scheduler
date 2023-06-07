@@ -23,7 +23,7 @@ public class Client {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Appointment> appointments;
 
     public Client() {
@@ -33,6 +33,14 @@ public class Client {
         this.phone = phone;
         this.address = address;
         this.account = account;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPhone() {
@@ -57,5 +65,13 @@ public class Client {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }
