@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class JwtService {
@@ -26,18 +27,17 @@ public class JwtService {
         Date creationTime = new Date();
         Date expirationTime = new Date(creationTime.getTime() + expiration);
 
-        var claims = new HashMap<String, Object>(0);
-        userDetails.getAuthorities().stream()
-                .findFirst()
-                .ifPresent(role -> claims.put("role", role.toString()));
-        claims.put("username", userDetails.getUsername());
+        CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
+        String roleName = customUserDetails.getAccount().getRole().getName();
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", roleName);
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(creationTime)
                 .setExpiration(expirationTime)
-                .setClaims(claims)
+                .addClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
     }
@@ -48,7 +48,7 @@ public class JwtService {
                 .parseClaimsJws(jwt)
                 .getBody();
 
-        return (String) claims.get("username");
+        return claims.getSubject();
     }
 
     public boolean validateToken(String jwt) {
