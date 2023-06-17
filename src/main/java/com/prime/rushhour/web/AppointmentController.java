@@ -59,7 +59,9 @@ public class AppointmentController {
 
     @PutMapping("/{id}")
     @PreAuthorize("(hasRole('EMPLOYEE') &&" +
-            "@permissionService.canEmployeeAccessAppointment(#id)) ||" +
+            "@permissionService.canEmployeeAccessAppointment(#id) &&" +
+            "@permissionService.canEmployeeAccessEmployee(#appointmentRequest.employeeId()) &&" +
+            "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityId())) ||" +
             "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> update(@PathVariable Long id, @Valid @RequestBody AppointmentRequest appointmentRequest) {
         return new ResponseEntity<>(appointmentService.update(id, appointmentRequest), HttpStatus.OK);
