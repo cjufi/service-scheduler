@@ -1,36 +1,67 @@
 package com.prime.rushhour.domain.appointment.mapper;
 
+import com.prime.rushhour.domain.activity.entity.Activity;
 import com.prime.rushhour.domain.activity.repository.converter.DurationConverter;
 import com.prime.rushhour.domain.activity.service.ActivityService;
 import com.prime.rushhour.domain.appointment.dto.AppointmentRequest;
 import com.prime.rushhour.domain.appointment.dto.AppointmentResponse;
 import com.prime.rushhour.domain.appointment.entity.Appointment;
+import com.prime.rushhour.domain.client.entity.Client;
 import com.prime.rushhour.domain.client.service.ClientService;
+import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring", uses = {EmployeeService.class, ClientService.class, ActivityService.class, DurationConverter.class})
-public interface AppointmentMapper {
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE,
+        uses = {EmployeeService.class, DurationConverter.class})
+public abstract class AppointmentMapper {
 
-    @Mapping(target = "employee", source = "employeeId")
-    @Mapping(target = "client", source = "clientId")
-    @Mapping(target = "activity", source = "activityId")
-    Appointment toEntity(AppointmentRequest appointmentRequest);
+    @Autowired
+    private EmployeeService employeeService;
 
-    @Mapping(target = "employeeResponse", source = "employee")
-    @Mapping(target = "employeeResponse.providerResponse", source = "employee.provider")
-    @Mapping(target = "employeeResponse.accountResponse", source = "employee.account")
-    @Mapping(target = "clientResponse", source = "client")
-    @Mapping(target = "clientResponse.accountResponse", source = "client.account")
-    @Mapping(target = "activityResponse", source = "activity")
-    @Mapping(target = "activityResponse.providerResponse", source = "activity.provider")
-    @Mapping(target = "activityResponse.employeeIds", source = "activity.employees")
-    AppointmentResponse toDto(Appointment appointment);
+    @Autowired
+    private ClientService clientService;
 
-    @Mapping(target = "employee", source = "employeeId")
-    @Mapping(target = "client", source = "clientId")
-    @Mapping(target = "activity", source = "activityId")
-    void update(@MappingTarget Appointment appointment, AppointmentRequest appointmentRequest);
+    @Autowired
+    private ActivityService activityService;
+
+    @Mapping(target = "employee", source = "employeeId", qualifiedByName = "toEmployee")
+    @Mapping(target = "client", source = "clientId", qualifiedByName = "toClient")
+    @Mapping(target = "activity", source = "activityId", qualifiedByName = "toActivity")
+    public abstract Appointment toEntity(AppointmentRequest appointmentRequest);
+
+    @Mapping(target = "employee", source = "employee")
+    @Mapping(target = "employee.provider", source = "employee.provider")
+    @Mapping(target = "employee.account", source = "employee.account")
+    @Mapping(target = "client", source = "client")
+    @Mapping(target = "client.account", source = "client.account")
+    @Mapping(target = "activity", source = "activity")
+    @Mapping(target = "activity.provider", source = "activity.provider")
+    @Mapping(target = "activity.employeeIds", source = "activity.employees")
+    public abstract AppointmentResponse toDto(Appointment appointment);
+
+    @Mapping(target = "employee", source = "employeeId", qualifiedByName = "toEmployee")
+    @Mapping(target = "client", source = "clientId", qualifiedByName = "toClient")
+    @Mapping(target = "activity", source = "activityId", qualifiedByName = "toActivity")
+    public abstract void update(@MappingTarget Appointment appointment, AppointmentRequest appointmentRequest);
+
+    @Named("toEmployee")
+    public Employee toEmployee(Long id) {
+        return employeeService.idToEmployee(id);
+    }
+
+    @Named("toClient")
+    public Client toClient(Long id) {
+        return clientService.idToClient(id);
+    }
+
+    @Named("toActivity")
+    public Activity toActivity(Long id) {
+        return activityService.idToActivity(id);
+    }
 }

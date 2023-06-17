@@ -64,7 +64,7 @@ public class PermissionService {
     }
 
     public boolean canProviderAdminCreateEmployee(EmployeeRequest employeeRequest) {
-        Long roleId = employeeRequest.accountRequest().roleId();
+        Long roleId = employeeRequest.account().roleId();
         var role = roleService.idToRole(roleId);
         var authentication = getAuthentication();
         Long providerId = providerService.getProviderIdByAccount(authentication.getAccount().getId());

@@ -36,10 +36,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientResponse save(ClientRequest clientRequest) {
-        accountService.validateAccount(clientRequest.accountRequest());
+        accountService.validateAccount(clientRequest.account());
 
-        if (!checkRole(clientRequest.accountRequest().roleId())) {
-            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientRequest.accountRequest().roleId());
+        if (!checkRole(clientRequest.account().roleId())) {
+            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientRequest.account().roleId());
         }
 
         var client = clientMapper.toEntity(clientRequest);
@@ -71,8 +71,8 @@ public class ClientServiceImpl implements ClientService {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
 
-        if (!checkRole(clientUpdateRequest.accountUpdateRequest().roleId())) {
-            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientUpdateRequest.accountUpdateRequest().roleId());
+        if (!checkRole(clientUpdateRequest.account().roleId())) {
+            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientUpdateRequest.account().roleId());
         }
 
         clientMapper.update(client, clientUpdateRequest);

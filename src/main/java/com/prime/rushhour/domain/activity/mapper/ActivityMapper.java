@@ -10,14 +10,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {ProviderService.class, EmployeeService.class, DurationConverter.class})
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE,
+        uses = {ProviderService.class, EmployeeService.class, DurationConverter.class})
 public interface ActivityMapper {
 
     @Mapping(target = "provider", source = "providerId")
     @Mapping(target = "employees", source = "employeeIds")
     Activity toEntity(ActivityRequest activityRequest);
 
-    @Mapping(target = "providerResponse", source = "provider")
+    @Mapping(target = "provider", source = "provider")
     @Mapping(target = "employeeIds", source = "employees")
     ActivityResponse toDto(Activity activity);
 

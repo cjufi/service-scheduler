@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 public record AppointmentResponse(
         LocalDateTime startDate,
         LocalDateTime endDate,
-        EmployeeResponse employeeResponse,
-        ClientResponse clientResponse,
-        ActivityResponse activityResponse
+        EmployeeResponse employee,
+        ClientResponse client,
+        ActivityResponse activity
 ) {
 }

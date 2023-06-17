@@ -86,8 +86,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         var employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
 
-        if (checkRole(employeeUpdateRequest.accountUpdateRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeUpdateRequest.accountUpdateRequest().roleId());
+        if (checkRole(employeeUpdateRequest.account().roleId())) {
+            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeUpdateRequest.account().roleId());
         }
 
         employeeMapper.update(employee, employeeUpdateRequest);
@@ -148,15 +148,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private void employeeValidation(EmployeeRequest employeeRequest) {
 
-        accountService.validateAccount(employeeRequest.accountRequest());
+        accountService.validateAccount(employeeRequest.account());
 
-        var emailDomain = extractEmailDomain(employeeRequest.accountRequest().email());
+        var emailDomain = extractEmailDomain(employeeRequest.account().email());
 
         if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(emailDomain))) {
             throw new DomainNotCompatibleException("Domain", emailDomain);
         }
-        if (checkRole(employeeRequest.accountRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeRequest.accountRequest().roleId());
+        if (checkRole(employeeRequest.account().roleId())) {
+            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeRequest.account().roleId());
         }
     }
 

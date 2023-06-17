@@ -10,7 +10,7 @@ public record EmployeeResponse(
         String phone,
         Double ratePerHour,
         LocalDate hireDate,
-        AccountResponse accountResponse,
-        ProviderResponse providerResponse
+        AccountResponse account,
+        ProviderResponse provider
 ) {
 }
