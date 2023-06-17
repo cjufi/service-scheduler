@@ -10,10 +10,10 @@ import java.time.LocalDate;
 public record EmployeeRequest(
         @NotBlank(message = "Title is a mandatory field")
         @Size(min = 2, message = "Title must be at least 2 characters long")
-        @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
+        @Pattern(regexp = "^[a-zA-Z0-9 ]*$", message = "Title can only be letters and numbers")
         String title,
         @NotBlank(message = "Phone is a mandatory field")
-        @Pattern(regexp = "^\\+?\\d+$")
+        @Pattern(regexp = "^\\+?\\d+$", message = "Phone number must only be numbers")
         String phone,
         @NotNull(message = "Rate Per Hour is a mandatory field")
         @Positive(message = "Rate Per Hour must be a positive number")
