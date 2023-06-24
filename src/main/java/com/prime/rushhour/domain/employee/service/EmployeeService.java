@@ -38,4 +38,8 @@ public interface EmployeeService {
     Long getEmployeesProviderIdByAccount(Long id);
 
     Employee getEmployeeByAccountId(Long id);
+
+    boolean isProviderSame(Long accountId, Long id);
+
+    boolean isEmployeesProviderSame(Long employeeId, Long id);
 }

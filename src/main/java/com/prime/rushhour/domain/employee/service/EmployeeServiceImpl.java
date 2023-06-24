@@ -138,6 +138,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findByAccountId(id);
     }
 
+    @Override
+    public boolean isProviderSame(Long accountId, Long id) {
+        var providerId = employeeRepository.findProviderIdByAccountId(accountId);
+        return providerId.equals(id);
+    }
+
+    @Override
+    public boolean isEmployeesProviderSame(Long employeeId, Long id) {
+        var employeesProviderId = employeeRepository.findProviderIdByEmployeeId(employeeId);
+        var providerId = employeeRepository.findProviderIdByAccountId(id);
+        return employeesProviderId.equals(providerId);
+    }
+
     private String extractEmailDomain(String email) {
         String[] parts = email.split("@");
         if (parts.length != 2) {

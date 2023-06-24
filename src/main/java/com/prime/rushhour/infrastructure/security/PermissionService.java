@@ -8,6 +8,7 @@ import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.service.RoleService;
+import com.prime.rushhour.infrastructure.service.AuthorizationService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -29,15 +30,20 @@ public class PermissionService {
 
     private final ActivityService activityService;
 
-    public PermissionService(EmployeeService employeeService, ClientService clientService, ProviderService providerService, RoleService roleService, ActivityService activityService) {
+    private final AuthorizationService authorizationService;
+
+    public PermissionService(EmployeeService employeeService, ClientService clientService, ProviderService providerService, RoleService roleService, ActivityService activityService, AuthorizationService authorizationService) {
         this.employeeService = employeeService;
         this.clientService = clientService;
         this.providerService = providerService;
         this.roleService = roleService;
         this.activityService = activityService;
+        this.authorizationService = authorizationService;
     }
 
     public boolean canProviderAdminAccessEmployee(Long id) {
+
+        authorizationService.canEmployeeAccessEmployee(id);
         var authentication = getAuthentication();
         Long providerId = employeeService.getProviderIdFromAccount(authentication.getAccount().getId());
         Long employeesProviderId = employeeService.getProviderIdFromEmployeeId(id);
@@ -58,12 +64,16 @@ public class PermissionService {
     }
 
     public boolean canProviderAdminAccessProvider(Long id) {
+
+        authorizationService.canEmployeeAccessProvider(id);
         var authentication = getAuthentication();
         Long providerId = providerService.getProviderIdByAccount(authentication.getAccount().getId());
         return Objects.equals(providerId, id);
     }
 
     public boolean canProviderAdminCreateEmployee(EmployeeRequest employeeRequest) {
+
+        authorizationService.canEmployeeAccessProvider(employeeRequest.providerId());
         Long roleId = employeeRequest.account().roleId();
         var role = roleService.idToRole(roleId);
         var authentication = getAuthentication();
@@ -79,6 +89,8 @@ public class PermissionService {
     }
 
     public boolean canEmployeeAccessEmployee(Long id) {
+
+        authorizationService.canEmployeeAccessEmployee(id);
         var authentication = getAuthentication();
         Long employeesAccountId = employeeService.getAccountIdFromEmployeeId(id);
         return Objects.equals(employeesAccountId, authentication.getAccount().getId());
