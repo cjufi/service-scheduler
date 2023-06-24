@@ -74,13 +74,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ErrorResponse> handleUnauthorizedException(UnauthorizedException e) {
-        var violation = new Violation(null, e.getMessage(), LocalDateTime.now());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(List.of(violation)));
-    }
-
     private record Violation(String field, String error, LocalDateTime timestamp) {
     }
 
