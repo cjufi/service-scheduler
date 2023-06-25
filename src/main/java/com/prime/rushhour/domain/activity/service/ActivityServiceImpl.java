@@ -94,4 +94,11 @@ public class ActivityServiceImpl implements ActivityService {
         return activityRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Activity.class.getSimpleName(), "id", id));
     }
+
+    @Override
+    public boolean isEmployeesActivitySame(Long activityId, Long accountId) {
+        var activitiesProviderId = activityRepository.findProviderIdByActivityId(activityId);
+        var providerId = employeeService.getProviderIdFromAccount(accountId);
+        return activitiesProviderId.equals(providerId);
+    }
 }

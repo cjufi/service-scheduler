@@ -29,4 +29,6 @@ public interface ActivityService {
     Activity idToActivity(Long id);
 
     Activity getActivityById(Long id);
+
+    boolean isEmployeesActivitySame(Long activityId, Long id);
 }

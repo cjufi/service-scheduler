@@ -82,6 +82,8 @@ public class PermissionService {
     }
 
     public boolean canProviderAdminAccessActivity(Long id) {
+
+        authorizationService.canEmployeeAccessActivity(id);
         var authentication = getAuthentication();
         var accountId = authentication.getAccount().getId();
         var providerId = activityService.getProviderIdFromActivityId(id);
@@ -97,6 +99,8 @@ public class PermissionService {
     }
 
     public boolean canEmployeeAccessActivity(Long id) {
+
+        authorizationService.canEmployeeAccessActivity(id);
         var authentication = getAuthentication();
         Long employeesProviderId = employeeService.getEmployeesProviderIdByAccount(authentication.getAccount().getId());
         var activity = activityService.getActivityById(id);
@@ -105,6 +109,8 @@ public class PermissionService {
     }
 
     public boolean canEmployeeAccessAppointment(Long id) {
+
+        authorizationService.canEmployeeAccessAppointment(id);
         var authentication = getAuthentication();
         var employee = employeeService.getEmployeeByAccountId(authentication.getAccount().getId());
 

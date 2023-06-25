@@ -1,7 +1,9 @@
 package com.prime.rushhour.infrastructure.service;
 
+import com.prime.rushhour.domain.activity.service.ActivityService;
+import com.prime.rushhour.domain.appointment.entity.Appointment;
+import com.prime.rushhour.domain.appointment.service.AppointmentService;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
-import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.infrastructure.exceptions.UnauthorizedException;
 import com.prime.rushhour.infrastructure.security.CustomUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,8 +14,14 @@ public class AuthorizationService {
 
     private final EmployeeService employeeService;
 
-    public AuthorizationService(EmployeeService employeeService) {
+    private final ActivityService activityService;
+
+    private final AppointmentService appointmentService;
+
+    public AuthorizationService(EmployeeService employeeService, ActivityService activityService, AppointmentService appointmentService) {
         this.employeeService = employeeService;
+        this.activityService = activityService;
+        this.appointmentService = appointmentService;
     }
 
     public void canEmployeeAccessProvider(Long id) {
@@ -22,10 +30,22 @@ public class AuthorizationService {
         }
     }
 
-    public void canEmployeeAccessEmployee(Long id) {
-        if(!employeeService.isEmployeesProviderSame(id, getAuthentication().getAccount().getId())) {
+    public void canEmployeeAccessEmployee(Long employeeId) {
+        if(!employeeService.isEmployeesProviderSame(employeeId, getAuthentication().getAccount().getId())) {
             throw new UnauthorizedException("You cannot access this employee, as he is not part of your Provider");
         }
+    }
+
+    public void canEmployeeAccessActivity(Long activityId) {
+        if(!activityService.isEmployeesActivitySame(activityId, getAuthentication().getAccount().getId())) {
+            throw new UnauthorizedException("You cannot access this activity, as it is not a part of your Provider");
+        }
+    }
+
+    public void canEmployeeAccessAppointment(Long appointmentId) {
+        Appointment appointment = appointmentService.findById(appointmentId);
+        canEmployeeAccessEmployee(appointment.getEmployee().getId());
+        canEmployeeAccessActivity(appointment.getActivity().getId());
     }
 
     private CustomUserDetails getAuthentication() {
