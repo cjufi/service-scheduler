@@ -1,4 +1,4 @@
-package com.prime.rushhour.infrastructure.mapper;
+package com.prime.rushhour.infrastructure.mapper.price;
 
 import org.mapstruct.Qualifier;
 
@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Qualifier
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.CLASS)
-public @interface EncodedMapping {
+public @interface PriceMapping {
 }

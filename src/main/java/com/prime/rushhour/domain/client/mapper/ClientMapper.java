@@ -5,9 +5,9 @@ import com.prime.rushhour.domain.client.dto.ClientResponse;
 import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
 import com.prime.rushhour.domain.client.entity.Client;
 import com.prime.rushhour.domain.role.service.RoleService;
-import com.prime.rushhour.infrastructure.mapper.EncodedMapping;
+import com.prime.rushhour.infrastructure.mapper.password.EncodedMapping;
 
-import com.prime.rushhour.infrastructure.mapper.PasswordEncoderMapper;
+import com.prime.rushhour.infrastructure.mapper.password.PasswordEncoderMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

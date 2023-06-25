@@ -10,6 +10,8 @@ import com.prime.rushhour.domain.client.entity.Client;
 import com.prime.rushhour.domain.client.service.ClientService;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
+import com.prime.rushhour.infrastructure.mapper.price.PriceMapper;
+import com.prime.rushhour.infrastructure.mapper.price.PriceMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -20,7 +22,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE,
-        uses = {EmployeeService.class, DurationConverter.class})
+        uses = {EmployeeService.class, DurationConverter.class, PriceMapper.class})
 public abstract class AppointmentMapper {
 
     @Autowired
@@ -42,6 +44,7 @@ public abstract class AppointmentMapper {
     @Mapping(target = "employee.account", source = "employee.account")
     @Mapping(target = "client.account", source = "client.account")
     @Mapping(target = "activities", source = "activities")
+    @Mapping(target = "price", source = "activities", qualifiedBy = PriceMapping.class)
     public abstract AppointmentResponse toDto(Appointment appointment);
 
     @Mapping(target = "employee", source = "employeeId", qualifiedByName = "toEmployee")
@@ -62,10 +65,5 @@ public abstract class AppointmentMapper {
     @Named("toActivities")
     public List<Activity> toActivity(List<Long> ids) {
         return activityService.idsToActivities(ids);
-    }
-
-    @Named("toEmployeeIds")
-    public List<Long> toEmployeeIds(List<Employee> employees) {
-        return employeeService.EmployeesToIds(employees);
     }
 }

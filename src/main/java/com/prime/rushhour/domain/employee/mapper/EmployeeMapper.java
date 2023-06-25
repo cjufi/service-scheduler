@@ -6,8 +6,8 @@ import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.service.RoleService;
-import com.prime.rushhour.infrastructure.mapper.EncodedMapping;
-import com.prime.rushhour.infrastructure.mapper.PasswordEncoderMapper;
+import com.prime.rushhour.infrastructure.mapper.password.EncodedMapping;
+import com.prime.rushhour.infrastructure.mapper.password.PasswordEncoderMapper;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",

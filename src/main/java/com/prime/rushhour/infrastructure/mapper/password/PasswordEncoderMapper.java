@@ -1,4 +1,4 @@
-package com.prime.rushhour.infrastructure.mapper;
+package com.prime.rushhour.infrastructure.mapper.password;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

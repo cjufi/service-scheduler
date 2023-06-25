@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -107,5 +108,15 @@ public class ActivityServiceImpl implements ActivityService {
             }
         }
         return true;
+    }
+
+    @Override
+    public BigDecimal addPricesOfActivities(List<Activity> activities) {
+        BigDecimal sum = BigDecimal.valueOf(0);
+
+        for(Activity activity : activities) {
+            sum = sum.add(activity.getPrice());
+        }
+        return sum;
     }
 }
