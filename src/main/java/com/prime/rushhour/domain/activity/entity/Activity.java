@@ -37,7 +37,9 @@ public class Activity {
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees;
 
-    @OneToMany(mappedBy = "activity",cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "appointment_activities", joinColumns = @JoinColumn(name = "activity_id"),
+            inverseJoinColumns = @JoinColumn(name = "appointment_id"))
     private Set<Appointment> appointments;
 
     public Activity() {

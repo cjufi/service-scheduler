@@ -37,19 +37,16 @@ public abstract class AppointmentMapper {
     @Mapping(target = "activities", source = "activityIds", qualifiedByName = "toActivities")
     public abstract Appointment toEntity(AppointmentRequest appointmentRequest);
 
-    @Mapping(target = "employee", source = "employee")
+
     @Mapping(target = "employee.provider", source = "employee.provider")
     @Mapping(target = "employee.account", source = "employee.account")
-    @Mapping(target = "client", source = "client")
     @Mapping(target = "client.account", source = "client.account")
-    @Mapping(target = "activity", source = "activity")
-    @Mapping(target = "activity.provider", source = "activity.provider")
-    @Mapping(target = "activity.employeeIds", source = "activity.employees")
+    @Mapping(target = "activities", source = "activities")
     public abstract AppointmentResponse toDto(Appointment appointment);
 
     @Mapping(target = "employee", source = "employeeId", qualifiedByName = "toEmployee")
     @Mapping(target = "client", source = "clientId", qualifiedByName = "toClient")
-    @Mapping(target = "activity", source = "activityId", qualifiedByName = "toActivity")
+    @Mapping(target = "activities", source = "activityIds", qualifiedByName = "toActivities")
     public abstract void update(@MappingTarget Appointment appointment, AppointmentRequest appointmentRequest);
 
     @Named("toEmployee")
@@ -65,5 +62,10 @@ public abstract class AppointmentMapper {
     @Named("toActivities")
     public List<Activity> toActivity(List<Long> ids) {
         return activityService.idsToActivities(ids);
+    }
+
+    @Named("toEmployeeIds")
+    public List<Long> toEmployeeIds(List<Employee> employees) {
+        return employeeService.EmployeesToIds(employees);
     }
 }

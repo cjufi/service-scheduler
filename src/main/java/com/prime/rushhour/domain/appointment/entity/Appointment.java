@@ -6,6 +6,7 @@ import com.prime.rushhour.domain.employee.entity.Employee;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Appointment {
@@ -28,9 +29,10 @@ public class Appointment {
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-    @ManyToOne
-    @JoinColumn(name = "activity_id", nullable = false)
-    private Activity activity;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "appointment_activities", joinColumns = @JoinColumn(name = "appointment_id"),
+            inverseJoinColumns = @JoinColumn(name = "activity_id"))
+    private List<Activity> activities;
 
     public Appointment() {}
 
@@ -74,11 +76,11 @@ public class Appointment {
         this.client = client;
     }
 
-    public Activity getActivity() {
-        return activity;
+    public List<Activity> getActivities() {
+        return activities;
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
     }
 }

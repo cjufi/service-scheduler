@@ -23,7 +23,7 @@ public class AppointmentController {
 
     @PostMapping
     @PreAuthorize("(hasRole('EMPLOYEE') && " +
-            "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityId()) &&" +
+            "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityIds()) &&" +
             "@permissionService.canEmployeeAccessEmployee(#appointmentRequest.employeeId())) ||" +
             "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> save(@Valid @RequestBody AppointmentRequest appointmentRequest) {
@@ -61,7 +61,7 @@ public class AppointmentController {
     @PreAuthorize("(hasRole('EMPLOYEE') &&" +
             "@permissionService.canEmployeeAccessAppointment(#id) &&" +
             "@permissionService.canEmployeeAccessEmployee(#appointmentRequest.employeeId()) &&" +
-            "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityId())) ||" +
+            "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityIds())) ||" +
             "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> update(@PathVariable Long id, @Valid @RequestBody AppointmentRequest appointmentRequest) {
         return new ResponseEntity<>(appointmentService.update(id, appointmentRequest), HttpStatus.OK);

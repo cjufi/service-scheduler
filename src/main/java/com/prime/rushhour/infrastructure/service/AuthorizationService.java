@@ -45,7 +45,7 @@ public class AuthorizationService {
     public void canEmployeeAccessAppointment(Long appointmentId) {
         Appointment appointment = appointmentService.findById(appointmentId);
         canEmployeeAccessEmployee(appointment.getEmployee().getId());
-        canEmployeeAccessActivity(appointment.getActivity().getId());
+//        canEmployeeAccessActivity(appointment.getActivity().getId());
     }
 
     private CustomUserDetails getAuthentication() {
