@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
@@ -84,9 +86,8 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Activity idToActivity(Long id) {
-        return activityRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Activity.class.getSimpleName(), "id", id));
+    public List<Activity> idsToActivities(List<Long> ids) {
+        return activityRepository.findByIdIn(ids);
     }
 
     @Override

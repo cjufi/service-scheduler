@@ -16,6 +16,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE,
         uses = {EmployeeService.class, DurationConverter.class})
@@ -32,7 +34,7 @@ public abstract class AppointmentMapper {
 
     @Mapping(target = "employee", source = "employeeId", qualifiedByName = "toEmployee")
     @Mapping(target = "client", source = "clientId", qualifiedByName = "toClient")
-    @Mapping(target = "activity", source = "activityId", qualifiedByName = "toActivity")
+    @Mapping(target = "activities", source = "activityIds", qualifiedByName = "toActivities")
     public abstract Appointment toEntity(AppointmentRequest appointmentRequest);
 
     @Mapping(target = "employee", source = "employee")
@@ -60,8 +62,8 @@ public abstract class AppointmentMapper {
         return clientService.idToClient(id);
     }
 
-    @Named("toActivity")
-    public Activity toActivity(Long id) {
-        return activityService.idToActivity(id);
+    @Named("toActivities")
+    public List<Activity> toActivity(List<Long> ids) {
+        return activityService.idsToActivities(ids);
     }
 }

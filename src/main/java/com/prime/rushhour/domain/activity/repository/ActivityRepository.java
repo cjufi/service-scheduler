@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
@@ -17,4 +19,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     Long findProviderIdByActivityId(@Param("id") Long id);
 
     Page<Activity> findActivitiesByProviderId(Pageable pageable, Long id);
+
+    List<Activity> findByIdIn(List<Long> activityIds);
 }

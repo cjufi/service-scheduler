@@ -6,6 +6,8 @@ import com.prime.rushhour.domain.activity.entity.Activity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface ActivityService {
 
     ActivityResponse save(ActivityRequest activityRequest);
@@ -26,7 +28,7 @@ public interface ActivityService {
 
     Page<ActivityResponse> getAllFromSameProvider(Pageable pageable, Long id);
 
-    Activity idToActivity(Long id);
+    List<Activity> idsToActivities(List<Long> ids);
 
     Activity getActivityById(Long id);
 
