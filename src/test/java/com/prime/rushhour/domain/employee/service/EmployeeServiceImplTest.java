@@ -17,6 +17,7 @@ import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.dto.RoleDto;
 import com.prime.rushhour.domain.role.entity.Role;
 import com.prime.rushhour.domain.role.service.RoleService;
+import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -163,5 +164,105 @@ class EmployeeServiceImplTest {
         verify(employeeMapper).update(employee, employeeUpdateRequest);
         verify(employeeRepository).save(employee);
         verify(employeeMapper).toDto(employee);
+    }
+
+    @Test
+    void getProviderIdFromAccount() {
+        Long accountId = 1L;
+        Long providerId = 1L;
+
+        when(employeeRepository.findProviderIdByAccountId(accountId)).thenReturn(providerId);
+        Long result = employeeService.getProviderIdFromAccount(accountId);
+        assertEquals(providerId, result);
+        verify(employeeRepository).findProviderIdByAccountId(accountId);
+    }
+
+    @Test
+    void getAccountIdFromEmployeeId() {
+        Long employeeId = 1L;
+        Long accountId = 1L;
+
+        when(employeeRepository.findAccountIdByEmployeeId(employeeId)).thenReturn(accountId);
+        Long result = employeeService.getAccountIdFromEmployeeId(employeeId);
+        assertEquals(accountId, result);
+        verify(employeeRepository).findAccountIdByEmployeeId(employeeId);
+    }
+
+    @Test
+    void idsToEmployees() {
+        List<Long> employeeIds = List.of(1L, 2L);
+        List<Employee> expectedEmployees = List.of(new Employee(), new Employee());
+
+        when(employeeRepository.findByIdIn(employeeIds)).thenReturn(expectedEmployees);
+        List<Employee> result = employeeService.idsToEmployees(employeeIds);
+        assertEquals(expectedEmployees, result);
+        verify(employeeRepository).findByIdIn(employeeIds);
+    }
+
+    @Test
+    void idsToEmployees_WhenEmployeeIdsDoNotExist() {
+        List<Long> employeeIds = List.of();
+
+        when(employeeRepository.findByIdIn(employeeIds)).thenReturn(List.of());
+        List<Employee> result = employeeService.idsToEmployees(employeeIds);
+        assertTrue(result.isEmpty());
+        verify(employeeRepository).findByIdIn(employeeIds);
+    }
+
+    @Test
+    void employeesToIds_WhenEmployeesExist() {
+        List<Employee> employees = List.of(
+                new Employee("Junior", "+381698154562", 12.67, LocalDate.of(2020, 8, 30),
+                        new Account("ftasic39@gmail.com", "FilipTasic", "Password12#", new Role("PROVIDER_ADMIN")), null),
+                new Employee("Senior", "+3816981522342", 20.0, LocalDate.of(2018, 8, 30),
+                        new Account("svetlana@gmail.com", "SvetlanaStojanovic", "Password12#", new Role("PROVIDER_ADMIN")), null)
+        );
+        employees.get(0).setId(1L);
+        employees.get(1).setId(2L);
+        List<Long> expectedIds = List.of(1L, 2L);
+
+        List<Long> result = employeeService.EmployeesToIds(employees);
+
+        assertEquals(expectedIds, result);
+    }
+
+    @Test
+    void employeesToIds_WhenEmployeesDoNotExist() {
+        List<Employee> employees = List.of(
+                new Employee("Junior", "+381698154562", 12.67, LocalDate.of(2020, 8, 30),
+                        new Account("ftasic39@gmail.com", "FilipTasic", "Password12#", new Role("PROVIDER_ADMIN")), null),
+                new Employee("Senior", "+3816981522342", 20.0, LocalDate.of(2018, 8, 30),
+                        new Account("svetlana@gmail.com", "SvetlanaStojanovic", "Password12#", new Role("PROVIDER_ADMIN")), null)
+        );
+
+        List<Long> result = employeeService.EmployeesToIds(employees);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void idToEmployee_WhenEmployeeExists() {
+        Long employeeId = 1L;
+        Employee employee = new Employee();
+
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+
+        Employee result = employeeService.idToEmployee(employeeId);
+
+        assertNotNull(result);
+        assertEquals(employee, result);
+
+        verify(employeeRepository).findById(employeeId);
+    }
+
+    @Test
+    void idToEmployee_WhenEmployeeDoesNotExist_ThrowsException() {
+        Long employeeId = 1L;
+
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> employeeService.idToEmployee(employeeId));
+
+        verify(employeeRepository).findById(employeeId);
     }
 }

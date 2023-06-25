@@ -36,6 +36,14 @@ public class Appointment {
 
     public Appointment() {}
 
+    public Appointment(LocalDateTime startDate, LocalDateTime endDate, Employee employee, Client client, List<Activity> activities) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.employee = employee;
+        this.client = client;
+        this.activities = activities;
+    }
+
     public Long getId() {
         return id;
     }

@@ -7,6 +7,7 @@ import com.prime.rushhour.domain.activity.entity.Activity;
 import com.prime.rushhour.domain.activity.mapper.ActivityMapper;
 import com.prime.rushhour.domain.activity.repository.ActivityRepository;
 import com.prime.rushhour.domain.employee.entity.Employee;
+import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.domain.provider.dto.ProviderResponse;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import com.prime.rushhour.domain.role.entity.Role;
@@ -42,6 +43,9 @@ class ActivityServiceImplTest {
 
     @Mock
     private ActivityMapper activityMapper;
+
+    @Mock
+    private EmployeeService employeeService;
 
     private ActivityRequest activityRequest;
 
@@ -145,5 +149,39 @@ class ActivityServiceImplTest {
         activityService.getProviderIdFromActivityId(1L);
 
         verify(activityRepository, times(1)).findProviderIdByActivityId(1L);
+    }
+
+    @Test
+    void IsEmployeesActivitySame() {
+        Long accountId = 1L;
+        Long providerId = 1L;
+        List<Long> activityIds = List.of(1L, 2L);
+
+        when(employeeService.getProviderIdFromAccount(accountId)).thenReturn(providerId);
+        when(activityRepository.findProviderIdByActivityId(anyLong())).thenReturn(providerId);
+
+        boolean result = activityService.isEmployeesActivitySame(activityIds, accountId);
+
+        assertTrue(result);
+        verify(employeeService).getProviderIdFromAccount(accountId);
+        verify(activityRepository, times(2)).findProviderIdByActivityId(anyLong());
+    }
+
+    @Test
+    void addPricesOfActivities_ReturnsZero() {
+        List<Activity> activities = List.of();
+
+        BigDecimal result = activityService.addPricesOfActivities(activities);
+
+        assertEquals(BigDecimal.ZERO, result);
+    }
+
+    @Test
+    void testAddPricesOfActivities_ReturnsValue() {
+        List<Activity> activities = List.of(activity);
+
+        BigDecimal result = activityService.addPricesOfActivities(activities);
+
+        assertEquals(BigDecimal.valueOf(20), result);
     }
 }
