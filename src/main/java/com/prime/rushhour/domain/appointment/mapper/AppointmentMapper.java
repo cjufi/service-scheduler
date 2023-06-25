@@ -39,11 +39,6 @@ public abstract class AppointmentMapper {
     @Mapping(target = "activities", source = "activityIds", qualifiedByName = "toActivities")
     public abstract Appointment toEntity(AppointmentRequest appointmentRequest);
 
-
-    @Mapping(target = "employee.provider", source = "employee.provider")
-    @Mapping(target = "employee.account", source = "employee.account")
-    @Mapping(target = "client.account", source = "client.account")
-    @Mapping(target = "activities", source = "activities")
     @Mapping(target = "price", source = "activities", qualifiedBy = PriceMapping.class)
     public abstract AppointmentResponse toDto(Appointment appointment);
 

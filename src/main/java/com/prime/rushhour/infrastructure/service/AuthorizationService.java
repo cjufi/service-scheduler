@@ -1,6 +1,5 @@
 package com.prime.rushhour.infrastructure.service;
 
-import com.prime.rushhour.domain.activity.service.ActivityService;
 import com.prime.rushhour.domain.appointment.entity.Appointment;
 import com.prime.rushhour.domain.appointment.service.AppointmentService;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
@@ -14,13 +13,10 @@ public class AuthorizationService {
 
     private final EmployeeService employeeService;
 
-    private final ActivityService activityService;
-
     private final AppointmentService appointmentService;
 
-    public AuthorizationService(EmployeeService employeeService, ActivityService activityService, AppointmentService appointmentService) {
+    public AuthorizationService(EmployeeService employeeService, AppointmentService appointmentService) {
         this.employeeService = employeeService;
-        this.activityService = activityService;
         this.appointmentService = appointmentService;
     }
 
