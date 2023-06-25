@@ -8,6 +8,7 @@ import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.domain.provider.service.ProviderService;
 import com.prime.rushhour.domain.role.service.RoleService;
+import com.prime.rushhour.infrastructure.exceptions.UnauthorizedException;
 import com.prime.rushhour.infrastructure.service.AuthorizationService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -116,17 +117,24 @@ public class PermissionService {
     public boolean canClientAccessClient(Long id) {
         var authentication = getAuthentication();
         Long clientsAccountId = clientService.getAccountIdFromClientId(id);
-        return Objects.equals(clientsAccountId, authentication.getAccount().getId());
+        if(!(Objects.equals(clientsAccountId, authentication.getAccount().getId()))) {
+            throw new UnauthorizedException("You cannot access another clients profile");
+        }
+        return true;
     }
 
     public boolean canClientAccessAppointment(Long id) {
         var authentication = getAuthentication();
         var client = clientService.getClientByAccountId(authentication.getAccount().getId());
 
-        return client.getAppointments().stream()
+        client.getAppointments().stream()
                 .map(Appointment::getId)
                 .filter(Objects::nonNull)
-                .anyMatch(appointmentId -> appointmentId.equals(id));
+                .filter(appointmentId -> appointmentId.equals(id))
+                .findFirst()
+                .orElseThrow(() -> new UnauthorizedException("This appointment is not registered for you!"));
+
+        return true;
     }
 
     private CustomUserDetails getAuthentication() {
