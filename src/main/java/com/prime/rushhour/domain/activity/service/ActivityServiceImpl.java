@@ -7,6 +7,7 @@ import com.prime.rushhour.domain.activity.mapper.ActivityMapper;
 import com.prime.rushhour.domain.activity.repository.ActivityRepository;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
+import com.prime.rushhour.infrastructure.exceptions.ForbiddenActivityException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -97,9 +98,14 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public boolean isEmployeesActivitySame(Long activityId, Long accountId) {
-        var activitiesProviderId = activityRepository.findProviderIdByActivityId(activityId);
+    public boolean isEmployeesActivitySame(List<Long> activityIds, Long accountId) {
         var providerId = employeeService.getProviderIdFromAccount(accountId);
-        return activitiesProviderId.equals(providerId);
+        for (Long id : activityIds) {
+            var activitiesProviderId = activityRepository.findProviderIdByActivityId(id);
+            if (!(activitiesProviderId.equals(providerId))) {
+                throw new ForbiddenActivityException(id);
+            }
+        }
+        return true;
     }
 }

@@ -35,17 +35,9 @@ public class AuthorizationService {
             throw new UnauthorizedException("You cannot access this employee, as he is not part of your Provider");
         }
     }
-
-    public void canEmployeeAccessActivity(Long activityId) {
-        if(!activityService.isEmployeesActivitySame(activityId, getAuthentication().getAccount().getId())) {
-            throw new UnauthorizedException("You cannot access this activity, as it is not a part of your Provider");
-        }
-    }
-
     public void canEmployeeAccessAppointment(Long appointmentId) {
         Appointment appointment = appointmentService.findById(appointmentId);
         canEmployeeAccessEmployee(appointment.getEmployee().getId());
-//        canEmployeeAccessActivity(appointment.getActivity().getId());
     }
 
     private CustomUserDetails getAuthentication() {

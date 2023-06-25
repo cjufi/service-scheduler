@@ -32,5 +32,5 @@ public interface ActivityService {
 
     Activity getActivityById(Long id);
 
-    boolean isEmployeesActivitySame(Long activityId, Long id);
+    boolean isEmployeesActivitySame(List<Long> activityIds, Long id);
 }

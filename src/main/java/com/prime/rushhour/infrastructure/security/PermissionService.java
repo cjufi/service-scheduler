@@ -82,8 +82,6 @@ public class PermissionService {
     }
 
     public boolean canProviderAdminAccessActivity(Long id) {
-
-        authorizationService.canEmployeeAccessActivity(id);
         var authentication = getAuthentication();
         var accountId = authentication.getAccount().getId();
         var providerId = activityService.getProviderIdFromActivityId(id);
@@ -98,14 +96,9 @@ public class PermissionService {
         return Objects.equals(employeesAccountId, authentication.getAccount().getId());
     }
 
-    public boolean canEmployeeAccessActivity(Long id) {
-
-        authorizationService.canEmployeeAccessActivity(id);
+    public boolean canEmployeeAccessActivity(List<Long> ids) {
         var authentication = getAuthentication();
-        Long employeesProviderId = employeeService.getEmployeesProviderIdByAccount(authentication.getAccount().getId());
-        var activity = activityService.getActivityById(id);
-        Long providerId = activity.getProvider().getId();
-        return Objects.equals(employeesProviderId, providerId);
+        return activityService.isEmployeesActivitySame(ids, authentication.getAccount().getId());
     }
 
     public boolean canEmployeeAccessAppointment(Long id) {
