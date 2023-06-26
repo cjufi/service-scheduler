@@ -38,6 +38,8 @@ public class AppointmentController {
             "@permissionService.canEmployeeAccessAppointment(#id)) ||" +
             "(hasRole('CLIENT') &&" +
             "@permissionService.canClientAccessAppointment(#id)) ||" +
+            "(hasRole('PROVIDER_ADMIN') && " +
+            "@permissionService.canEmployeeAccessAppointment(#id)) ||"  +
             "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(appointmentService.getById(id), HttpStatus.OK);
