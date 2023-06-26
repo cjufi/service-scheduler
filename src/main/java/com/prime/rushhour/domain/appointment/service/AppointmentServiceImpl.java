@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
 
@@ -63,6 +65,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 
     @Override
     public Appointment findById(Long id) {
-        return appointmentRepository.findAppointmentById(id);
+        return appointmentRepository.findAppointmentById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Appointment.class.getSimpleName(), "id", id));
     }
 }

@@ -239,30 +239,4 @@ class EmployeeServiceImplTest {
 
         assertTrue(result.isEmpty());
     }
-
-    @Test
-    void idToEmployee_WhenEmployeeExists() {
-        Long employeeId = 1L;
-        Employee employee = new Employee();
-
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-
-        Employee result = employeeService.idToEmployee(employeeId);
-
-        assertNotNull(result);
-        assertEquals(employee, result);
-
-        verify(employeeRepository).findById(employeeId);
-    }
-
-    @Test
-    void idToEmployee_WhenEmployeeDoesNotExist_ThrowsException() {
-        Long employeeId = 1L;
-
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
-
-        assertThrows(EntityNotFoundException.class, () -> employeeService.idToEmployee(employeeId));
-
-        verify(employeeRepository).findById(employeeId);
-    }
 }

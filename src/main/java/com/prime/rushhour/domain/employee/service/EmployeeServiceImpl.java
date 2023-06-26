@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.employee.service;
 
+import com.prime.rushhour.domain.account.entity.Account;
 import com.prime.rushhour.domain.account.service.AccountService;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
@@ -121,14 +122,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return employeeIds;
     }
+
+    @Override
+    public Employee idToEmployee(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
+    }
+
     @Override
     public Long getEmployeesProviderIdByAccount(Long id) {
         return employeeRepository.findEmployeesProviderIdByAccountId(id);
     }
 
     @Override
-    public Employee getEmployeeByAccountId(Long id) {
-        return employeeRepository.findByAccountId(id);
+    public Employee getEmployeeByAccount(Account account) {
+        return employeeRepository.findByAccount(account);
     }
 
     @Override

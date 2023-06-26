@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.client.service;
 
+import com.prime.rushhour.domain.account.entity.Account;
 import com.prime.rushhour.domain.account.service.AccountService;
 import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
@@ -91,8 +92,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client getClientByAccountId(Long id) {
-        return clientRepository.findByAccountId(id);
+    public Client getClientByAccount(Account account) {
+        return clientRepository.findByAccount(account);
     }
 
     protected boolean checkRole(Long id) {

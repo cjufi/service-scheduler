@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.client.service;
 
+import com.prime.rushhour.domain.account.entity.Account;
 import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
 import com.prime.rushhour.domain.client.dto.ClientUpdateRequest;
@@ -23,5 +24,5 @@ public interface ClientService {
 
     Client idToClient(Long id);
 
-    Client getClientByAccountId(Long id);
+    Client getClientByAccount(Account account);
 }

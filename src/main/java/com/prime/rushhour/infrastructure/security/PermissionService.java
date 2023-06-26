@@ -106,7 +106,7 @@ public class PermissionService {
 
         authorizationService.canEmployeeAccessAppointment(id);
         var authentication = getAuthentication();
-        var employee = employeeService.getEmployeeByAccountId(authentication.getAccount().getId());
+        var employee = employeeService.getEmployeeByAccount(authentication.getAccount());
 
         return employee.getAppointments().stream()
                 .map(Appointment::getId)
@@ -125,7 +125,7 @@ public class PermissionService {
 
     public boolean canClientAccessAppointment(Long id) {
         var authentication = getAuthentication();
-        var client = clientService.getClientByAccountId(authentication.getAccount().getId());
+        var client = clientService.getClientByAccount(authentication.getAccount());
 
         client.getAppointments().stream()
                 .map(Appointment::getId)
