@@ -28,6 +28,8 @@ public class AppointmentController {
             "(hasRole('PROVIDER_ADMIN') && " +
             "@permissionService.canProviderAdminAccessEmployee(#appointmentRequest.employeeId()) &&" +
             "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityIds())) ||"  +
+            "(hasRole('CLIENT') &&" +
+            "@permissionService.canClientAccessAppointment(#appointmentRequest.clientId())) ||" +
             "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> save(@Valid @RequestBody AppointmentRequest appointmentRequest) {
         return new ResponseEntity<>(appointmentService.save(appointmentRequest), HttpStatus.CREATED);
@@ -55,6 +57,8 @@ public class AppointmentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("(hasRole('EMPLOYEE') &&" +
             "@permissionService.canEmployeeAccessAppointment(#id)) ||" +
+            "(hasRole('PROVIDER_ADMIN') && " +
+            "@permissionService.canEmployeeAccessAppointment(#id)) ||"  +
             "(hasRole('CLIENT') &&" +
             "@permissionService.canClientAccessAppointment(#id)) ||" +
             "hasRole('ADMIN')")
@@ -67,6 +71,10 @@ public class AppointmentController {
             "@permissionService.canEmployeeAccessAppointment(#id) &&" +
             "@permissionService.canEmployeeAccessEmployee(#appointmentRequest.employeeId()) &&" +
             "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityIds())) ||" +
+            "(hasRole('CLIENT') &&" +
+            "@permissionService.canClientAccessAppointment(#id)) ||" +
+            "(hasRole('PROVIDER_ADMIN') && " +
+            "@permissionService.canEmployeeAccessAppointment(#id)) ||"  +
             "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> update(@PathVariable Long id, @Valid @RequestBody AppointmentRequest appointmentRequest) {
         return new ResponseEntity<>(appointmentService.update(id, appointmentRequest), HttpStatus.OK);
