@@ -102,6 +102,7 @@ public class ActivityServiceImpl implements ActivityService {
     public boolean isEmployeesActivitySame(List<Long> activityIds, Long accountId) {
         var providerId = employeeService.getProviderIdFromAccount(accountId);
         for (Long id : activityIds) {
+            getActivityById(id);
             var activitiesProviderId = activityRepository.findProviderIdByActivityId(id);
             if (!(activitiesProviderId.equals(providerId))) {
                 throw new ForbiddenActivityException(id);

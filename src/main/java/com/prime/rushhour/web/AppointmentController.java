@@ -25,6 +25,9 @@ public class AppointmentController {
     @PreAuthorize("(hasRole('EMPLOYEE') && " +
             "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityIds()) &&" +
             "@permissionService.canEmployeeAccessEmployee(#appointmentRequest.employeeId())) ||" +
+            "(hasRole('PROVIDER_ADMIN') && " +
+            "@permissionService.canProviderAdminAccessEmployee(#appointmentRequest.employeeId()) &&" +
+            "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityIds())) ||"  +
             "hasRole('ADMIN')")
     public ResponseEntity<AppointmentResponse> save(@Valid @RequestBody AppointmentRequest appointmentRequest) {
         return new ResponseEntity<>(appointmentService.save(appointmentRequest), HttpStatus.CREATED);
