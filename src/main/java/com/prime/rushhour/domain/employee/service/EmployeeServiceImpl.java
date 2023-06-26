@@ -121,13 +121,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return employeeIds;
     }
-
-    @Override
-    public Employee idToEmployee(Long id) {
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
-    }
-
     @Override
     public Long getEmployeesProviderIdByAccount(Long id) {
         return employeeRepository.findEmployeesProviderIdByAccountId(id);
