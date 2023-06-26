@@ -1,6 +1,5 @@
 package com.prime.rushhour.domain.appointment.service;
 
-import com.prime.rushhour.domain.activity.entity.Activity;
 import com.prime.rushhour.domain.activity.service.ActivityService;
 import com.prime.rushhour.domain.appointment.dto.AppointmentRequest;
 import com.prime.rushhour.domain.appointment.dto.AppointmentResponse;
@@ -11,8 +10,6 @@ import com.prime.rushhour.infrastructure.exceptions.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
@@ -32,7 +29,6 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public AppointmentResponse save(AppointmentRequest appointmentRequest) {
         var appointment = appointmentMapper.toEntity(appointmentRequest);
-        appointment.setEndDate(appointment.getStartDate().plusMinutes(getDurationOfActivities(appointment.getActivities())));
         return appointmentMapper.toDto(appointmentRepository.save(appointment));
     }
 
@@ -61,10 +57,6 @@ public class AppointmentServiceImpl implements AppointmentService{
         var appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Appointment.class.getSimpleName(), "id", id));
 
-        List<Activity> activities = activityService.idsToActivities(appointmentRequest.activityIds());
-        appointment.setEndDate(appointmentRequest.startDate()
-                .plusMinutes(getDurationOfActivities(activities)));
-
         appointmentMapper.update(appointment, appointmentRequest);
         return appointmentMapper.toDto(appointmentRepository.save(appointment));
     }
@@ -72,13 +64,5 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public Appointment findById(Long id) {
         return appointmentRepository.findAppointmentById(id);
-    }
-
-    private long getDurationOfActivities(List<Activity> activities) {
-        long totalDuration = 0;
-        for(Activity activity : activities) {
-            totalDuration += activity.getDuration().toMinutes();
-        }
-        return totalDuration;
     }
 }

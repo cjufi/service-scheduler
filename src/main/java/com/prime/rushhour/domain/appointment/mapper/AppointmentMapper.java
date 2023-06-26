@@ -12,12 +12,11 @@ import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.employee.service.EmployeeService;
 import com.prime.rushhour.infrastructure.mapper.price.PriceMapper;
 import com.prime.rushhour.infrastructure.mapper.price.PriceMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
@@ -60,5 +59,24 @@ public abstract class AppointmentMapper {
     @Named("toActivities")
     public List<Activity> toActivity(List<Long> ids) {
         return activityService.idsToActivities(ids);
+    }
+
+    @AfterMapping
+    protected void calculateEndDate(AppointmentRequest appointmentRequest, @MappingTarget Appointment appointment) {
+        List<Long> activityIds = appointmentRequest.activityIds();
+        long totalDurationMinutes = getDurationOfActivities(activityIds);
+        Duration totalDuration = Duration.ofMinutes(totalDurationMinutes);
+
+        LocalDateTime newEndDate = appointment.getStartDate().plus(totalDuration);
+        appointment.setEndDate(newEndDate);
+    }
+
+    private long getDurationOfActivities(List<Long> activityIds) {
+        long totalDuration = 0;
+        List<Activity> activities = activityService.idsToActivities(activityIds);
+        for (Activity activity : activities) {
+            totalDuration += activity.getDuration().toMinutes();
+        }
+        return totalDuration;
     }
 }
