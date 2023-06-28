@@ -6,7 +6,8 @@ import com.prime.rushhour.domain.provider.entity.Provider;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE)
 public interface ProviderMapper {
 
     Provider toEntity(ProviderRequest providerRequest);

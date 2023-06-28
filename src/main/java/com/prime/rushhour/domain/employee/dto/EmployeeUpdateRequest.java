@@ -22,7 +22,7 @@ public record EmployeeUpdateRequest(
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         LocalDate hireDate,
         @Valid
-        AccountUpdateRequest accountUpdateRequest,
+        AccountUpdateRequest account,
 
         Long providerId
 ) {

@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.employee.service;
 
+import com.prime.rushhour.domain.account.entity.Account;
 import com.prime.rushhour.domain.account.service.AccountService;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
@@ -86,8 +87,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         var employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
 
-        if (checkRole(employeeUpdateRequest.accountUpdateRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeUpdateRequest.accountUpdateRequest().roleId());
+        if (checkRole(employeeUpdateRequest.account().roleId())) {
+            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeUpdateRequest.account().roleId());
         }
 
         employeeMapper.update(employee, employeeUpdateRequest);
@@ -122,6 +123,35 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeIds;
     }
 
+    @Override
+    public Employee idToEmployee(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Employee.class.getSimpleName(), "id", id));
+    }
+
+    @Override
+    public Long getEmployeesProviderIdByAccount(Long id) {
+        return employeeRepository.findEmployeesProviderIdByAccountId(id);
+    }
+
+    @Override
+    public Employee getEmployeeByAccount(Account account) {
+        return employeeRepository.findByAccount(account);
+    }
+
+    @Override
+    public boolean isProviderSame(Long accountId, Long id) {
+        var providerId = employeeRepository.findProviderIdByAccountId(accountId);
+        return providerId.equals(id);
+    }
+
+    @Override
+    public boolean isEmployeesProviderSame(Long employeeId, Long id) {
+        var employeesProviderId = employeeRepository.findProviderIdByEmployeeId(employeeId);
+        var providerId = employeeRepository.findProviderIdByAccountId(id);
+        return employeesProviderId.equals(providerId);
+    }
+
     private String extractEmailDomain(String email) {
         String[] parts = email.split("@");
         if (parts.length != 2) {
@@ -132,15 +162,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private void employeeValidation(EmployeeRequest employeeRequest) {
 
-        accountService.validateAccount(employeeRequest.accountRequest());
+        accountService.validateAccount(employeeRequest.account());
 
-        var emailDomain = extractEmailDomain(employeeRequest.accountRequest().email());
+        var emailDomain = extractEmailDomain(employeeRequest.account().email());
 
         if (!(providerService.getProviderById(employeeRequest.providerId()).getBusinessDomain().equals(emailDomain))) {
             throw new DomainNotCompatibleException("Domain", emailDomain);
         }
-        if (checkRole(employeeRequest.accountRequest().roleId())) {
-            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeRequest.accountRequest().roleId());
+        if (checkRole(employeeRequest.account().roleId())) {
+            throw new RoleNotCompatibleException(Employee.class.getSimpleName(), employeeRequest.account().roleId());
         }
     }
 

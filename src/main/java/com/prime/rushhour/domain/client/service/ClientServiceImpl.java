@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.client.service;
 
+import com.prime.rushhour.domain.account.entity.Account;
 import com.prime.rushhour.domain.account.service.AccountService;
 import com.prime.rushhour.domain.client.dto.ClientRequest;
 import com.prime.rushhour.domain.client.dto.ClientResponse;
@@ -36,10 +37,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientResponse save(ClientRequest clientRequest) {
-        accountService.validateAccount(clientRequest.accountRequest());
+        accountService.validateAccount(clientRequest.account());
 
-        if (!checkRole(clientRequest.accountRequest().roleId())) {
-            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientRequest.accountRequest().roleId());
+        if (!checkRole(clientRequest.account().roleId())) {
+            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientRequest.account().roleId());
         }
 
         var client = clientMapper.toEntity(clientRequest);
@@ -71,8 +72,8 @@ public class ClientServiceImpl implements ClientService {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
 
-        if (!checkRole(clientUpdateRequest.accountUpdateRequest().roleId())) {
-            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientUpdateRequest.accountUpdateRequest().roleId());
+        if (!checkRole(clientUpdateRequest.account().roleId())) {
+            throw new RoleNotCompatibleException(Client.class.getSimpleName(), clientUpdateRequest.account().roleId());
         }
 
         clientMapper.update(client, clientUpdateRequest);
@@ -82,6 +83,17 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Long getAccountIdFromClientId(Long id) {
         return clientRepository.findAccountIdByClientId(id);
+    }
+
+    @Override
+    public Client idToClient(Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Client.class.getSimpleName(), "id", id));
+    }
+
+    @Override
+    public Client getClientByAccount(Account account) {
+        return clientRepository.findByAccount(account);
     }
 
     protected boolean checkRole(Long id) {

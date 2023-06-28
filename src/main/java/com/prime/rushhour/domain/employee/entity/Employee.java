@@ -1,10 +1,12 @@
 package com.prime.rushhour.domain.employee.entity;
 
 import com.prime.rushhour.domain.account.entity.Account;
+import com.prime.rushhour.domain.appointment.entity.Appointment;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 public class Employee {
@@ -32,6 +34,9 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
+
+    @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Appointment> appointments;
 
     public Employee(String title, String phone, Double ratePerHour, LocalDate hireDate, Account account, Provider provider) {
         this.title = title;
@@ -99,5 +104,13 @@ public class Employee {
 
     public void setProvider(Provider provider) {
         this.provider = provider;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }

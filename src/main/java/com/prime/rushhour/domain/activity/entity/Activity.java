@@ -1,6 +1,7 @@
 package com.prime.rushhour.domain.activity.entity;
 
 import com.prime.rushhour.domain.activity.repository.converter.DurationConverter;
+import com.prime.rushhour.domain.appointment.entity.Appointment;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import com.prime.rushhour.domain.provider.entity.Provider;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Activity {
@@ -30,10 +32,15 @@ public class Activity {
     @JoinColumn(name = "provider_id", nullable = false)
     private Provider provider;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "activity_employees", joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "appointment_activities", joinColumns = @JoinColumn(name = "activity_id"),
+            inverseJoinColumns = @JoinColumn(name = "appointment_id"))
+    private Set<Appointment> appointments;
 
     public Activity() {
     }
@@ -93,5 +100,13 @@ public class Activity {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }

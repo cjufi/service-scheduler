@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.employee.repository;
 
+import com.prime.rushhour.domain.account.entity.Account;
 import com.prime.rushhour.domain.employee.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +14,6 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    void deleteEmployeesByProviderId(Long id);
-
     @Query("SELECT e.provider.id FROM Employee e WHERE e.account.id = :accountId")
     Long findProviderIdByAccountId(@Param("accountId") Long accountId);
 
@@ -26,8 +25,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Page<Employee> findEmployeesByProviderId(Pageable pageable, Long id);
 
-    @Query("SELECT e.id FROM Employee e WHERE e = :employee")
-    Long findEmployeeId(@Param("employee") Employee employee);
-
     List<Employee> findByIdIn(List<Long> employeeIds);
+
+    @Query("SELECT e.provider.id FROM Employee e WHERE e.account.id = :accountId")
+    Long findEmployeesProviderIdByAccountId(@Param("accountId") Long accountId);
+
+    @Query("SELECT e from Employee e WHERE e.account.id = :#{#account.id}")
+    Employee findByAccount(@Param("account")Account account);
 }

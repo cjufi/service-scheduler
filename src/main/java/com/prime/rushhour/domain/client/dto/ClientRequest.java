@@ -14,6 +14,6 @@ public record ClientRequest(
         @Size(min = 3, message = "Address must be at least 3 characters long")
         String address,
         @Valid
-        AccountRequest accountRequest
+        AccountRequest account
 ) {
 }

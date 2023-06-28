@@ -1,5 +1,6 @@
 package com.prime.rushhour.domain.employee.service;
 
+import com.prime.rushhour.domain.account.entity.Account;
 import com.prime.rushhour.domain.employee.dto.EmployeeRequest;
 import com.prime.rushhour.domain.employee.dto.EmployeeResponse;
 import com.prime.rushhour.domain.employee.dto.EmployeeUpdateRequest;
@@ -32,4 +33,14 @@ public interface EmployeeService {
     List<Employee> idsToEmployees(List<Long> employeeIds);
 
     List<Long> EmployeesToIds(List<Employee> employees);
+
+    Employee idToEmployee(Long id);
+
+    Long getEmployeesProviderIdByAccount(Long id);
+
+    Employee getEmployeeByAccount(Account account);
+
+    boolean isProviderSame(Long accountId, Long id);
+
+    boolean isEmployeesProviderSame(Long employeeId, Long id);
 }

@@ -2,8 +2,12 @@ package com.prime.rushhour.domain.activity.service;
 
 import com.prime.rushhour.domain.activity.dto.ActivityRequest;
 import com.prime.rushhour.domain.activity.dto.ActivityResponse;
+import com.prime.rushhour.domain.activity.entity.Activity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 public interface ActivityService {
 
@@ -24,4 +28,12 @@ public interface ActivityService {
     Long getProviderIdFromAccountId(Long id);
 
     Page<ActivityResponse> getAllFromSameProvider(Pageable pageable, Long id);
+
+    List<Activity> idsToActivities(List<Long> ids);
+
+    Activity getActivityById(Long id);
+
+    boolean isEmployeesActivitySame(List<Long> activityIds, Long id);
+
+    BigDecimal addPricesOfActivities(List<Activity> activities);
 }

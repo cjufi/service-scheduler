@@ -5,7 +5,8 @@ import com.prime.rushhour.domain.role.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE)
 public interface RoleMapper {
 
     Role toEntity(RoleDto roleDto);

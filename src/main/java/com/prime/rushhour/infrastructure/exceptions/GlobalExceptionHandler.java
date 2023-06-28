@@ -74,6 +74,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(List.of(violation)));
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedException(RuntimeException e) {
+        var violation = new Violation(null, e.getMessage(), LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(List.of(violation)));
+    }
+
+    @ExceptionHandler(ForbiddenActivityException.class)
+    public ResponseEntity<ErrorResponse> handleForbiddenActivityException(RuntimeException e) {
+        var violation = new Violation(null, e.getMessage(), LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(List.of(violation)));
+    }
+
     private record Violation(String field, String error, LocalDateTime timestamp) {
     }
 

@@ -9,7 +9,7 @@ public record ActivityResponse(
         String name,
         BigDecimal price,
         Long duration,
-        ProviderResponse providerResponse,
+        ProviderResponse provider,
         List<Long> employeeIds
 ) {
 }
