@@ -44,9 +44,6 @@ class ActivityServiceImplTest {
     @Mock
     private ActivityMapper activityMapper;
 
-    @Mock
-    private EmployeeService employeeService;
-
     private ActivityRequest activityRequest;
 
     private Activity activity;
@@ -149,22 +146,6 @@ class ActivityServiceImplTest {
         activityService.getProviderIdFromActivityId(1L);
 
         verify(activityRepository, times(1)).findProviderIdByActivityId(1L);
-    }
-
-    @Test
-    void IsEmployeesActivitySame() {
-        Long accountId = 1L;
-        Long providerId = 1L;
-        List<Long> activityIds = List.of(1L, 2L);
-
-        when(employeeService.getProviderIdFromAccount(accountId)).thenReturn(providerId);
-        when(activityRepository.findProviderIdByActivityId(anyLong())).thenReturn(providerId);
-
-        boolean result = activityService.isEmployeesActivitySame(activityIds, accountId);
-
-        assertTrue(result);
-        verify(employeeService).getProviderIdFromAccount(accountId);
-        verify(activityRepository, times(2)).findProviderIdByActivityId(anyLong());
     }
 
     @Test

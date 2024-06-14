@@ -11,16 +11,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * REST controller for managing appointments.
+ *
+ * Provides endpoints for creating, retrieving, updating, and deleting appointments.
+ *
+ * @version 1.0
+ * @author Filip
+ */
 @RestController
 @RequestMapping("/api/v1/appointment")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
 
+    /**
+     * Constructs a new AppointmentController with the specified AppointmentService.
+     *
+     * @param appointmentService the service for managing appointments
+     */
     public AppointmentController(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
 
+    /**
+     * Creates a new appointment.
+     *
+     * @param appointmentRequest the request body containing appointment details
+     * @return the created appointment response
+     */
     @PostMapping
     @PreAuthorize("(hasRole('EMPLOYEE') && " +
             "@permissionService.canEmployeeAccessActivity(#appointmentRequest.activityIds()) &&" +
@@ -35,6 +54,12 @@ public class AppointmentController {
         return new ResponseEntity<>(appointmentService.save(appointmentRequest), HttpStatus.CREATED);
     }
 
+    /**
+     * Retrieves an appointment by its ID.
+     *
+     * @param id the ID of the appointment to retrieve
+     * @return the appointment response
+     */
     @GetMapping("/{id}")
     @PreAuthorize("(hasRole('EMPLOYEE') &&" +
             "@permissionService.canEmployeeAccessAppointment(#id)) ||" +
@@ -47,12 +72,23 @@ public class AppointmentController {
         return new ResponseEntity<>(appointmentService.getById(id), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves all appointments.
+     *
+     * @param pageable pagination information
+     * @return a page of appointment responses
+     */
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<AppointmentResponse>> getAll(Pageable pageable) {
         return new ResponseEntity<>(appointmentService.getAll(pageable), HttpStatus.OK);
     }
 
+    /**
+     * Deletes an appointment by its ID.
+     *
+     * @param id the ID of the appointment to delete
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("(hasRole('EMPLOYEE') &&" +
@@ -66,6 +102,13 @@ public class AppointmentController {
         appointmentService.delete(id);
     }
 
+    /**
+     * Updates an appointment by its ID.
+     *
+     * @param id the ID of the appointment to update
+     * @param appointmentRequest the request body containing updated appointment details
+     * @return the updated appointment response
+     */
     @PutMapping("/{id}")
     @PreAuthorize("(hasRole('EMPLOYEE') &&" +
             "@permissionService.canEmployeeAccessAppointment(#id) &&" +
