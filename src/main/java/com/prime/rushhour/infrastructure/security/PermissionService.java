@@ -52,6 +52,7 @@ public class PermissionService {
     }
 
     public boolean canProviderAdminAccessEmployees(List<Long> employeeIds) {
+
         var authentication = getAuthentication();
         Long providerId = employeeService.getProviderIdFromAccount(authentication.getAccount().getId());
         var provider = providerService.getProviderById(providerId);
@@ -61,7 +62,13 @@ public class PermissionService {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        return employeeIdSet.containsAll(employeeIds);
+        boolean hasAccess = employeeIdSet.containsAll(employeeIds);
+
+        if (!hasAccess) {
+            throw new UnauthorizedException("You cannot add these employees to this activity");
+        }
+
+        return true;
     }
 
     public boolean canProviderAdminAccessProvider(Long id) {
