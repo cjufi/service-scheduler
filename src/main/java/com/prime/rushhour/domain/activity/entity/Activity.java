@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -219,5 +220,31 @@ public class Activity {
      */
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", duration=" + duration +
+                ", provider=" + provider +
+                ", employees=" + employees +
+                ", appointments=" + appointments +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return Objects.equals(id, activity.id) && Objects.equals(name, activity.name) && Objects.equals(price, activity.price) && Objects.equals(duration, activity.duration) && Objects.equals(provider, activity.provider) && Objects.equals(employees, activity.employees) && Objects.equals(appointments, activity.appointments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, duration, provider, employees, appointments);
     }
 }
