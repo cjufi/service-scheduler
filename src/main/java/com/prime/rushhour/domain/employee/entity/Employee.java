@@ -6,6 +6,7 @@ import com.prime.rushhour.domain.provider.entity.Provider;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -237,5 +238,32 @@ public class Employee {
      */
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", phone='" + phone + '\'' +
+                ", ratePerHour=" + ratePerHour +
+                ", hireDate=" + hireDate +
+                ", account=" + account +
+                ", provider=" + provider +
+                ", appointments=" + appointments +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) && Objects.equals(title, employee.title) && Objects.equals(phone, employee.phone) && Objects.equals(ratePerHour, employee.ratePerHour) && Objects.equals(hireDate, employee.hireDate) && Objects.equals(account, employee.account) && Objects.equals(provider, employee.provider) && Objects.equals(appointments, employee.appointments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, phone, ratePerHour, hireDate, account, provider, appointments);
     }
 }

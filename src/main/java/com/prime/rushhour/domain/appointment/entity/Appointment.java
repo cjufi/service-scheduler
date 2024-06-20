@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents an appointment in the system.
@@ -188,5 +189,30 @@ public class Appointment {
      */
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
+    }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id=" + id +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", employee=" + employee +
+                ", client=" + client +
+                ", activities=" + activities +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Appointment that = (Appointment) o;
+        return Objects.equals(id, that.id) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(employee, that.employee) && Objects.equals(client, that.client) && Objects.equals(activities, that.activities);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startDate, endDate, employee, client, activities);
     }
 }

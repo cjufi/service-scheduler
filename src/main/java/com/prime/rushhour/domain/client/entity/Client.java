@@ -4,6 +4,7 @@ import com.prime.rushhour.domain.account.entity.Account;
 import com.prime.rushhour.domain.appointment.entity.Appointment;
 import jakarta.persistence.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -156,5 +157,29 @@ public class Client {
      */
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", account=" + account +
+                ", appointments=" + appointments +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(id, client.id) && Objects.equals(phone, client.phone) && Objects.equals(address, client.address) && Objects.equals(account, client.account) && Objects.equals(appointments, client.appointments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, phone, address, account, appointments);
     }
 }
