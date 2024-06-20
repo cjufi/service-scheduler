@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -288,5 +289,34 @@ public class Provider {
      */
     public void setActivities(Set<Activity> activities) {
         this.activities = activities;
+    }
+
+    @Override
+    public String toString() {
+        return "Provider{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", website='" + website + '\'' +
+                ", businessDomain='" + businessDomain + '\'' +
+                ", phone='" + phone + '\'' +
+                ", startTimeOfWorkingDay=" + startTimeOfWorkingDay +
+                ", endTimeOfWorkingDay=" + endTimeOfWorkingDay +
+                ", workingDays=" + workingDays +
+                ", employees=" + employees +
+                ", activities=" + activities +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Provider provider = (Provider) o;
+        return Objects.equals(id, provider.id) && Objects.equals(name, provider.name) && Objects.equals(website, provider.website) && Objects.equals(businessDomain, provider.businessDomain) && Objects.equals(phone, provider.phone) && Objects.equals(startTimeOfWorkingDay, provider.startTimeOfWorkingDay) && Objects.equals(endTimeOfWorkingDay, provider.endTimeOfWorkingDay) && Objects.equals(workingDays, provider.workingDays) && Objects.equals(employees, provider.employees) && Objects.equals(activities, provider.activities);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, website, businessDomain, phone, startTimeOfWorkingDay, endTimeOfWorkingDay, workingDays, employees, activities);
     }
 }

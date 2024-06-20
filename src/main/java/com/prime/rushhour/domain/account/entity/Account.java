@@ -3,6 +3,8 @@ package com.prime.rushhour.domain.account.entity;
 import com.prime.rushhour.domain.role.entity.Role;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 /**
  * Represents an account in the system.
  *
@@ -154,5 +156,29 @@ public class Account {
      */
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equals(id, account.id) && Objects.equals(email, account.email) && Objects.equals(fullName, account.fullName) && Objects.equals(password, account.password) && Objects.equals(role, account.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, fullName, password, role);
     }
 }
